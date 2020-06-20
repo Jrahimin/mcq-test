@@ -74,10 +74,10 @@
                                     <label for="menu">Select Menu</label>
                                     <select class="form-control" id="menu" v-model="about.menu_id">
                                         <option></option>
-                                        @foreach(SubMenuHelper::SubMenu('pages.dynamic') as $key => $sm)
-                                            <option
-                                                value="{{$sm->id}}">{{$sm->title_en.' ('.($sm->parent_id==0?'Parent':$sm->childMenus->title_en).':'.$sm->id.')'}}</option>
-                                        @endforeach
+{{--                                        @foreach(SubMenuHelper::SubMenu('pages.dynamic') as $key => $sm)--}}
+{{--                                            <option--}}
+{{--                                                value="{{$sm->id}}">{{$sm->title_en.' ('.($sm->parent_id==0?'Parent':$sm->childMenus->title_en).':'.$sm->id.')'}}</option>--}}
+{{--                                        @endforeach--}}
                                     </select>
                                 </div>
                                 <div class="form-group">
