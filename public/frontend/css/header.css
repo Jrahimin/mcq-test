@@ -1,0 +1,334 @@
+
+/* Header with Background Slider start */
+
+    .main-nav {
+        position: absolute;
+        /* top:10px; */
+        left:0;
+        width:100%;
+        z-index:9999;
+    }
+    .logo{
+        padding-left: 3%;
+    }
+    .logo_eti{
+        height: 100px ;
+        width: 100px;
+    }
+    .header_title{
+        font-size: 45px;
+        font-weight: bold;
+        color: black;
+        text-shadow: 1px 1px 0px white;
+        margin-top: 5%;
+    }
+    .language_img{
+        height: 35px;
+        width: 110px;
+        background-position: center;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        margin-top: 10px;
+        position: relative;
+        left: 40%;
+    }
+    .language{
+        line-height: 35px;
+        padding-left: 30%;
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    .headerbg_image {
+        height:300px;
+        width:100%;
+    }
+
+    .carousel-item:after {
+        content: "";
+        display: black;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 300px;
+    }
+    /* .bg-light {
+        background-color: rgba(0,0,0,0) !Important;
+    } */
+
+/* Header with Background Slider end */
+
+/*  Nav bar Section start  */
+.nav_menu{
+    /* clear: both;
+    width: 100%;
+    height: 37px;
+    background-color: #FAFAFA;
+    border-bottom: 1px dotted #CCCCCC;
+    z-index: 999; */
+    clear: both;
+    width: 100%;
+    height: 37px;
+    background-color: #FAFAFA;
+    border-bottom: 1px dotted #CCCCCC;
+    position: relative;
+    z-index: 500;
+}
+
+.nav_menu li{
+    position: relative;
+    display: block;
+    float: left;
+    height: 37px;
+    border-right: 1px dotted #ccc;
+    padding: 0px 41px;
+    list-style: none;
+    /* margin: 0; */
+    /* padding: 0; */
+    z-index: 999999;
+}
+.nav_menu li a{
+    /* padding: 0px 15px; */
+    line-height: px;
+}
+.menu_bar{
+    /* background-image: linear-gradient(to right,#5DAAF8,#1473CD); */
+    height:40px;
+    padding:0px;
+    margin:0px
+}
+
+/* .start {
+    width: 100%;
+}
+
+.navbar-nav {
+    width:100%;
+}
+.home {
+    width: 8.00%;
+    text-align:center;
+} */
+.ribbon {
+    height: 36px;
+    width: 8.00%;
+    position: absolute;
+  }
+
+  .ribbon_bookmark{
+    background: #1473CD;
+    top: 0px;
+    left: 0px;
+    font-size: 20px;
+  }
+
+
+.ribbon_bookmark:after{
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: -50px;
+    border-left: 25px solid #1473CD;
+    border-right: 25px solid transparent;
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+}
+/* .about_us {
+    width: 12.00%;
+    text-align:center;
+
+} */
+
+.menu_font{
+    font-size: 17px;
+    font-weight: bold;
+}
+/* .verticle_line{
+    border-left: 2px solid #ffffff;
+}
+.feculti_member {
+    width: 12.00%;
+    text-align:center;
+}
+.training {
+    width: 12.00%;
+    text-align:center;
+}
+.contact{
+    width: 12.00%;
+    text-align:center;
+}
+.publication {
+    width: 12.00%;
+    text-align:center;
+}
+.organogram {
+    width: 12.00%;
+    text-align:center;
+}
+.research {
+    width: 20.00%;
+    text-align:center;
+}
+.more{
+    width: 10%;
+    text-align:center;
+} */
+/*  Nav bar Section end  */
+
+
+/*  Breaking news and briefing section start  */
+
+.news-20 {
+height: 50px;
+width: 100%;
+background-color: #3C7FB3;
+}
+.news-read {
+margin: 0px;
+}
+.tag {
+    height: 50px;
+    width: 100%;
+    border-radius: 0px 30px 30px 0px;
+    /* background-color: #0064C2; */
+    color: white;
+    font-size: 17px;
+    align-content: center;
+    padding-top: 12px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 40px;
+    background-color: rgba(0,0,255,0.3);
+}
+.marquee {
+width: 100%;
+direction: left;
+height: 50px;
+color:white;
+line-height: 50px;
+text-align: center;
+}
+.search-B {
+height: 50px;
+width: 50%;
+}
+
+.search-container {
+    float: right;
+  }
+
+  .search_input {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+  }
+
+  .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
+  /*.search-container button:hover {
+    background: #ccc;
+  }*/
+
+/* End Breaking style */
+
+/* Start extra style */
+/* #img-style {
+ width:100%;
+ height:250px;
+ object-fit:cover;
+}
+.image_description {
+ border: 1px solid black;
+ position: relative;
+ top: 16px;
+ left: -10%;
+ max-height: 250px;
+ overflow: hidden;
+ box-shadow: 10px 5px 10px #5d5b5b69;
+}
+
+.content  {
+text-align: center;
+color: black;
+}
+#text {
+margin: 20px;
+margin-top: 0px;
+text-align: justify;
+} */
+
+
+/* end extra style */
+
+
+
+
+
+/* Carousel image/ header design */
+
+
+
+
+
+
+
+/* Breaking news and briefing section end style  */
+
+
+/* height: 50px; */
+    /* width: 50px; */
+
+/* mobile responsive */
+/* ----------- Google Pixel ----------- */
+
+/* Portrait */
+
+@media only screen and (max-width: 600px) {
+    .logo_eti{
+        height: 50px;
+        width: 50px;
+    }
+
+    .header_title{
+        font-size: 20px;
+    }
+
+    .language{
+        font-size: 12px;
+    }
+    .language_img{
+        width: 50px;
+        right: 0px;
+    }
+    .tag{
+        font-size: 15px;
+        padding-top: 5px;
+        padding-right: 50px;
+    }
+    .search-B{
+        display: none;
+    }
+    .nav_menu{
+        /* background-color: #ffffff; */
+        height: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-expand-md .navbar-nav .nav-link {
+         padding-right: 0px;
+         padding-left: 0px;
+    }
+}

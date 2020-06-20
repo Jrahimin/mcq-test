@@ -1,0 +1,237 @@
+*{
+    padding: 0;
+    margin: 0;
+    outline:0;
+}
+
+body{
+        margin: 5%;
+        margin-top: 0%;
+        margin-bottom: 0%;
+        background-color: #EEEEFA;
+    }
+/* Header with Background Slider start */
+    .navbar-brand{
+        height: 100px ;
+        width: 100px;
+    }
+
+    .navbar-light {
+    width: 100%;
+    padding:0px;
+    margin:0px;
+    background-color: #4A9CEE;
+    }
+    .main-nav {
+        position: absolute;
+        top:10px;
+        left:0;
+        width:100%;
+        z-index:2000;
+    }
+    .logo_eti{
+        position: relative;
+        /* right: 75%; */
+    }
+        
+    .center{
+        color:white;
+    }
+    .language{
+        line-height: 50px;
+        padding-left: 40%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    .carousel-inner img {
+        height:350px;
+        width:100%;
+    }
+    
+    .carousel-item:after {
+        content: "";
+        display: black;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 300px;
+    }
+    .bg-light {
+        background-color: rgba(0,0,0,0) !Important;
+    }
+    
+    /* Header with Background Slider end */
+
+
+/*  Breaking news and briefing section start  */
+
+.news-20 {
+height: 50px;
+width: 100%;
+background-color: #3C7FB3;
+}
+.news-read {
+margin: 0px;
+}
+.tag {
+height: 50px;
+width: 100%;
+} 
+.marquee {
+width: 100%;
+direction: left;
+height: 50px; 
+color:white;
+line-height: 50px;
+text-align: center;
+}
+.search-B {
+height: 50px;
+width: 50%;
+}
+
+.search-container {
+    float: right;
+  }
+  
+  .search_input {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+  }
+  
+  .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  
+  /*.search-container button:hover {
+    background: #ccc;
+  }*/
+  
+  .tag{
+    border-radius: 0px 30px 30px 0px;
+    background-color: #0064C2;
+  }
+  .ribbon {
+    height: 40px;
+    width: 8.00%;
+    position: absolute;
+  }
+  
+  .ribbon_bookmark{
+    background: #ffffff;
+    top: 9px;
+    left: 0px;
+    font-size: 20px;
+  }
+  
+  
+  .ribbon_bookmark:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -50px;
+    border-left: 25px solid #ffffff;
+    border-right: 25px solid transparent;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+  }
+  /* End navbar style */
+#img-style {
+ width:100%;
+ height:250px;
+ object-fit:cover;
+}
+.image_description {
+ border: 1px solid black;
+ position: relative;
+ top: 16px; 
+ left: -10%;
+ max-height: 250px;
+ overflow: hidden;
+ box-shadow: 10px 5px 10px #5d5b5b69;
+}
+
+.content  {
+text-align: center; 
+color: black;
+}
+#text {
+margin: 20px;
+margin-top: 0px; 
+text-align: justify;
+}
+
+/* Header with Background Slider start */
+
+
+
+
+
+
+/* Carousel image/ header design */
+
+
+
+
+
+
+
+/* Breaking news and briefing section end style  */ 
+
+/*  Nav bar Section start  */ 
+
+.start {
+    width: 100%;
+}
+
+.navbar-nav {
+    width:100%;
+}
+.page1 {
+    width: 8.00%;
+    text-align:center;
+}
+.about_us {
+    width: 14.00%;
+    text-align:center;
+}
+.verticle_line{
+    border-left: 2px solid #ffffff;
+}
+.feculti_member {
+    width: 14.00%;
+    text-align:center;
+}
+.training {
+    width: 14.00%;
+    text-align:center;
+}
+.contact{
+    width: 12.00%;
+    text-align:center;
+}
+.publication {
+    width: 14.00%;
+    text-align:center;
+}
+.organogram {
+    width: 14.00%;
+    text-align:center;
+}
+.research {
+    width: 20.00%;
+    text-align:center;
+}
+/*  Nav bar Section end  */ 

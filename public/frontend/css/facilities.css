@@ -1,0 +1,12 @@
+
+.backgroundimage {
+    width:100%; 
+    height: auto;
+    background-image: url('../image/Cfacilities.png');
+    background-size: contain;
+}    
+
+.paraFont{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
+}
