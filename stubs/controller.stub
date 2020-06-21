@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Log;
 class {{ class }} extends Controller
 {
    use ApiResponseTrait;
-        public function __construct(){
 
+   protected $exceptionMessage;
+        public function __construct()
+        {
+            $this->exceptionMessage = "Something went wrong. Please try again later.";
         }
        /**
         * Display a listing of the resource.
@@ -23,7 +26,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -38,7 +41,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -54,7 +57,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -70,7 +73,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -86,7 +89,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -103,7 +106,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
 
@@ -119,7 +122,7 @@ class {{ class }} extends Controller
 
            } catch (\Exception $ex) {
                Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-               return $this->exceptionResponse('Something went wrong!');
+               return $this->exceptionResponse($this->exceptionMessage);
            }
        }
    }
