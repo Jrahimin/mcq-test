@@ -15,11 +15,16 @@ class CreateExamTestsTable extends Migration
     {
         Schema::create('exam_tests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('exam_pack_id')->index();
+            $table->unsignedInteger('exam_pack_id')->index()->nullable();
             $table->string('title');
             $table->dateTime('exam_schedule');
             $table->integer('duration_minutes')->nullable();
             $table->double('price',8,2);
+            $table->double('mark_per_question')->nullable();
+            $table->double('negative_mark_per_question')->nullable();
+            $table->tinyInteger('type');
+            $table->tinyInteger('status')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
