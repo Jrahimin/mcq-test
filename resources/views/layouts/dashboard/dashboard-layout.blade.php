@@ -55,17 +55,16 @@ to get the desired effect
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
 <!-- jQuery -->
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE -->
 <script src="{{asset('dist/js/adminlte.js')}}"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="{{asset('js/vuejs/vuejs-dev.js')}}"></script>
+<script src="{{asset('js/axios/axios.min.js')}}"></script>
+<script src="{{asset('js/vuejs/vee-validation.js')}}"></script>
+<script src="{{asset('js/sweet-alert.min.js')}}"></script>
 @yield('script-lib')
 @stack('custom-js')
 </body>

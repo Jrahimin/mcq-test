@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ExamTestRequest;
+use App\Http\Resources\Admin\ExamTestResource;
+use App\Models\ExamPack;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
 use App\Traits\QueryTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use phpDocumentor\Reflection\Types\Collection;
+use Yajra\DataTables\Facades\DataTables;
 
 class ExamTestController extends Controller
 {
@@ -19,6 +25,7 @@ class ExamTestController extends Controller
     {
         $this->exceptionMessage = "Something went wrong. Please try again later.";
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,25 +34,15 @@ class ExamTestController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = $this->filterData($request, ExamTest::query());
-            $examTests = $query->latest()->paginate(20);
 
-            return $this->successResponse('',$examTests);
+            if ($request->ajax()) {
 
-        } catch (\Exception $ex) {
-            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
-     */
-    public function create()
-    {
-        try {
+                $query = $this->filterData($request, ExamTest::query());
+                $examTests = $query->latest();
+                return Datatables::of($examTests)->make(true);
+            }
+            $packages = ExamPack::select('title', 'id')->where('status', 1)->get();
+            return view('admin.exam-test', ['packages' => $packages, 'title' => 'Exam Test', 'path' => ['Exam-Test'], 'route' => 'exam-test']);
 
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -59,42 +56,23 @@ class ExamTestController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(ExamTestRequest $request)
     {
         try {
-
-        } catch (\Exception $ex) {
-            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        try {
-
-        } catch (\Exception $ex) {
-            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
-     */
-    public function edit($id)
-    {
-        try {
-
+            $examTest = ExamTest::create([
+                'exam_pack_id' => $request->exam_pack_id,
+                'title' => $request->title,
+                'exam_schedule' => Carbon::parse($request->exam_schedule)->format('Y-m-d H:i:s'),
+                'duration_minutes' => $request->duration_minutes,
+                'price' => $request->price,
+                'mark_per_question' => $request->mark_per_question,
+                'negative_mark_per_question' => $request->negative_mark_per_question,
+                'type' => $request->type,
+                'status' => $request->status
+            ]);
+            if ($examTest)
+                return $this->successResponse('Exam test updated successfully', collect(new ExamTestResource($examTest)));
+            return $this->invalidResponse($this->exceptionMessage);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -108,10 +86,23 @@ class ExamTestController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(ExamTestRequest $request, ExamTest $examTest)
     {
         try {
-
+            $isUpdated = $examTest->update([
+                'exam_pack_id' => $request->exam_pack_id,
+                'title' => $request->title,
+                'exam_schedule' => Carbon::parse($request->exam_schedule)->format('Y-m-d H:i:s'),
+                'duration_minutes' => $request->duration_minutes,
+                'price' => $request->price,
+                'mark_per_question' => $request->mark_per_question,
+                'negative_mark_per_question' => $request->negative_mark_per_question,
+                'type' => $request->type,
+                'status' => $request->status
+            ]);
+            if ($isUpdated)
+                return $this->successResponse('Exam test updated successfully', collect(new ExamTestResource($examTest)));
+            return $this->invalidResponse($this->exceptionMessage);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -127,7 +118,9 @@ class ExamTestController extends Controller
     public function destroy($id)
     {
         try {
-
+            $examTest = ExamTest::find($id)->delete();
+            if ($examTest) return $this->successResponse('Exam test deleted successfully', null);
+            return $this->invalidResponse($this->exceptionMessage);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -137,7 +130,7 @@ class ExamTestController extends Controller
     protected function filterData(Request $request, $query)
     {
         $query = $this->whereQueryFilter($request, $query, ['title', 'type', 'status']);
-        $query = $this->filterDateBetween($request, $query,'exam_schedule');
+        $query = $this->filterDateBetween($request, $query, 'exam_schedule');
 
         return $query;
     }

@@ -34,7 +34,7 @@ class AboutController extends Controller
             if ($request->ajax()) {
 //                return Datatables::of(About::all())->rawColumns(['description_en', 'description_bn', 'image'])->make(true);
             }
-            return view('page-configurations.about', ['title' => 'Dynamic Configuration', 'path' => ['Dynamic'], 'route' => 'about']);
+            return view('admin.about', ['title' => 'Dynamic Configuration', 'path' => ['Dynamic'], 'route' => 'about']);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             if ($request->ajax())

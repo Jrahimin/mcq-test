@@ -18,7 +18,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::resource('about','V1\AboutController');
+Route::group(['namespace' => 'Admin'], function () {
+    Route::resource('exam-test', 'ExamTestController');
+});
 
 Auth::routes();
 
