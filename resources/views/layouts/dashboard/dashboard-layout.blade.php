@@ -30,12 +30,12 @@ to get the desired effect
 -->
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-   @include('layouts.dashboard.navbar')
-    @include('layouts.dashboard.sidebar')
-    <!-- Content Wrapper. Contains page content -->
+@include('layouts.dashboard.navbar')
+@include('layouts.dashboard.sidebar')
+<!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        @include('layouts.dashboard.page-header')
-        <!-- /.content-header -->
+    @include('layouts.dashboard.page-header')
+    <!-- /.content-header -->
 
         <!-- Main content -->
         <div class="content">
@@ -65,6 +65,22 @@ to get the desired effect
 <script src="{{asset('js/axios/axios.min.js')}}"></script>
 <script src="{{asset('js/vuejs/vee-validation.js')}}"></script>
 <script src="{{asset('js/sweet-alert.min.js')}}"></script>
+<script>
+    VeeValidate.extend('required', {
+        validate(value, args) {
+            return {
+                required: true,
+                valid: ['', null, undefined].indexOf(value) === -1
+            };
+        },
+        computesRequired: true
+    });
+    // Vue.component('ValidationObserver', VeeValidate.ValidationObserver);
+    Vue.component('validation-observer', VeeValidate.ValidationObserver);
+    // Register the component globally.
+    Vue.component('validation-provider', VeeValidate.ValidationProvider);
+    window.$ = $;
+</script>
 @yield('script-lib')
 @stack('custom-js')
 </body>

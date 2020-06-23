@@ -36,7 +36,6 @@ class ExamTestController extends Controller
         try {
 
             if ($request->ajax()) {
-
                 $query = $this->filterData($request, ExamTest::query());
                 $examTests = $query->latest();
                 return Datatables::of($examTests)->make(true);

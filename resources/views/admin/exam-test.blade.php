@@ -35,93 +35,118 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
+                        <validation-observer v-slot="{ handleSubmit }">
+                            <form @submit.prevent="handleSubmit(submit)">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="menu">Select Package</label>
+                                            <select class="form-control"
+                                                    id="menu" v-model="examTest.exam_pack_id">
+                                                <option></option>
+                                                @foreach($packages as $key => $pack)
+                                                    <option
+                                                        value="{{$pack->id}}">{{$pack->title}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <validation-provider rules="required"
+                                                                 v-slot="{ errors }">
+                                                <input type="text" class="form-control" id="title"
+                                                       placeholder="Enter exam title"
+                                                       v-bind:class="errors[0]?'border-danger':''"
+                                                       v-model="examTest.title">
+                                            </validation-provider>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exam_schedule">Exam Schedule</label>
+                                            <validation-provider rules="required"
+                                                                 v-slot="{ errors }">
+                                                <input type="datetime-local" v-bind:class="errors[0]?'border-danger':''"
+                                                       class="form-control" id="exam_schedule"
+                                                       placeholder="Enter exam schedule"
+                                                       v-model="examTest.exam_schedule">
+                                            </validation-provider>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="duration_minutes">Exam Duration in minutes</label>
+                                            <input type="number" class="form-control"
+                                                   id="duration_minutes"
+                                                   placeholder="Enter exam duration"
+                                                   v-model="examTest.duration_minutes">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="price">Price</label>
+                                            <validation-provider rules="required"
+                                                                 v-slot="{ errors }">
+                                                <input type="number" class="form-control" id="price"
+                                                       placeholder="Enter exam price"
+                                                       v-bind:class="errors[0]?'border-danger':''"
+                                                       v-model="examTest.price">
+                                            </validation-provider>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="menu">Mark Per Question</label>
+                                            <input type="number" class="form-control" id="mark_per_question"
+                                                   placeholder="Enter mark per question"
+                                                   v-model="examTest.mark_per_question">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="negative_mark_per_question">Negative Mark Per Question</label>
+                                            <input type="number" class="form-control"
+                                                   id="negative_mark_per_question"
+                                                   placeholder="Enter negative Mark per question"
+                                                   v-model="examTest.negative_mark_per_question">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="price">Type</label>
+                                            <validation-provider rules="required"
+                                                                 v-slot="{ errors }">
+                                                <input type="text" class="form-control" id="type"
+                                                       placeholder="Enter exam type"
+                                                       v-bind:class="errors[0]?'border-danger':''"
+                                                       v-model="examTest.type">
+                                            </validation-provider>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                                   v-model="examTest.status">
+                                            <label class="form-check-label" for="exampleCheck1">Is Active</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <label for="menu">Select Package</label>
-                                    <select class="form-control" id="menu" v-model="examTest.exam_pack_id">
-                                        <option></option>
-                                        @foreach($packages as $key => $pack)
-                                            <option
-                                                value="{{$pack->id}}">{{$pack->title}}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="float-right">
+                                        <button type="submit"
+                                                :class="mode === 'create'?'btn btn-info bg-info':'btn btn-primary bg-primary'">
+                                            @{{ mode==='create'?'Submit':'Update' }}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" placeholder="Enter exam title"
-                                           v-model="examTest.title">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="exam_schedule">Exam Schedule</label>
-                                    <input type="datetime-local" class="form-control" id="exam_schedule"
-                                           placeholder="Enter exam schedule"
-                                           v-model="examTest.exam_schedule">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="duration_minutes">Exam Duration in minutes</label>
-                                    <input type="number" class="form-control" id="duration_minutes"
-                                           placeholder="Enter exam duration"
-                                           v-model="examTest.duration_minutes">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="price">Price</label>
-                                    <input type="number" class="form-control" id="price" placeholder="Enter exam price"
-                                           v-model="examTest.price">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="menu">Mark Per Question</label>
-                                    <input type="number" class="form-control" id="mark_per_question"
-                                           placeholder="Enter mark per question"
-                                           v-model="examTest.mark_per_question">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="negative_mark_per_question">Negative Mark Per Question</label>
-                                    <input type="number" class="form-control" id="negative_mark_per_question"
-                                           placeholder="Enter negative Mark per question"
-                                           v-model="examTest.negative_mark_per_question">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="price">Type</label>
-                                    <input type="text" class="form-control" id="type" placeholder="Enter exam type"
-                                           v-model="examTest.type">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                                           v-model="examTest.status">
-                                    <label class="form-check-label" for="exampleCheck1">Is Active</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="float-right">
-                                <button
-                                    :class="mode === 'create'?'btn btn-info bg-info':'btn btn-primary bg-primary'"
-                                    @click="submit">
-                                    @{{ mode==='create'?'Submit':'Update' }}
-                                </button>
-                            </div>
-                        </div>
+                            </form>
+                        </validation-observer>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -227,7 +252,9 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_schedule',
+                                data: 'exam_schedule', render(data, row, type) {
+                                    return (new Date(data)).toLocaleString();
+                                },
                                 name: 'exam_schedule',
                                 defaultContent: '',
                                 title: 'Exam Schedule'
@@ -337,9 +364,9 @@
                     this.error = undefined;
                     let url = '/exam-test';
                     let method = 'post';
-                    this.examTest.exam_schedule = new Date(this.examTest.exam_schedule);
+                    console.log(this.examTest.exam_schedule);
+                    this.examTest.exam_schedule = new Date(this.examTest.exam_schedule + ':00z');
                     if (this.mode === 'edit') {
-                        this.formData.append('id', this.dataTableData[+this.selectedIndex].id);
                         url += '/' + this.dataTableData[+this.selectedIndex].id;
                         method = 'put';
                     }
@@ -393,7 +420,7 @@
                     that.dataTableData = that.dataTable.rows().data();
                     that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
                     that.examTest = that.dataTableData[that.selectedIndex];
-                    that.examTest.exam_schedule = (new Date(that.dataTableData[that.selectedIndex].exam_schedule).toISOString() + '').substr(0, 16);
+                    that.examTest.exam_schedule = that.dataTableData[that.selectedIndex].exam_schedule.substr(0, 10) + "T" + that.dataTableData[that.selectedIndex].exam_schedule.substr(11, 5);
                     console.log(that.examTest.exam_schedule);
                 });
 
