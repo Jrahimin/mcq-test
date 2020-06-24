@@ -11,7 +11,7 @@
     </style>
 @endpush
 @section('main-content')
-    <div class="container-fluid" id="examTest">
+    <div class="container-fluid" id="testQuestion">
         <div class="row" v-if="mode">
             <div class="col-12">
                 <div class="card">
@@ -32,15 +32,20 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="menu">Select Package</label>
-                                            <select class="form-control"
-                                                    id="menu" v-model="examTest.exam_pack_id">
-                                                <option></option>
-                                                @foreach($packages as $key => $pack)
-                                                    <option
-                                                        value="{{$pack->id}}">{{$pack->title}}</option>
-                                                @endforeach
-                                            </select>
+                                            <label for="menu">Select Exam</label>
+                                            <validation-provider rules="required"
+                                                                 v-slot="{ errors }">
+                                                <select class="form-control"
+                                                        v-bind:class="errors[0]?'border-danger':''"
+                                                        id="menu" v-model="testQuestion.exam_test_id"
+                                                >
+                                                    <option></option>
+                                                    @foreach($testQuestions as $key => $testQuestion)
+                                                        <option
+                                                            value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </validation-provider>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -51,10 +56,14 @@
                                                 <input type="text" class="form-control" id="title"
                                                        placeholder="Enter exam title"
                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.title">
+                                                       v-model="testQuestion.title">
                                             </validation-provider>
                                         </div>
                                     </div>
+
+                                    attachment_url
+                                    mark
+                                    status
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="exam_schedule">Exam Schedule</label>
@@ -63,8 +72,17 @@
                                                 <input type="datetime-local" v-bind:class="errors[0]?'border-danger':''"
                                                        class="form-control" id="exam_schedule"
                                                        placeholder="Enter exam schedule"
-                                                       v-model="examTest.exam_schedule">
+                                                       v-model="testQuestion.exam_schedule">
                                             </validation-provider>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exam_schedule">Exam Description</label>
+                                            <input type="datetime-local"
+                                                   class="form-control" id="exam_schedule"
+                                                   placeholder="Enter description"
+                                                   v-model="testQuestion.description">
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +93,7 @@
                                             <input type="number" class="form-control"
                                                    id="duration_minutes"
                                                    placeholder="Enter exam duration"
-                                                   v-model="examTest.duration_minutes">
+                                                   v-model="testQuestion.duration_minutes">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -86,7 +104,7 @@
                                                 <input type="number" class="form-control" id="price"
                                                        placeholder="Enter exam price"
                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.price">
+                                                       v-model="testQuestion.price">
                                             </validation-provider>
                                         </div>
                                     </div>
@@ -95,7 +113,7 @@
                                             <label for="menu">Mark Per Question</label>
                                             <input type="number" class="form-control" id="mark_per_question"
                                                    placeholder="Enter mark per question"
-                                                   v-model="examTest.mark_per_question">
+                                                   v-model="testQuestion.mark_per_question">
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +124,7 @@
                                             <input type="number" class="form-control"
                                                    id="negative_mark_per_question"
                                                    placeholder="Enter negative Mark per question"
-                                                   v-model="examTest.negative_mark_per_question">
+                                                   v-model="testQuestion.negative_mark_per_question">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -117,14 +135,14 @@
                                                 <input type="text" class="form-control" id="type"
                                                        placeholder="Enter exam type"
                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.type">
+                                                       v-model="testQuestion.type">
                                             </validation-provider>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                                                   v-model="examTest.status">
+                                                   v-model="testQuestion.status">
                                             <label class="form-check-label" for="exampleCheck1">Is Active</label>
                                         </div>
                                     </div>
@@ -150,14 +168,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Exam Test List</h3>
-                        <button class="btn btn-info float-right" @click="addExamTest"><i class="fa fa-plus"></i>Add
+                        <h3 class="card-title">Test Question List</h3>
+                        <button class="btn btn-info float-right" @click="addTestQuestion"><i class="fa fa-plus"></i>Add
                         </button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="table-responsive" style="width:100%">
-                            <table id="examTest-table" class="table table-bordered table-striped" width="100%">
+                            <table id="testQuestion-table" class="table table-bordered table-striped" width="100%">
                             </table>
                         </div>
                     </div>
@@ -177,20 +195,27 @@
 @push('custom-js')
     <script defer type="text/javascript">
         new Vue({
-            el: '#examTest',
+            el: '#testQuestion',
             data: {
                 dataTableData: [],
                 dataTable: {},
-                examTest: {
-                    "exam_pack_id": undefined,
-                    "title": undefined,
-                    "exam_schedule": undefined,
-                    "duration_minutes": undefined,
-                    "price": undefined,
-                    "mark_per_question": undefined,
-                    "negative_mark_per_question": undefined,
-                    "type": undefined,
-                    "status": true,
+                testQuestion: {
+                    exam_test_id: undefined,
+                    title: undefined,
+                    description: undefined,
+                    attachment_url: undefined,
+                    mark: undefined,
+                    status: true,
+                    answer: [
+                        {
+                            question_id: undefined,
+                            answer: undefined,
+                            image_url: undefined,
+                            description: undefined,
+                            is_correct: undefined,
+                            status: true,
+                        }
+                    ]
                 },
                 mode: undefined,
                 error: undefined,
@@ -199,13 +224,13 @@
             },
             methods: {
                 dataTableInit(data) {
-                    this.dataTable = $('#examTest-table').DataTable({
+                    this.dataTable = $('#testQuestion-table').DataTable({
                         processing: true,
                         serverSide: true,
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/exam-test',
+                            url: '/test-question',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -223,10 +248,10 @@
                             {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_pack_id',
-                                name: 'exam_pack_id',
+                                data: 'exam_test_id',
+                                name: 'exam_test_id',
                                 defaultContent: '',
-                                title: 'Exam Pack ID'
+                                title: 'Exam Test ID'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
@@ -237,47 +262,24 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_schedule', render(data, row, type) {
-                                    return (new Date(data)).toLocaleString();
-                                },
-                                name: 'exam_schedule',
+                                data: 'description',
+                                name: 'description',
                                 defaultContent: '',
-                                title: 'Exam Schedule'
+                                title: 'Description'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'duration_minutes',
-                                name: 'duration_minutes',
+                                data: 'attachment_url',
+                                name: 'attachment_url',
                                 defaultContent: '',
-                                title: 'Duration (minutes)'
+                                title: 'Attachment URL'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'price',
-                                name: 'price',
+                                data: 'mark',
+                                name: 'mark',
                                 defaultContent: '',
-                                title: 'Price (BDT)'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'mark_per_question',
-                                name: 'mark_per_question',
-                                defaultContent: '',
-                                title: 'Mark/Question'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'negative_mark_per_question',
-                                name: 'negative_mark_per_question',
-                                defaultContent: '',
-                                title: '(-)Mark/Question'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'type',
-                                name: 'type',
-                                defaultContent: '',
-                                title: 'Type'
+                                title: 'Mark'
                             }, {
                                 className: 'all',
                                 orderable: true,
@@ -312,15 +314,15 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-test';
+                    let url = '/test-question';
                     let method = 'post';
-                    this.examTest.exam_schedule = new Date(this.examTest.exam_schedule + ':00z');
+                    this.testQuestion.exam_schedule = new Date(this.testQuestion.exam_schedule + ':00z');
                     if (this.mode === 'edit') {
                         url += '/' + this.dataTableData[+this.selectedIndex].id;
                         method = 'put';
                     }
 
-                    this.ajaxCall(url, this.examTest, method, (data, code) => {
+                    this.ajaxCall(url, this.testQuestion, method, (data, code) => {
                         if (code === 200) {
                             this.dataTableData = this.dataTable.rows().data();
                             this.reset();
@@ -340,19 +342,26 @@
                 },
                 reset() {
                     this.mode = undefined;
-                    this.examTest = {
-                        "exam_pack_id": undefined,
-                        "title": undefined,
-                        "exam_schedule": undefined,
-                        "duration_minutes": undefined,
-                        "price": undefined,
-                        "mark_per_question": undefined,
-                        "negative_mark_per_question": undefined,
-                        "type": undefined,
-                        "status": true,
-                    };
+                    this.testQuestion = [{
+                        exam_test_id: undefined,
+                        title: undefined,
+                        description: undefined,
+                        attachment_url: undefined,
+                        mark: undefined,
+                        status: true,
+                        answer: [
+                            {
+                                question_id: undefined,
+                                answer: undefined,
+                                image_url: undefined,
+                                description: undefined,
+                                is_correct: undefined,
+                                status: true,
+                            }
+                        ]
+                    }];
                 },
-                addExamTest() {
+                addTestQuestion() {
                     this.reset();
                     this.mode = 'create';
                 },
@@ -363,8 +372,8 @@
             mounted() {
                 const that = this;
                 this.dataTableInit({});
-                $('#examTest-table thead tr').clone(true).appendTo('#examTest-table thead');
-                $('#examTest-table thead tr:eq(1) th').each(function (i) {
+                $('#testQuestion-table thead tr').clone(true).appendTo('#testQuestion-table thead');
+                $('#testQuestion-table thead tr:eq(1) th').each(function (i) {
                     var title = $(this).text();
                     $(this).html('<input type="text" placeholder="' + title + '" />');
 
@@ -377,16 +386,15 @@
                         }
                     });
                 });
-                $('#examTest-table tbody').on('click', '.edit_discount', function () {
+                $('#testQuestion-table tbody').on('click', '.edit_discount', function () {
                     that.reset();
                     that.mode = 'edit';
                     that.dataTableData = that.dataTable.rows().data();
                     that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                    that.examTest = that.dataTableData[that.selectedIndex];
-                    that.examTest.exam_schedule = that.dataTableData[that.selectedIndex].exam_schedule.substr(0, 10) + "T" + that.dataTableData[that.selectedIndex].exam_schedule.substr(11, 5);
+                    that.testQuestion = that.dataTableData[that.selectedIndex];
                 });
 
-                $('#examTest-table tbody').on('click', '.delete_discount', function () {
+                $('#testQuestion-table tbody').on('click', '.delete_discount', function () {
                     swal({
                         title: "Are you sure?",
                         text: "Once deleted, you will not be able to recover this data",
@@ -398,7 +406,7 @@
                             that.state = undefined;
                             that.dataTableData = that.dataTable.rows().data();
                             that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                            that.ajaxCall('exam-test/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
+                            that.ajaxCall('test-question/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
                                 if (code === 200) {
                                     that.dataTableData.splice(that.selectedIndex, 1);
                                     that.dataTable.clear();

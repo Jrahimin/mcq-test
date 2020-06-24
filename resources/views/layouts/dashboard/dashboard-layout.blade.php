@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
+    <!-- datatable fixed-header style -->
+    <link rel="stylesheet" href="{{asset('plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css')}}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     @yield('style-lib')
     @stack('custom-css')
 </head>
@@ -80,7 +91,52 @@ to get the desired effect
     // Register the component globally.
     Vue.component('validation-provider', VeeValidate.ValidationProvider);
     window.$ = $;
+
+    window.responseProcess = (response, alert, callback) => {
+        {
+            if (response.status === 'success' || response.code === 200) {
+                if (alert)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Yahoo..',
+                        text: response.message || 'Form stored successfully',
+                    });
+            } else {
+                if (alert)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message || 'Something went wrong! please try again later',
+                    });
+            }
+            callback(response.data, response.code);
+        }
+    };
+    window.ajaxCall = (api, data, method, callback, alert = false, base_url = '') => {
+        (async () => {
+            await axios[method](base_url + api, {
+                ...data
+            })
+                .then(response => this.responseProcess(response.data, alert, (data, code) => callback(data, code)))
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! please try again later',
+                    });
+                });
+        })();
+
+    }
 </script>
+<!-- DataTables -->
+<script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
+<script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
 @yield('script-lib')
 @stack('custom-js')
 </body>

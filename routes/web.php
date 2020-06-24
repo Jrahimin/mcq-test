@@ -20,6 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::group(['namespace' => 'Admin'], function () {
     Route::resource('exam-test', 'ExamTestController');
+    Route::resource('test-question', 'TestQuestionController');
 });
 
 Auth::routes();

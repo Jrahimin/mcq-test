@@ -2,9 +2,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('dashboard')}}" class="brand-link">
-        <img src="{{ asset('frontend/image/logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="{{ asset('frontend/image/')}}" alt="" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">ETI</span>
+        <span class="brand-text font-weight-light">MCQ Exam System</span>
     </a>
 
     <!-- Sidebar -->
@@ -12,7 +12,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('frontend/image/Dg picture.jpg')}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ asset('frontend/image/Dg picture.jpg')}}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Super Admin</a>
@@ -35,20 +35,20 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#"
-                       class="nav-link {{ request()->is(['about']) ? 'active' : '' }}">
+                       class="nav-link {{ request()->is(['exam-test']) ? 'active' : '' }}">
                         <i class="fa fa-copy nav-icon"></i>
                         <p>
-                            Home Page
+                            Exam
                             <i class="fa fa-angle-left right"></i>
-                            {{--                            <span class="badge badge-info right"></span>--}}
+                                                        <span class="badge badge-info right"></span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview"
-                        style="{{request()->is(['about'])?'display:block;':''}}">
+                        style="{{request()->is(['exam-test'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{url('/about')}}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">
+                            <a href="{{url('/exam-test')}}" class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-info nav-icon"></i>
-                                <p>Header</p>
+                                <p>Exam-Test</p>
                             </a>
                         </li>
                     </ul>
