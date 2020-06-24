@@ -8,14 +8,16 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
-    <!-- summernote style -->
-    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
+    <!-- datatable fixed-header style -->
+    <link rel="stylesheet" href="{{asset('plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 @endsection
 @push('custom-css')
     <style type="text/css">
-
+        thead input {
+            width: 100% !important;
+        }
     </style>
 @endpush
 @section('main-content')
@@ -183,9 +185,10 @@
     <!-- DataTables -->
     <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
-    <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
+    <script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
     <script src="{{asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
 
 @endsection
@@ -412,8 +415,22 @@
                 },
             },
             mounted() {
-                this.dataTableInit({});
                 const that = this;
+                this.dataTableInit({});
+                $('#examTest-table thead tr').clone(true).appendTo('#examTest-table thead');
+                $('#examTest-table thead tr:eq(1) th').each(function (i) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (that.dataTable.column(i).search() !== this.value) {
+                            that.dataTable
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
                 $('#examTest-table tbody').on('click', '.edit_discount', function () {
                     that.reset();
                     that.mode = 'edit';
