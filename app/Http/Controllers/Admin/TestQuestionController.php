@@ -58,9 +58,6 @@ class TestQuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->file('image'));
-        Excel::import(new QuestionImport(), request()->file('image'));
-        return view('admin.excel');
         try {
             $testQuestion = TestQuestion::create([
                 'exam_test_id' => $request->exam_test_id,
@@ -88,6 +85,12 @@ class TestQuestionController extends Controller
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }
+    }
+
+    public function importQuestionFromExcel()
+    {
+        Excel::import(new QuestionImport(), request()->file('image'));
+        return view('admin.excel');
     }
 
     /**
@@ -155,4 +158,5 @@ class TestQuestionController extends Controller
 
         return $query;
     }
+
 }
