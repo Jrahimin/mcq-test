@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TestQuestionRequest;
 use App\Http\Resources\Admin\TestQuestionResource;
+use App\Imports\QuestionImport;
 use App\Models\Answer;
 use App\Models\TestQuestion;
 use App\Traits\ApiResponseTrait;
@@ -12,6 +13,7 @@ use App\Traits\QueryTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class TestQuestionController extends Controller
@@ -32,6 +34,7 @@ class TestQuestionController extends Controller
      */
     public function index(Request $request)
     {
+        return view('admin.excel', ['title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
         try {
 
             if ($request->ajax()) {
@@ -53,8 +56,11 @@ class TestQuestionController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function store(TestQuestionRequest $request)
+    public function store(Request $request)
     {
+        //dd($request->file('image'));
+        Excel::import(new QuestionImport(), request()->file('image'));
+        return view('admin.excel');
         try {
             $testQuestion = TestQuestion::create([
                 'exam_test_id' => $request->exam_test_id,
