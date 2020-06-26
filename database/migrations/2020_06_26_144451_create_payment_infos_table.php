@@ -20,6 +20,7 @@ class CreatePaymentInfosTable extends Migration
             $table->double('amount',10,2);
             $table->string('payment_channel')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->unsignedInteger('approved_by_id')->nullable();
             $table->timestamps();
         });
     }
