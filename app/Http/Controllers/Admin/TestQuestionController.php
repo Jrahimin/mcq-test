@@ -13,6 +13,8 @@ use App\Traits\QueryTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -34,7 +36,6 @@ class TestQuestionController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.excel', ['title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
         try {
 
             if ($request->ajax()) {
@@ -89,8 +90,14 @@ class TestQuestionController extends Controller
 
     public function importQuestionFromExcel()
     {
-        Excel::import(new QuestionImport(), request()->file('image'));
-        return view('admin.excel');
+        try{
+            Excel::import(new QuestionImport(), request()->file('question'));
+            return "imported"; //todo
+        }
+        catch (\Exception $ex){
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
     }
 
     /**
