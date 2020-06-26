@@ -16,6 +16,7 @@ class CreateTestQuestionsTable extends Migration
         Schema::create('test_questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('exam_test_id')->index();
+            $table->unsignedInteger('subject_id')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('attachment_url')->nullable();

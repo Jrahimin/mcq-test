@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\ExamPack;
 use App\Models\ExamTest;
+use App\Models\PaymentInfo;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,5 +46,9 @@ class User extends Authenticatable
 
     public function examTest(){
         return $this->belongsToMany(ExamTest::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(PaymentInfo::class);
     }
 }

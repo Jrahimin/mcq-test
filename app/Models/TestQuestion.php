@@ -12,6 +12,10 @@ class TestQuestion extends Model
         return $this->belongsTo(ExamTest::class);
     }
 
+    public function subject(){
+        return $this->belongsTo(Subject::class);
+    }
+
     public function answers(){
         return $this->hasMany(Answer::class,'question_id');
     }
