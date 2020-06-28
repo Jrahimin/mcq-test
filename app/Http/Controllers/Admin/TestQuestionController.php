@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\TestQuestionResource;
 use App\Imports\QuestionImport;
 use App\Models\Answer;
 use App\Models\ExamTest;
+use App\Models\Subject;
 use App\Models\TestQuestion;
 use App\Traits\ApiResponseTrait;
 use App\Traits\QueryTrait;
@@ -45,7 +46,8 @@ class TestQuestionController extends Controller
                 return Datatables::of(TestQuestionResource::collection($testQuestions))->make(true);
             }
             $examTests = ExamTest::select('title', 'id')->where('status', 1)->get();
-            return view('admin.test-question', ['examTests' => $examTests, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
+            $subjects = Subject::select('name', 'id')->where('status', 1)->get();
+            return view('admin.test-question', ['subjects' => $subjects,'examTests' => $examTests, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
 
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -65,6 +67,7 @@ class TestQuestionController extends Controller
             DB::beginTransaction();
             $testQuestion = TestQuestion::create([
                 'exam_test_id' => $request->exam_test_id,
+                'subject_id' => $request->subject_id,
                 'title' => $request->title,
                 'mark' => $request->mark,
                 'status' => !!$request->status,
@@ -113,6 +116,7 @@ class TestQuestionController extends Controller
             DB::beginTransaction();
             $testQuestion->update([
                 'exam_test_id' => $request->exam_test_id,
+                'subject_id' => $request->subject_id,
                 'title' => $request->title,
                 'mark' => $request->mark,
                 'status' => !!$request->status,

@@ -31,7 +31,7 @@
                             <validation-observer v-slot="{ handleSubmit }">
                                 <form @submit.prevent="handleSubmit(submit)">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="menu">Select Exam</label>
                                                 <validation-provider rules="required"
@@ -49,7 +49,21 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="menu">Select Exam</label>
+                                                <select class="form-control"
+                                                        id="subject_id" v-model="testQuestion.subject_id"
+                                                >
+                                                    <option></option>
+                                                    @foreach($subjects as $key => $subject)
+                                                        <option
+                                                            value="{{$subject->id}}">{{$subject->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="title">Title</label>
                                                 <validation-provider rules="required"
@@ -61,7 +75,7 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exam_schedule">Question Mark</label>
                                                 <validation-provider rules="required"
@@ -189,7 +203,7 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Upload a Excel File</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Upload an Excel File</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -226,6 +240,7 @@
                 dataTable: {},
                 testQuestion: {
                     exam_test_id: undefined,
+                    subject_id: undefined,
                     title: undefined,
                     mark: undefined,
                     status: true,
@@ -289,10 +304,17 @@
                             {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_test_id',
-                                name: 'exam_test_id',
+                                data: 'exam_name',
+                                name: 'exam_name',
                                 defaultContent: '',
-                                title: 'Exam Test ID'
+                                title: 'Exam Name'
+                            }, {
+                                className: 'details-control',
+                                orderable: true,
+                                data: 'subject_name',
+                                name: 'subject_name',
+                                defaultContent: '',
+                                title: 'Subject'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
@@ -391,6 +413,7 @@
                     this.mode = undefined;
                     this.testQuestion = {
                         exam_test_id: undefined,
+                        subject_id: undefined,
                         title: undefined,
                         description: undefined,
                         attachment_url: undefined,

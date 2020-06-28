@@ -17,7 +17,10 @@ class TestQuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'exam_test_id' => $this->exam_test_id,
+            'subject_id' => $this->subject_id,
             'title' => $this->title,
+            'exam_name' => $this->examTest->title ?? '',
+            'subject_name' => $this->subject->name ?? '',
             'mark' => $this->mark,
             'status' => $this->status,
             'answers' => $this->answers->map(function ($answer) {

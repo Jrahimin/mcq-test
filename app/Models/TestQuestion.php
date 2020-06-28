@@ -11,7 +11,6 @@ class TestQuestion extends Model
     public function examTest(){
         return $this->belongsTo(ExamTest::class);
     }
-
     public function subject(){
         return $this->belongsTo(Subject::class);
     }
