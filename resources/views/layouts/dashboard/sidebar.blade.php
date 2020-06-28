@@ -35,7 +35,7 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#"
-                       class="nav-link {{ request()->is(['exam-test']) ? 'active' : '' }}">
+                       class="nav-link {{ request()->is(['exam-test','test-question']) ? 'active' : '' }}">
                         <i class="fa fa-copy nav-icon"></i>
                         <p>
                             Exam
@@ -44,11 +44,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview"
-                        style="{{request()->is(['exam-test'])?'display:block;':''}}">
+                        style="{{request()->is(['exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
                             <a href="{{url('/exam-test')}}" class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
-                                <i class="far fa-info nav-icon"></i>
+                                <i class="far fa-book-open nav-icon"></i>
                                 <p>Exam-Test</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/test-question')}}" class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
+                                <i class="far fa-question nav-icon"></i>
+                                <p>Test Question</p>
                             </a>
                         </li>
                     </ul>
