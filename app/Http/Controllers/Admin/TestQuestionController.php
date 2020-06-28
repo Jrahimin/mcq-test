@@ -47,7 +47,7 @@ class TestQuestionController extends Controller
             }
             $examTests = ExamTest::select('title', 'id')->where('status', 1)->get();
             $subjects = Subject::select('name', 'id')->where('status', 1)->get();
-            return view('admin.test-question', ['subjects' => $subjects,'examTests' => $examTests, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
+            return view('admin.test-question', ['subjects' => $subjects, 'examTests' => $examTests, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
 
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -99,7 +99,7 @@ class TestQuestionController extends Controller
             return redirect()->back();
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
+            return redirect()->back()->withErrors(['Something went wrong! please provide a valid file format']);
         }
     }
 
