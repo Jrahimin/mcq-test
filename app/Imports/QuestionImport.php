@@ -13,8 +13,7 @@ class QuestionImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
                 'option_1' => 'required',
@@ -28,7 +27,7 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 'is_correct_5' => 'nullable|integer',
             ]);
 
-            if($validator->fails()){
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->errors());
             }
 
@@ -37,15 +36,14 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 'title' => $row['question'],
             ]);
 
-            for($i=1; $i<6; $i++)
-            {
-                if(!$row['option_'.$i])
+            for ($i = 1; $i < 6; $i++) {
+                if (!$row['option_' . $i])
                     break;
 
                 Answer::create([
                     'question_id' => $question->id,
-                    'answer' => $row['option_'.$i],
-                    'is_correct' => $row['is_correct_'.$i] ? 1 : 0,
+                    'answer' => $row['option_' . $i],
+                    'is_correct' => $row['is_correct_' . $i] ? 1 : 0,
                 ]);
             }
         }

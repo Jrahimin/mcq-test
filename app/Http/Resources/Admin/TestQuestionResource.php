@@ -15,18 +15,17 @@ class TestQuestionResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'exam_test_id' => $this->exam_test_id,
             'title' => $this->title,
-            'description' => $this->description,
-            'attachment_url' => $this->attachment_url,
             'mark' => $this->mark,
             'status' => $this->status,
-            'answers' => $this->map(function ($answer) {
+            'answers' => $this->answers->map(function ($answer) {
                 return collect([
+                    'id' => $answer->id,
                     'question_id' => $answer->question_id,
                     'answer' => $answer->answer,
                     'image_url' => $answer->image_url,
-                    'description' => $answer->description,
                     'is_correct' => $answer->is_correct,
                     'status' => $answer->status,
                 ]);

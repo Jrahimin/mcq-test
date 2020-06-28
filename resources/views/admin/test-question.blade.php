@@ -11,193 +11,171 @@
     </style>
 @endpush
 @section('main-content')
-    <div class="container-fluid" id="testQuestion">
-        <div class="row" v-if="mode">
-            <div class="col-12">
-                <div class="card">
-                    <div class="alert alert-danger alert-dismissible" v-if="error">
-                        <button type="button" class="close" data-dismiss="alert" @click="error=undefined">&times;
-                        </button>
-                        <strong>Warning!</strong>@{{ error }}
-                    </div>
-                    <div class="card-header">
-                        <h5 class="d-inline-block">@{{mode.toUpperCase()}}</h5>
-                        <a href="javascript:void(0)" class="float-right text-danger" @click="closeEditor"><i
-                                class="fa fa-window-close"></i></a>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <validation-observer v-slot="{ handleSubmit }">
-                            <form @submit.prevent="handleSubmit(submit)">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="menu">Select Exam</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <select class="form-control"
-                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                        id="menu" v-model="testQuestion.exam_test_id"
-                                                >
-                                                    <option></option>
-                                                    @foreach($testQuestions as $key => $testQuestion)
-                                                        <option
-                                                            value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </validation-provider>
+    <div class="mt-15">
+        <div class="container-fluid" id="testQuestion">
+            <div class="row" v-if="mode">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="alert alert-danger alert-dismissible" v-if="error">
+                            <button type="button" class="close" data-dismiss="alert" @click="error=undefined">&times;
+                            </button>
+                            <strong>Warning!</strong>@{{ error }}
+                        </div>
+                        <div class="card-header">
+                            <h5 class="d-inline-block">@{{mode.toUpperCase()}}</h5>
+                            <a href="javascript:void(0)" class="float-right text-danger" @click="closeEditor"><i
+                                    class="fa fa-window-close"></i></a>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <validation-observer v-slot="{ handleSubmit }">
+                                <form @submit.prevent="handleSubmit(submit)">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="menu">Select Exam</label>
+                                                <validation-provider rules="required"
+                                                                     v-slot="{ errors }">
+                                                    <select class="form-control"
+                                                            v-bind:class="errors[0]?'border-danger':''"
+                                                            id="menu" v-model="testQuestion.exam_test_id"
+                                                    >
+                                                        <option></option>
+                                                        @foreach($examTests as $key => $testQuestion)
+                                                            <option
+                                                                value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </validation-provider>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="title">Title</label>
+                                                <validation-provider rules="required"
+                                                                     v-slot="{ errors }">
+                                                    <input type="text" class="form-control" id="title"
+                                                           placeholder="Enter exam title"
+                                                           v-bind:class="errors[0]?'border-danger':''"
+                                                           v-model="testQuestion.title">
+                                                </validation-provider>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exam_schedule">Question Mark</label>
+                                                <validation-provider rules="required"
+                                                                     v-slot="{ errors }">
+                                                    <input type="number" v-bind:class="errors[0]?'border-danger':''"
+                                                           class="form-control" id="mark"
+                                                           placeholder="Enter question mark"
+                                                           v-model="testQuestion.mark">
+                                                </validation-provider>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="title">Title</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="text" class="form-control" id="title"
-                                                       placeholder="Enter exam title"
-                                                       v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="testQuestion.title">
-                                            </validation-provider>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                                       v-model="testQuestion.status">
+                                                <label class="form-check-label" for="exampleCheck1">Is Active</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="exam_schedule">Question Mark</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="number" v-bind:class="errors[0]?'border-danger':''"
-                                                       class="form-control" id="mark"
-                                                       placeholder="Enter question mark"
-                                                       v-model="testQuestion.mark">
-                                            </validation-provider>
+                                    <div class="row border-primary mb-2 p-2"
+                                         v-for="(as,i) in testQuestion.answers"
+                                         style="background-color:rgba(119,175,175,0.59)">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <validation-provider rules="required"
+                                                                     v-slot="{ errors }">
+                                                    <label for="image_url">Answer</label>
+                                                    <input type="text" v-bind:class="errors[0]?'border-danger':''"
+                                                           class="form-control" id="answer"
+                                                           placeholder="Enter Answer"
+                                                           v-model="as.answer">
+                                                </validation-provider>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="image_url">Image URL</label>
+                                                <input type="text"
+                                                       class="form-control" id="image_url"
+                                                       placeholder="Enter Image URL"
+                                                       v-model="as.image_url">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="is_correct"
+                                                       v-model="as.is_correct">
+                                                <label class="form-check-label" for="exam_schedule">IS Correct</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="status"
+                                                       v-model="as.status">
+                                                <label class="form-check-label" for="exam_schedule">IS Active</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="float-right">
+                                                <a href="javascript:void(0)" class="badge badge-danger" v-if="i>3"
+                                                   @click="removeAnswer(i)"><i
+                                                        class="fa fa-window-close"></i> Remove</a>
+                                                <a href="javascript:void(0)" class="badge badge-primary pull-right"
+                                                   v-if="i === testQuestion.answers.length-1"
+                                                   @click="addAnswer()"><i
+                                                        class="fa fa-plus"></i> Add</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="exam_schedule">Exam Description</label>
-                                            <input type="text"
-                                                   class="form-control" id="exam_schedule"
-                                                   placeholder="Enter description"
-                                                   v-model="testQuestion.description">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="attachment_url">Attachment</label>
-                                            <input type="number" class="form-control"
-                                                   id="attachment_url"
-                                                   v-model="testQuestion.attachment_url">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                                                   v-model="testQuestion.status">
-                                            <label class="form-check-label" for="exampleCheck1">Is Active</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row border-primary mb-2 p-2"
-                                     v-for="(as,i) in testQuestion.answers" style="background-color:#bbc6dc">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <label for="image_url">Answer</label>
-                                                <input type="text" v-bind:class="errors[0]?'border-danger':''"
-                                                       class="form-control" id="answer"
-                                                       placeholder="Enter Answer"
-                                                       v-model="as.answer">
-                                            </validation-provider>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="exam_schedule">Description</label>
-                                            <input type="text"
-                                                   class="form-control" id="exam_schedule"
-                                                   placeholder="Enter description"
-                                                   v-model="as.description">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="image_url">Image URL</label>
-                                            <input type="text"
-                                                   class="form-control" id="image_url"
-                                                   placeholder="Enter Image URL"
-                                                   v-model="as.image_url">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox"
-                                                   class="form-check-input" id="is_correct"
-                                                   v-model="as.is_correct">
-                                            <label class="form-check-label" for="exam_schedule">IS Correct</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox"
-                                                   class="form-check-input" id="status"
-                                                   v-model="as.status">
-                                            <label class="form-check-label" for="exam_schedule">IS Active</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="form-group">
                                         <div class="float-right">
-                                            <a href="javascript:void(0)" class="badge badge-danger" v-if="i>1"
-                                               @click="removeAnswer(i)"><i
-                                                    class="fa fa-window-close"></i> Remove</a>
-                                            <a href="javascript:void(0)" class="badge badge-primary pull-right"
-                                               v-if="i === testQuestion.answers.length-1"
-                                               @click="addAnswer()"><i
-                                                    class="fa fa-plus"></i> Add</a>
+                                            <button type="submit"
+                                                    :class="mode === 'create'?'btn btn-info bg-info':'btn btn-primary bg-primary'">
+                                                @{{ mode==='create'?'Submit':'Update' }}
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="float-right">
-                                        <button type="submit"
-                                                :class="mode === 'create'?'btn btn-info bg-info':'btn btn-primary bg-primary'">
-                                            @{{ mode==='create'?'Submit':'Update' }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </validation-observer>
-                    </div>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Test Question List</h3>
-                        <button class="btn btn-info float-right" @click="addTestQuestion"><i class="fa fa-plus"></i>Add
-                        </button>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="table-responsive" style="width:100%">
-                            <table id="testQuestion-table" class="table table-bordered table-striped" width="100%">
-                            </table>
+                                </form>
+                            </validation-observer>
                         </div>
                     </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Test Question List</h3>
+                            <button class="btn btn-info float-right" @click="addTestQuestion"><i class="fa fa-plus"></i>Add
+                            </button>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="table-responsive" style="width:100%">
+                                <table id="testQuestion-table" class="table table-bordered table-striped" width="100%">
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
             <!-- /.col -->
         </div>
-        <!-- /.col -->
+
     </div>
     <!-- /.container-fluid -->
 @endsection
@@ -214,8 +192,6 @@
                 testQuestion: {
                     exam_test_id: undefined,
                     title: undefined,
-                    description: undefined,
-                    attachment_url: undefined,
                     mark: undefined,
                     status: true,
                     answers: [
@@ -223,16 +199,26 @@
                             question_id: undefined,
                             answer: undefined,
                             image_url: undefined,
-                            description: undefined,
-                            is_correct: undefined,
+                            is_correct: false,
                             status: true,
                         },
                         {
                             question_id: undefined,
                             answer: undefined,
                             image_url: undefined,
-                            description: undefined,
-                            is_correct: undefined,
+                            is_correct: false,
+                            status: true,
+                        }, {
+                            question_id: undefined,
+                            answer: undefined,
+                            image_url: undefined,
+                            is_correct: false,
+                            status: true,
+                        }, {
+                            question_id: undefined,
+                            answer: undefined,
+                            image_url: undefined,
+                            is_correct: false,
                             status: true,
                         },
                     ]
@@ -282,20 +268,6 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'description',
-                                name: 'description',
-                                defaultContent: '',
-                                title: 'Description'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'attachment_url',
-                                name: 'attachment_url',
-                                defaultContent: '',
-                                title: 'Attachment URL'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
                                 data: 'mark',
                                 name: 'mark',
                                 defaultContent: '',
@@ -336,6 +308,26 @@
                     this.error = undefined;
                     let url = '/test-question';
                     let method = 'post';
+                    const answerCount = this.testQuestion.answers.reduce((previousValue, currentValue) => {
+                        return previousValue + (!!currentValue.is_correct === true ? 1 : 0);
+                    }, 0);
+                    if (answerCount <= 0 || answerCount >= 2) {
+                        swal({
+                            title: "Are you sure?",
+                            text: "For this question you set " + answerCount + " answer" + (answerCount > 1 ? "s" : "") + (answerCount > 1 ? " are" : " is") + " correct",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                this.submitS1(url, method)
+                            }
+                        });
+                    } else {
+                        this.submitS1(url, method)
+                    }
+                },
+                submitS1(url, method) {
                     this.testQuestion.exam_schedule = new Date(this.testQuestion.exam_schedule + ':00z');
                     if (this.mode === 'edit') {
                         url += '/' + this.dataTableData[+this.selectedIndex].id;
@@ -374,16 +366,26 @@
                                 question_id: undefined,
                                 answer: undefined,
                                 image_url: undefined,
-                                description: undefined,
-                                is_correct: undefined,
+                                is_correct: false,
                                 status: true,
                             },
                             {
                                 question_id: undefined,
                                 answer: undefined,
                                 image_url: undefined,
-                                description: undefined,
-                                is_correct: undefined,
+                                is_correct: false,
+                                status: true,
+                            }, {
+                                question_id: undefined,
+                                answer: undefined,
+                                image_url: undefined,
+                                is_correct: false,
+                                status: true,
+                            }, {
+                                question_id: undefined,
+                                answer: undefined,
+                                image_url: undefined,
+                                is_correct: false,
                                 status: true,
                             },
                         ]
@@ -394,8 +396,7 @@
                         question_id: undefined,
                         answer: undefined,
                         image_url: undefined,
-                        description: undefined,
-                        is_correct: undefined,
+                        is_correct: false,
                         status: true,
                     });
                 },

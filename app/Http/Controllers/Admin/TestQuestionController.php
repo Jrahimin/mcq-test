@@ -7,11 +7,13 @@ use App\Http\Requests\Admin\TestQuestionRequest;
 use App\Http\Resources\Admin\TestQuestionResource;
 use App\Imports\QuestionImport;
 use App\Models\Answer;
+use App\Models\ExamTest;
 use App\Models\TestQuestion;
 use App\Traits\ApiResponseTrait;
 use App\Traits\QueryTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -42,8 +44,8 @@ class TestQuestionController extends Controller
                 $testQuestions = TestQuestion::with('answers')->get();
                 return Datatables::of(TestQuestionResource::collection($testQuestions))->make(true);
             }
-            $testQuestions = TestQuestion::select('title', 'id')->where('status', 1)->get();
-            return view('admin.test-question', ['testQuestions' => $testQuestions, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
+            $examTests = ExamTest::select('title', 'id')->where('status', 1)->get();
+            return view('admin.test-question', ['examTests' => $examTests, 'title' => 'Exam Test', 'path' => ['Test-Question'], 'route' => 'test-question']);
 
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -57,32 +59,31 @@ class TestQuestionController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(TestQuestionRequest $request)
     {
         try {
+            DB::beginTransaction();
             $testQuestion = TestQuestion::create([
                 'exam_test_id' => $request->exam_test_id,
                 'title' => $request->title,
-                'description' => $request->description,
-                'attachment_url' => $request->attachment_url,
                 'mark' => $request->mark,
-                'status' => $request->status,
+                'status' => !!$request->status,
             ]);
-            $testQuestion = $testQuestion->answers->saveMany($request->answers->map(function ($answer) use ($testQuestion) {
-                //@todo image process
-                return new Answer([
+            $answers = [];
+            foreach ($request->answers as $answer) {
+                $answers[] = new Answer([
                     'question_id' => $testQuestion->id,
-                    'answer' => $answer->answer,
-                    'image_url' => $answer->image_url,
-                    'description' => $answer->description,
-                    'is_correct' => $answer->is_correct,
-                    'status' => $answer->status,
+                    'answer' => $answer['answer'],
+                    'image_url' => $answer['image_url'] ?? '',
+                    'is_correct' => !!$answer['is_correct'],
+                    'status' => !!$answer['status'],
                 ]);
-            }));
-            if ($testQuestion)
-                return $this->successResponse('Exam test updated successfully', collect(new TestQuestionResource($testQuestion)));
-            return $this->invalidResponse($this->exceptionMessage);
+            }
+            $testQuestion->answers()->saveMany($answers);
+            DB::commit();
+            return $this->successResponse('Exam test updated successfully', collect(new TestQuestionResource($testQuestion)));
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }
@@ -90,11 +91,10 @@ class TestQuestionController extends Controller
 
     public function importQuestionFromExcel()
     {
-        try{
+        try {
             Excel::import(new QuestionImport(), request()->file('question'));
-            return "imported"; //todo
-        }
-        catch (\Exception $ex){
+            return $this->successResponse('File upload successfully', null);
+        } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }
@@ -110,29 +110,29 @@ class TestQuestionController extends Controller
     public function update(TestQuestionRequest $request, TestQuestion $testQuestion)
     {
         try {
-            $testQuestion = $testQuestion->update([
+            DB::beginTransaction();
+            $testQuestion->update([
                 'exam_test_id' => $request->exam_test_id,
                 'title' => $request->title,
-                'description' => $request->description,
-                'attachment_url' => $request->attachment_url,
                 'mark' => $request->mark,
-                'status' => $request->status,
+                'status' => !!$request->status,
             ]);
-            $isUpdated = $testQuestion->answers->saveMany($request->answers->map(function ($answer) use ($testQuestion) {
-                //@todo image process
-                return new Answer([
+            $testQuestion->answers()->delete();
+            $answers = [];
+            foreach ($request->answers as $answer) {
+                $answers[] = new Answer([
                     'question_id' => $testQuestion->id,
-                    'answer' => $answer->answer,
-                    'image_url' => $answer->image_url,
-                    'description' => $answer->description,
-                    'is_correct' => $answer->is_correct,
-                    'status' => $answer->status,
+                    'answer' => $answer['answer'],
+                    'image_url' => $answer['image_url'],
+                    'is_correct' => !!$answer['is_correct'],
+                    'status' => !!$answer['status'],
                 ]);
-            }));
-            if ($isUpdated)
-                return $this->successResponse('Exam test updated successfully', collect(new TestQuestionResource($testQuestion)));
-            return $this->invalidResponse($this->exceptionMessage);
+            }
+            $testQuestion->answers()->saveMany($answers);
+            DB::commit();
+            return $this->successResponse('Exam test updated successfully', collect(new TestQuestionResource($testQuestion)));
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }
@@ -147,12 +147,14 @@ class TestQuestionController extends Controller
     public function destroy($id)
     {
         try {
+            DB::beginTransaction();
             $testQuestion = TestQuestion::find($id);
-            $testQuestion = $testQuestion->delete();
-            $testQuestion = $testQuestion->answers->delete();
-            if ($testQuestion) return $this->successResponse('Exam test deleted successfully', null);
-            return $this->invalidResponse($this->exceptionMessage);
+            $testQuestion->answers()->delete();
+            $testQuestion->delete();
+            DB::commit();
+            return $this->successResponse('Exam test deleted successfully', null);
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }

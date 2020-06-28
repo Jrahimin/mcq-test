@@ -30,9 +30,9 @@ class TestQuestionRequest extends FormRequest
             'exam_test_id' => 'required|exists:exam_tests,id',
             'title' => 'required',
             'mark' => 'required',
-            'answer'=>'required|array|size:2',
-            'answer.answer'=>'required|string',
-            'answer.is_correct'=>'required|bool',
+            'answers'=>'required|array|min:4',
+            'answers.*.answer'=>'required|string',
+            'answers.*.is_correct'=>'required|bool',
         ];
     }
 }
