@@ -92,8 +92,8 @@ class TestQuestionController extends Controller
     public function importQuestionFromExcel()
     {
         try {
-            Excel::import(new QuestionImport(), request()->file('question'));
-            return $this->successResponse('File upload successfully', null);
+            Excel::import(new QuestionImport(), \request()->file('question'));
+            return redirect()->back();
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);

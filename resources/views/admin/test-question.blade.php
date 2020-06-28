@@ -151,14 +151,19 @@
                 </div>
                 <!-- /.card -->
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Test Question List</h3>
-                            <button class="btn btn-info float-right" @click="addTestQuestion"><i class="fa fa-plus"></i>Add
-                            </button>
+                            <h3 class="card-title d-inline-block">Test Question List</h3>
+                            <div class="d-inline-block float-right">
+                                <button class="btn btn-primary mr-1" @click="uploadQuestion"><i
+                                        class="fa fa-upload"></i> Question
+                                </button>
+                                <button class="btn btn-info" @click="addTestQuestion"><i class="fa fa-plus"></i>
+                                    Question
+                                </button>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -176,6 +181,36 @@
             <!-- /.col -->
         </div>
 
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{route('test-question-import')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload a Excel File</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="question">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <!-- /.container-fluid -->
 @endsection
@@ -409,6 +444,9 @@
                 },
                 closeEditor() {
                     this.mode = undefined;
+                },
+                uploadQuestion() {
+                    $("#exampleModal").modal('show');
                 },
             },
             mounted() {
