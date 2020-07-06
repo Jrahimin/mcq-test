@@ -34,7 +34,7 @@
                                         <div class="form-group">
                                             <label for="menu">Select Exam</label>
                                             <select class="form-control"
-                                                    id="menu" v-model="examPack.exam_pack_id" multiple>
+                                                    id="menu" v-model="examPack.exam_id_list" multiple> //TODO select2 multi input
                                                 <option></option>
                                                 @foreach($examTests as $key => $exam)
                                                     <option
@@ -196,6 +196,7 @@
                 dataTableData: [],
                 dataTable: {},
                 examPack: {
+                    "exam_id_list" : [],
                     "title": undefined,
                     "mini_test_count": undefined,
                     "mock_test_count": undefined,
@@ -236,10 +237,10 @@
                             {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_pack_id',
-                                name: 'exam_pack_id',
+                                data: 'exam_id_list',
+                                name: 'exam_id_list',
                                 defaultContent: '',
-                                title: 'Exam Pack ID'
+                                title: 'Exam ID'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
@@ -250,22 +251,6 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_schedule', render(data, row, type) {
-                                    return (new Date(data)).toLocaleString();
-                                },
-                                name: 'exam_schedule',
-                                defaultContent: '',
-                                title: 'Exam Schedule'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'duration_minutes',
-                                name: 'duration_minutes',
-                                defaultContent: '',
-                                title: 'Duration (minutes)'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
                                 data: 'price',
                                 name: 'price',
                                 defaultContent: '',
@@ -273,24 +258,42 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'mark_per_question',
-                                name: 'mark_per_question',
+                                data: 'mini_test_count',
+                                name: 'mini_test_count',
                                 defaultContent: '',
-                                title: 'Mark/Question'
+                                title: 'Mini Test Limit'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'negative_mark_per_question',
-                                name: 'negative_mark_per_question',
+                                data: 'mock_test_count',
+                                name: 'mock_test_count',
                                 defaultContent: '',
-                                title: '(-)Mark/Question'
+                                title: 'Mock Test Limit'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'type',
-                                name: 'type',
+                                data: 'model_test_count',
+                                name: 'model_test_count',
                                 defaultContent: '',
-                                title: 'Type'
+                                title: 'Model Test Limit'
+                            }, {
+                                className: 'details-control',
+                                orderable: true,
+                                data: 'from_date', render(data, row, type) {
+                                    return (new Date(data)).toLocaleString();
+                                },
+                                name: 'from_date',
+                                defaultContent: '',
+                                title: 'Pack Active From'
+                            },  {
+                                className: 'details-control',
+                                orderable: true,
+                                data: 'to_date', render(data, row, type) {
+                                    return (new Date(data)).toLocaleString();
+                                },
+                                name: 'to_date',
+                                defaultContent: '',
+                                title: 'Pack Active Till'
                             }, {
                                 className: 'all',
                                 orderable: true,
@@ -325,7 +328,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-test';
+                    let url = '/exam-pack';
                     let method = 'post';
                     this.examPack.exam_schedule = new Date(this.examPack.exam_schedule + ':00z');
                     if (this.mode === 'edit') {
@@ -354,14 +357,14 @@
                 reset() {
                     this.mode = undefined;
                     this.examPack = {
-                        "exam_pack_id": undefined,
+                        "exam_id_list" : [],
                         "title": undefined,
-                        "exam_schedule": undefined,
-                        "duration_minutes": undefined,
+                        "mini_test_count": undefined,
+                        "mock_test_count": undefined,
+                        "model_test_count": undefined,
                         "price": undefined,
-                        "mark_per_question": undefined,
-                        "negative_mark_per_question": undefined,
-                        "type": undefined,
+                        "from_date": undefined,
+                        "to_date": undefined,
                         "status": true,
                     };
                 },
@@ -411,7 +414,7 @@
                             that.state = undefined;
                             that.dataTableData = that.dataTable.rows().data();
                             that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                            that.ajaxCall('exam-test/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
+                            that.ajaxCall('exam-pack/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
                                 if (code === 200) {
                                     that.dataTableData.splice(that.selectedIndex, 1);
                                     that.dataTable.clear();
