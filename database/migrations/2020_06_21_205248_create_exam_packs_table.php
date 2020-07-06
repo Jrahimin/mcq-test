@@ -20,8 +20,8 @@ class CreateExamPacksTable extends Migration
             $table->integer('mock_test_count')->default(0);
             $table->integer('model_test_count')->default(0);
             $table->double('price',10,2);
-            $table->date('from_date')->nullable();
-            $table->date('to_date')->nullable();
+            $table->dateTime('from_date')->nullable();
+            $table->dateTime('to_date')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

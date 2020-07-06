@@ -35,26 +35,35 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#"
-                       class="nav-link {{ request()->is(['exam-test','test-question']) ? 'active' : '' }}">
+                       class="nav-link {{ request()->is(['exam-pack','exam-test','test-question']) ? 'active' : '' }}">
                         <i class="fa fa-copy nav-icon"></i>
                         <p>
                             Exam
                             <i class="fa fa-angle-left right"></i>
-                                                        <span class="badge badge-info right"></span>
+                            <span class="badge badge-info right"></span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview"
-                        style="{{request()->is(['exam-test','test-question'])?'display:block;':''}}">
+                        style="{{request()->is(['exam-pack','exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{url('/exam-test')}}" class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
+                            <a href="{{url('/exam-test')}}"
+                               class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>Exam-Test</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/test-question')}}" class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
+                            <a href="{{url('/test-question')}}"
+                               class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Test Question</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/exam-pack')}}"
+                               class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
+                                <i class="far fa-question nav-icon"></i>
+                                <p>Exam Package</p>
                             </a>
                         </li>
                     </ul>

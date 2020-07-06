@@ -30,20 +30,7 @@
                         <validation-observer v-slot="{ handleSubmit }">
                             <form @submit.prevent="handleSubmit(submit)">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="menu">Select Exam</label>
-                                            <select class="form-control"
-                                                    id="menu" v-model="examPack.exam_pack_id" multiple>
-                                                <option></option>
-                                                @foreach($examTests as $key => $exam)
-                                                    <option
-                                                        value="{{$exam->id}}">{{$exam->title}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="title">Title</label>
                                             <validation-provider rules="required"
@@ -60,37 +47,25 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="mini_test">Mini Test</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="number" class="form-control" id="mini_test"
-                                                       placeholder="Enter mini test number"
-                                                       v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examPack.mini_test">
-                                            </validation-provider>
+                                            <input type="number" class="form-control" id="mini_test"
+                                                   placeholder="Enter mini test number"
+                                                   v-model="examPack.mini_test_count">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="mock_test">Mock Test</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="number" class="form-control" id="mock_test"
-                                                       placeholder="Enter mock test number"
-                                                       v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examPack.mock_test">
-                                            </validation-provider>
+                                            <input type="number" class="form-control" id="mock_test"
+                                                   placeholder="Enter mock test number"
+                                                   v-model="examPack.mock_test_count">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="model_test">Model Test</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="number" class="form-control" id="model_test"
-                                                       placeholder="Enter model test number"
-                                                       v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examPack.model_test">
-                                            </validation-provider>
+                                            <input type="number" class="form-control" id="model_test"
+                                                   placeholder="Enter model test number"
+                                                   v-model="examPack.model_test_count">
                                         </div>
                                     </div>
                                 </div>
@@ -110,25 +85,21 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="from_date">Active From</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="datetime-local" v-bind:class="errors[0]?'border-danger':''"
-                                                       class="form-control" id="from_date"
-                                                       placeholder="Enter Activation From"
-                                                       v-model="examPack.from_date">
-                                            </validation-provider>
+
+                                            <input type="datetime-local"
+                                                   class="form-control" id="from_date"
+                                                   placeholder="Enter Activation From"
+                                                   v-model="examPack.from_date">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="to_date">Active Till</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <input type="datetime-local" v-bind:class="errors[0]?'border-danger':''"
-                                                       class="form-control" id="to_date"
-                                                       placeholder="Enter Activation Till"
-                                                       v-model="examPack.to_date">
-                                            </validation-provider>
+
+                                            <input type="datetime-local"
+                                                   class="form-control" id="to_date"
+                                                   placeholder="Enter Activation Till"
+                                                   v-model="examPack.to_date">
                                         </div>
                                     </div>
                                 </div>
@@ -236,13 +207,6 @@
                             {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_pack_id',
-                                name: 'exam_pack_id',
-                                defaultContent: '',
-                                title: 'Exam Pack ID'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
                                 data: 'title',
                                 name: 'title',
                                 defaultContent: '',
@@ -250,47 +214,42 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_schedule', render(data, row, type) {
-                                    return (new Date(data)).toLocaleString();
-                                },
-                                name: 'exam_schedule',
+                                data: 'mini_test_count',
+                                name: 'mini_test_count',
                                 defaultContent: '',
-                                title: 'Exam Schedule'
+                                title: 'Mini Test Count'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'duration_minutes',
-                                name: 'duration_minutes',
+                                data: 'mock_test_count',
+                                name: 'mock_test_count',
                                 defaultContent: '',
-                                title: 'Duration (minutes)'
+                                title: 'Mock Test Count'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
                                 data: 'price',
                                 name: 'price',
                                 defaultContent: '',
-                                title: 'Price (BDT)'
+                                title: 'Price'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'mark_per_question',
-                                name: 'mark_per_question',
+                                data: 'from_date', render(data, row, type) {
+                                    return (new Date(data)).toLocaleString();
+                                },
+                                name: 'from_date',
                                 defaultContent: '',
-                                title: 'Mark/Question'
+                                title: 'Form Date'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'negative_mark_per_question',
-                                name: 'negative_mark_per_question',
+                                data: 'to_date', render(data, row, type) {
+                                    return (new Date(data)).toLocaleString();
+                                },
+                                name: 'to_date',
                                 defaultContent: '',
-                                title: '(-)Mark/Question'
-                            }, {
-                                className: 'details-control',
-                                orderable: true,
-                                data: 'type',
-                                name: 'type',
-                                defaultContent: '',
-                                title: 'Type'
+                                title: 'To Date'
                             }, {
                                 className: 'all',
                                 orderable: true,
@@ -325,9 +284,10 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-test';
+                    let url = '/exam-pack';
                     let method = 'post';
-                    this.examPack.exam_schedule = new Date(this.examPack.exam_schedule + ':00z');
+                    this.examPack.from_date = new Date(this.examPack.from_date + ':00z');
+                    this.examPack.to_date = new Date(this.examPack.to_date + ':00z');
                     if (this.mode === 'edit') {
                         url += '/' + this.dataTableData[+this.selectedIndex].id;
                         method = 'put';
@@ -354,14 +314,13 @@
                 reset() {
                     this.mode = undefined;
                     this.examPack = {
-                        "exam_pack_id": undefined,
                         "title": undefined,
-                        "exam_schedule": undefined,
-                        "duration_minutes": undefined,
+                        "mini_test_count": undefined,
+                        "mock_test_count": undefined,
+                        "model_test_count": undefined,
                         "price": undefined,
-                        "mark_per_question": undefined,
-                        "negative_mark_per_question": undefined,
-                        "type": undefined,
+                        "from_date": undefined,
+                        "to_date": undefined,
                         "status": true,
                     };
                 },
@@ -396,7 +355,8 @@
                     that.dataTableData = that.dataTable.rows().data();
                     that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
                     that.examPack = that.dataTableData[that.selectedIndex];
-                    that.examPack.exam_schedule = that.dataTableData[that.selectedIndex].exam_schedule.substr(0, 10) + "T" + that.dataTableData[that.selectedIndex].exam_schedule.substr(11, 5);
+                    that.examPack.from_date = that.examPack.from_date.substr(0, 10) + "T" + that.examPack.from_date.substr(11, 5);
+                    that.examPack.to_date = that.examPack.to_date.substr(0, 10) + "T" + that.examPack.to_date.substr(11, 5);
                 });
 
                 $('#examPack-table tbody').on('click', '.delete_discount', function () {
@@ -411,7 +371,7 @@
                             that.state = undefined;
                             that.dataTableData = that.dataTable.rows().data();
                             that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                            that.ajaxCall('exam-test/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
+                            that.ajaxCall('exam-pack/' + that.dataTableData[that.selectedIndex].id, {}, 'delete', (data, code) => {
                                 if (code === 200) {
                                     that.dataTableData.splice(that.selectedIndex, 1);
                                     that.dataTable.clear();
@@ -423,7 +383,6 @@
                         }
                     });
                 });
-
             },
         })
     </script>
