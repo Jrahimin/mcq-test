@@ -21,6 +21,7 @@ Auth::routes();
 Route::group(['namespace' => 'Admin'], function () {
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
+    Route::resource('exam-pack', 'ExamPackController');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
 
