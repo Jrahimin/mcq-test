@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
+    Route::resource('user-management', 'UserManagementController');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
 
