@@ -77,7 +77,7 @@ class UserManagementController extends Controller
     {
         try {
             $user->update($this->generateData($request));
-            return $this->successResponse('Exam pack stored successfully', $user);
+            return $this->successResponse('User stored successfully', $user);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -94,7 +94,7 @@ class UserManagementController extends Controller
     {
         try {
             $user->delete();
-            return $this->successResponse('Exam test deleted successfully', null);
+            return $this->successResponse('User deleted successfully', null);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -103,14 +103,14 @@ class UserManagementController extends Controller
 
     protected function generateData(Request $request)
     {
-        return [
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile_no' => $request->mobile_no,
-            'address' => $request->address,
-            'type' => $request->type ?? 0,
-            'status' => !!$request->status,
-            'password' => bcrypt($request->password),
-        ];
+            return [
+                'name' => $request->name,
+                'email' => $request->email,
+                'mobile_no' => $request->mobile_no,
+                'address' => $request->address,
+                'type' => $request->type ?? 0,
+                'status' => !!$request->status,
+                'password' => bcrypt($request->password),
+            ];
     }
 }
