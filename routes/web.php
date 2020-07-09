@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test', function () {
+    $user = \App\User::create([
+        'name' => 'admin',
+        'email' => 'admin@gmail.com',
+        'mobile_no' => '01846966947',
+        'address' => 'dhaka',
+        'type' => 0,
+        'status' => 0,
+        'password' => bcrypt("Password@1"),
+    ]);
+
+    dd($user);
+});
 
 Route::get('/', function () {
     return view('welcome');
