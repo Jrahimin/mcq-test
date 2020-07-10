@@ -5,12 +5,19 @@ namespace App\Imports;
 use App\Models\Answer;
 use App\Models\TestQuestion;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class QuestionImport implements ToCollection, WithHeadingRow
 {
+    protected $request;
+    public function __construct($request)
+    {
+        $this->request = $request;
+    }
+
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
@@ -31,9 +38,13 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 return redirect()->back()->withErrors($validator->errors());
             }
 
+            DB::beginTransaction();
+
             $question = TestQuestion::create([
-                'exam_test_id' => 1,
-                'title' => $row['question'],
+                'exam_test_id' => $this->request->exam_test_id,
+                'subject_id'   => $this->request->subject_id,
+                'mark'         => $this->request->mark,
+                'title'        => $row['question'],
             ]);
 
             for ($i = 1; $i < 6; $i++) {
@@ -46,6 +57,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
                     'is_correct' => $row['is_correct_' . $i] ? 1 : 0,
                 ]);
             }
+
+            DB::commit();
         }
     }
 }

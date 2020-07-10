@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
 
 class SubjectAddSeeder extends Seeder
@@ -15,7 +16,10 @@ class SubjectAddSeeder extends Seeder
 
         foreach ($subjects as $subjectName)
         {
-            \App\Models\Subject::create([
+            if(Subject::where('name', $subjectName)->where('status', 1)->first())
+                continue;
+
+            Subject::create([
                 'name' => $subjectName
             ]);
         }

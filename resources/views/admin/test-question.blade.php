@@ -51,7 +51,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="menu">Select Exam</label>
+                                                <label for="menu">Select Subject</label>
                                                 <select class="form-control"
                                                         id="subject_id" v-model="testQuestion.subject_id"
                                                 >
@@ -172,7 +172,7 @@
                             <h3 class="card-title d-inline-block">Test Question List</h3>
                             <div class="d-inline-block float-right">
                                 <button class="btn btn-primary mr-1" @click="uploadQuestion"><i
-                                        class="fa fa-upload"></i> Question
+                                        class="fa fa-upload"></i> Upload Question
                                 </button>
                                 <button class="btn btn-info" @click="addTestQuestion"><i class="fa fa-plus"></i>
                                     Question
@@ -196,9 +196,9 @@
         </div>
 
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade ml-5 mt-4" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <form action="{{route('test-question-import')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
@@ -210,7 +210,36 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select class="form-control" id="exam_test_id" name="exam_test_id">
+                                        <option value="">Select Exam</option>
+                                        @foreach($examTests as $key => $testQuestion)
+                                            <option
+                                                value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select class="form-control" id="subject_id" name="subject_id">
+                                        <option value="">Select Subject</option>
+                                        @foreach($subjects as $key => $subject)
+                                            <option
+                                                value="{{$subject->id}}">{{$subject->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="mark" placeholder="Mark per question">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="question">
                                     <label class="custom-file-label" for="customFile">Choose file</label>

@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('test', function () {
+    if(\App\User::where('email', 'admin@gmail.com'))
+        return "test";
+
     $user = \App\User::create([
         'name' => 'admin',
         'email' => 'admin@gmail.com',
-        'mobile_no' => '01846966947',
-        'address' => 'dhaka',
-        'type' => 0,
-        'status' => 0,
+        'type' => \App\Enums\UserTypes::SUPERADMIN,
+        'status' => 1,
         'password' => bcrypt("Password@1"),
     ]);
 
@@ -27,11 +28,11 @@ Route::get('test', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.dashboard');
 });
 
 Auth::routes();
-Route::group(['namespace' => 'Admin'], function () {
+Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
@@ -40,5 +41,3 @@ Route::group(['namespace' => 'Admin'], function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
