@@ -82,7 +82,7 @@
                         style="{{request()->is(['user-management'])?'display:block;':''}}">
                         <li class="nav-item">
                             <a href="{{url('/user-management')}}"
-                               class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
+                               class="nav-link {{ request()->is('user-management') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>User Management</p>
                             </a>
