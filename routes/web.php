@@ -12,8 +12,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('migrate', function (){
+    \Artisan::call('migrate');
+
+    return "migration done";
+});
+
+Route::get('cache', function (){
+    \Artisan::call('config:cache');
+
+    return "cache clear";
+});
+
 Route::get('test', function () {
-    if(\App\User::where('email', 'admin@gmail.com'))
+    if(\App\User::where('email', 'admin@gmail.com')->first())
         return "test";
 
     $user = \App\User::create([
