@@ -35,7 +35,7 @@
                                             <label for="menu">Select Package</label>
                                             <select class="form-control"
                                                     id="menu" v-model="examTest.exam_pack_id">
-                                                <option></option>
+                                                <option value="">Select a Package</option>
                                                 @foreach($packages as $key => $pack)
                                                     <option
                                                         value="{{$pack->id}}">{{$pack->title}}</option>
