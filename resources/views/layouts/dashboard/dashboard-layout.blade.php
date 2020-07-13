@@ -9,6 +9,8 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{secure_asset('plugins/fontawesome-free/css/all.min.css')}}">
+
+    <link rel="stylesheet" href="{{secure_asset('css/dashboard_box.css')}}">
     <!-- IonIcons -->
     <!-- Theme style -->
     <link rel="stylesheet" href="{{secure_asset('dist/css/adminlte.min.css')}}">

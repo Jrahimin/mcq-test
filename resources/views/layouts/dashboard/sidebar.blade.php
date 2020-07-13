@@ -12,7 +12,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ secure_asset('frontend/image/Dg picture.jpg')}}" class="img-circle elevation-2" alt="User">
+                <img src="{{ secure_asset('frontend/image/admin.png')}}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Super Admin</a>
