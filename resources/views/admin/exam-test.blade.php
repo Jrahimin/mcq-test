@@ -205,7 +205,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/exam-test',
+                            url: 'exam-test',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -312,7 +312,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-test';
+                    let url = 'exam-test';
                     let method = 'post';
                     this.examTest.exam_schedule = new Date(this.examTest.exam_schedule + ':00z');
                     if (this.mode === 'edit') {

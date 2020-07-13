@@ -315,7 +315,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/test-question',
+                            url: 'test-question',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -392,7 +392,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/test-question';
+                    let url = 'test-question';
                     let method = 'post';
                     const answerCount = this.testQuestion.answers.reduce((previousValue, currentValue) => {
                         return previousValue + (!!currentValue.is_correct === true ? 1 : 0);

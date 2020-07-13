@@ -189,7 +189,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/exam-pack',
+                            url: 'exam-pack',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -284,7 +284,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-pack';
+                    let url = 'exam-pack';
                     let method = 'post';
                     this.examPack.from_date = new Date(this.examPack.from_date + ':00z');
                     this.examPack.to_date = new Date(this.examPack.to_date + ':00z');

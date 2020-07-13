@@ -8,22 +8,21 @@
     <title>A2B Online Exam</title>
 
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- IonIcons -->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
-    <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
     <!-- datatable fixed-header style -->
-    <link rel="stylesheet" href="{{asset('plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     @yield('style-lib')
@@ -67,15 +66,15 @@ to get the desired effect
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+<script src="{{secure_asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
-<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{secure_asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE -->
-<script src="{{asset('dist/js/adminlte.js')}}"></script>
-<script src="{{asset('js/vuejs/vuejs-dev.js')}}"></script>
-<script src="{{asset('js/axios/axios.min.js')}}"></script>
-<script src="{{asset('js/vuejs/vee-validation.js')}}"></script>
-<script src="{{asset('js/sweet-alert.min.js')}}"></script>
+<script src="{{secure_asset('dist/js/adminlte.js')}}"></script>
+<script src="{{secure_asset('js/vuejs/vuejs-dev.js')}}"></script>
+<script src="{{secure_asset('js/axios/axios.min.js')}}"></script>
+<script src="{{secure_asset('js/vuejs/vee-validation.js')}}"></script>
+<script src="{{secure_asset('js/sweet-alert.min.js')}}"></script>
 <script>
     VeeValidate.extend('required', {
         validate(value, args) {
@@ -130,13 +129,13 @@ to get the desired effect
     }
 </script>
 <!-- DataTables -->
-<script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
-<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
-<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
-<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
-<script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
-<script src="{{asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{secure_asset('plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{secure_asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
 @yield('script-lib')
 @stack('custom-js')
 </body>

@@ -25,6 +25,12 @@ Route::get('cache', function (){
     return "cache clear";
 });
 
+Route::get('seed', function (){
+    \Artisan::call('db:seed');
+
+    return "cache clear";
+});
+
 Route::get('test', function () {
     if(\App\User::where('email', 'admin@gmail.com')->first())
         return "test";
