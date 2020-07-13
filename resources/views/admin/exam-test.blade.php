@@ -33,12 +33,9 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="menu">Select Package</label>
-                                            <select class="form-control"
-                                                    id="menu" v-model="examTest.exam_pack_id">
-                                                <option value="">Select a Package</option>
+                                            <select class="form-control" id="menu" v-model="examTest.exam_pack_id">
                                                 @foreach($packages as $key => $pack)
-                                                    <option
-                                                        value="{{$pack->id}}">{{$pack->title}}</option>
+                                                    <option value="{{$pack->id}}">{{$pack->title}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
