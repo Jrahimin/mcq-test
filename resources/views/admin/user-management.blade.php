@@ -128,7 +128,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Exam Pack List</h3>
+                        <h3 class="card-title">User List {{$status}}</h3>
                         <button class="btn btn-info float-right" @click="addExamTest"><i class="fa fa-plus"></i>Add
                         </button>
                     </div>
@@ -182,7 +182,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: 'user-management',
+                            url: 'user-management{{isset($from_date)?'?from_date='.$from_date:(isset($status)?'?status='.$status:'')}}',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",

@@ -38,9 +38,9 @@ class UserManagementController extends Controller
             if ($request->wantsJson()) {
                 $query = User::query();
 
-                if($request->has('status'))
+                if ($request->has('status'))
                     $query = $query->where('status', $request->status);
-                if($request->has('from_date'))
+                if ($request->has('from_date'))
                     $query = $query->whereDate('created_at', $request->from_date);
 
                 $userManagements = $query->latest()->get();
@@ -49,6 +49,8 @@ class UserManagementController extends Controller
             }
             $data = $this->data;
             $data['userTypes'] = (object)[1 => 'Super Admin', 2 => 'Account', 3 => 'Sub Admin', 4 => 'Basic User'];//super-admin,account,sub-admin,basic
+            if ($request->from_date) $data['from_date'] = $request->from_date;
+            if (isset($request->status)) $data['status'] = $request->status;
             return view('admin.user-management', $data);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -111,14 +113,14 @@ class UserManagementController extends Controller
 
     protected function generateData(Request $request)
     {
-            return [
-                'name' => $request->name,
-                'email' => $request->email,
-                'mobile_no' => $request->mobile_no,
-                'address' => $request->address,
-                'type' => $request->type ?? 0,
-                'status' => !!$request->status,
-                'password' => bcrypt($request->password),
-            ];
+        return [
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile_no' => $request->mobile_no,
+            'address' => $request->address,
+            'type' => $request->type ?? 0,
+            'status' => !!$request->status,
+            'password' => bcrypt($request->password),
+        ];
     }
 }
