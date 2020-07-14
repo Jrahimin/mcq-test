@@ -112,10 +112,14 @@
                                             <label for="price">Type</label>
                                             <validation-provider rules="required"
                                                                  v-slot="{ errors }">
-                                                <input type="text" class="form-control" id="type"
-                                                       placeholder="Enter exam type"
-                                                       v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.type">
+                                                <select type="text" class="form-control" id="type"
+                                                        v-bind:class="errors[0]?'border-danger':''"
+                                                        v-model="examTest.type">
+                                                    <option value="">Select Type</option>
+                                                    <option value="1">MODEL TEST</option>
+                                                    <option value="2">MOCK TEST</option>
+                                                    <option value="3">MINI TEST</option>
+                                                </select>
                                             </validation-provider>
                                         </div>
                                     </div>
@@ -187,7 +191,7 @@
                     "price": undefined,
                     "mark_per_question": undefined,
                     "negative_mark_per_question": undefined,
-                    "type": undefined,
+                    "type": '',
                     "status": true,
                 },
                 mode: undefined,
@@ -272,7 +276,11 @@
                             }, {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'type',
+                                data: 'type', render(data, row, type) {
+                                    if (data == 1) return 'MODEL TEST';
+                                    if (data == 2) return 'MOCK TEST';
+                                    if (data == 3) return 'MINI TEST';
+                                },
                                 name: 'type',
                                 defaultContent: '',
                                 title: 'Type'
@@ -346,7 +354,7 @@
                         "price": undefined,
                         "mark_per_question": undefined,
                         "negative_mark_per_question": undefined,
-                        "type": undefined,
+                        "type": '',
                         "status": true,
                     };
                 },

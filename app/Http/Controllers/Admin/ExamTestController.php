@@ -34,7 +34,6 @@ class ExamTestController extends Controller
     public function index(Request $request)
     {
         try {
-
             if ($request->ajax()) {
                 $query = $this->filterData($request, ExamTest::query());
                 $examTests = $query->latest();
@@ -42,7 +41,6 @@ class ExamTestController extends Controller
             }
             $packages = ExamPack::select('title', 'id')->where('status', 1)->get();
             return view('admin.exam-test', ['packages' => $packages, 'title' => 'Exam Test', 'path' => ['Exam-Test'], 'route' => 'exam-test']);
-
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
