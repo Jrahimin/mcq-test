@@ -92,7 +92,7 @@
                         <span class="count-name">Total Paid Amount</span>
                         <hr>
                         <div>
-                            <a class="count-link btn btn-sm btn-info" href="#" target="_blank">
+                            <a class="count-link btn btn-sm btn-info" href="{{ route('payment-info.index') }}" target="_blank">
                                 <strong>Show</strong>
                             </a>
                         </div>
@@ -105,7 +105,7 @@
                         <span class="count-name">Awaiting Payment Approval</span>
                         <hr>
                         <div>
-                            <a class="count-link btn btn-sm btn-info" href="#" target="_blank">
+                            <a class="count-link btn btn-sm btn-info" href="{{ route('payment-info.index').'?status=0' }}" target="_blank">
                                 <strong>Show</strong>
                             </a>
                         </div>
