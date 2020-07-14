@@ -140,7 +140,7 @@
                                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm pull-right"
                                                    v-if="i === testQuestion.answers.length-1"
                                                    @click="addAnswer()"><i
-                                                        class="fa fa-plus"></i> Add</a>
+                                                        class="fa fa-plus"></i> Add Option</a>
                                             </div>
                                         </div>
                                     </div>
