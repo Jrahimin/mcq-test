@@ -92,10 +92,14 @@ class TestQuestionController extends Controller
         }
     }
 
-    public function importQuestionFromExcel()
+    public function importQuestionFromExcel(Request $request)
     {
+        $this->validate($request,[
+            'exam_test_id' => 'required'
+        ]);
+
         try {
-            Excel::import(new QuestionImport(), \request()->file('question'));
+            Excel::import(new QuestionImport($request), $request->file('question'));
             return redirect()->back();
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -152,10 +156,13 @@ class TestQuestionController extends Controller
     {
         try {
             DB::beginTransaction();
-            $testQuestion = TestQuestion::find($id);
+
+            $testQuestion = TestQuestion::findOrFail($id);
             $testQuestion->answers()->delete();
             $testQuestion->delete();
+
             DB::commit();
+
             return $this->successResponse('Exam test deleted successfully', null);
         } catch (\Exception $ex) {
             DB::rollBack();

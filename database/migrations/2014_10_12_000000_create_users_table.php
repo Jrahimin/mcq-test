@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->double('balance', 12, 2)->default(0);
             $table->string('mobile_no')->nullable();
             $table->text('address')->nullable();
-            $table->tinyInteger('type')->default(4);
+            $table->tinyInteger('type')->default(UserTypes::USER);
             $table->tinyInteger('status')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

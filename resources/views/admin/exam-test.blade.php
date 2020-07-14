@@ -33,12 +33,9 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="menu">Select Package</label>
-                                            <select class="form-control"
-                                                    id="menu" v-model="examTest.exam_pack_id">
-                                                <option></option>
+                                            <select class="form-control" id="menu" v-model="examTest.exam_pack_id">
                                                 @foreach($packages as $key => $pack)
-                                                    <option
-                                                        value="{{$pack->id}}">{{$pack->title}}</option>
+                                                    <option value="{{$pack->id}}">{{$pack->title}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -205,7 +202,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/exam-test',
+                            url: 'exam-test',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -312,7 +309,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/exam-test';
+                    let url = 'exam-test';
                     let method = 'post';
                     this.examTest.exam_schedule = new Date(this.examTest.exam_schedule + ':00z');
                     if (this.mode === 'edit') {

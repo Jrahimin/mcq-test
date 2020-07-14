@@ -2,36 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::get('test', function () {
-    $user = \App\User::create([
-        'name' => 'admin',
-        'email' => 'admin@gmail.com',
-        'mobile_no' => '01846966947',
-        'address' => 'dhaka',
-        'type' => 0,
-        'status' => 0,
-        'password' => bcrypt("Password@1"),
-    ]);
-
-    dd($user);
-});
-
-Route::get('/', function () {
-    return view('welcome');
+    return "test route";
 });
 
 Auth::routes();
-Route::group(['namespace' => 'Admin'], function () {
+Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
@@ -40,5 +17,3 @@ Route::group(['namespace' => 'Admin'], function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

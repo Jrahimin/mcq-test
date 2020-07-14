@@ -15,7 +15,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
+        {{--<li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">15</span>
@@ -40,10 +40,10 @@
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
-        </li>
+        </li>--}}
         <li class="nav-item">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <img src="{{ asset('frontend/image/Dg picture.jpg')}}" class="img-circle elevation-2" alt="User Image" height="24px" width="24px">
+                <img src="{{ secure_asset('frontend/image/admin.png')}}" class="img-circle elevation-2" alt="User Image" height="24px" width="24px">
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
@@ -66,7 +66,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
                 </form>
-                
+
             </div>
         </li>
     </ul>

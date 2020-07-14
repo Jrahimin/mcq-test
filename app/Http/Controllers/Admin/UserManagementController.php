@@ -36,7 +36,15 @@ class UserManagementController extends Controller
     {
         try {
             if ($request->wantsJson()) {
-                $userManagements = User::latest()->get();
+                $query = User::query();
+
+                if($request->has('status'))
+                    $query = $query->where('status', $request->status);
+                if($request->has('from_date'))
+                    $query = $query->whereDate('created_at', $request->from_date);
+
+                $userManagements = $query->latest()->get();
+
                 return Datatables::of($userManagements)->make(true);
             }
             $data = $this->data;

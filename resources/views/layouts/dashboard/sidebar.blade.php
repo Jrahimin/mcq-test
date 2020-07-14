@@ -1,10 +1,10 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{url('dashboard')}}" class="brand-link">
-        <img src="{{ asset('frontend/image/')}}" alt="" class="brand-image img-circle elevation-3"
+    <a href="{{secure_url('/')}}" class="brand-link">
+        <img src="{{ secure_asset('frontend/image/')}}" alt="" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">MCQ Exam System</span>
+        <span class="brand-text font-weight-light">A2B Exam System</span>
     </a>
 
     <!-- Sidebar -->
@@ -12,7 +12,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('frontend/image/Dg picture.jpg')}}" class="img-circle elevation-2" alt="User">
+                <img src="{{ secure_asset('frontend/image/admin.png')}}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Super Admin</a>
@@ -25,7 +25,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="{{url('/dashboard')}}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="{{secure_url('/')}}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-area"></i>
                         <p>
                             Dashboard
@@ -46,21 +46,21 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['exam-pack','exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{url('/exam-test')}}"
+                            <a href="{{secure_url('/exam-test')}}"
                                class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>Exam-Test</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/test-question')}}"
+                            <a href="{{secure_url('/test-question')}}"
                                class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Test Question</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/exam-pack')}}"
+                            <a href="{{secure_url('/exam-pack')}}"
                                class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Exam Package</p>
@@ -81,7 +81,7 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['user-management'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{url('/user-management')}}"
+                            <a href="{{secure_url('/user-management')}}"
                                class="nav-link {{ request()->is('user-management') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>User Management</p>

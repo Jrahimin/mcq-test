@@ -182,7 +182,7 @@
                         pagingType: "full_numbers",
 
                         ajax: {
-                            url: '/user-management',
+                            url: 'user-management',
                             type: 'GET',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -273,7 +273,7 @@
                 responseProcess: window.responseProcess,
                 submit() {
                     this.error = undefined;
-                    let url = '/user-management';
+                    let url = 'user-management';
                     let method = 'post';
                     if (this.mode === 'edit') {
                         url += '/' + this.dataTableData[+this.selectedIndex].id;

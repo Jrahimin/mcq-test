@@ -2,14 +2,14 @@
 @section('title',$title??'Dynamic')
 @section('style-lib')
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
-    <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-responsive/css/responsive.bootstrap4.css')}}">
     <!-- summernote style -->
-    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/summernote/summernote-bs4.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 @endsection
@@ -132,12 +132,12 @@
 @endsection
 @section('script-lib')
     <!-- DataTables -->
-    <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
-    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
-    <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
-    <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
-    <script src="{{asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script src="{{secure_asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables-responsive/js/dataTables.responsive.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables-responsive/js/responsive.bootstrap4.js')}}"></script>
+    <script src="{{secure_asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
 
 @endsection
 @push('custom-js')
