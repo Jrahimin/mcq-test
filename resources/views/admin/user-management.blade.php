@@ -128,7 +128,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">User List {{$status}}</h3>
+                        <h3 class="card-title">User List</h3>
                         <button class="btn btn-info float-right" @click="addExamTest"><i class="fa fa-plus"></i>Add
                         </button>
                     </div>

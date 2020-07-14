@@ -34,6 +34,7 @@
                                         <div class="form-group">
                                             <label for="menu">Select Package</label>
                                             <select class="form-control" id="menu" v-model="examTest.exam_pack_id">
+                                                <option value="">Select Package</option>
                                                 @foreach($packages as $key => $pack)
                                                     <option value="{{$pack->id}}">{{$pack->title}}</option>
                                                 @endforeach
@@ -179,7 +180,7 @@
                 dataTableData: [],
                 dataTable: {},
                 examTest: {
-                    "exam_pack_id": undefined,
+                    "exam_pack_id": '',
                     "title": undefined,
                     "exam_schedule": undefined,
                     "duration_minutes": undefined,
@@ -338,7 +339,7 @@
                 reset() {
                     this.mode = undefined;
                     this.examTest = {
-                        "exam_pack_id": undefined,
+                        "exam_pack_id": '',
                         "title": undefined,
                         "exam_schedule": undefined,
                         "duration_minutes": undefined,

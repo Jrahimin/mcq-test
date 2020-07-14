@@ -40,7 +40,7 @@
                                                             v-bind:class="errors[0]?'border-danger':''"
                                                             id="menu" v-model="testQuestion.exam_test_id"
                                                     >
-                                                        <option></option>
+                                                        <option value="">Select Exam</option>
                                                         @foreach($examTests as $key => $testQuestion)
                                                             <option
                                                                 value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
@@ -55,7 +55,7 @@
                                                 <select class="form-control"
                                                         id="subject_id" v-model="testQuestion.subject_id"
                                                 >
-                                                    <option></option>
+                                                    <option value="">Select Subject</option>
                                                     @foreach($subjects as $key => $subject)
                                                         <option
                                                             value="{{$subject->id}}">{{$subject->name}}</option>
@@ -213,7 +213,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <select class="form-control" id="exam_test_id" name="exam_test_id">
-                                        <option value="">Select Exam</option>
+                                        <option value="" selected>Select Exam</option>
                                         @foreach($examTests as $key => $testQuestion)
                                             <option
                                                 value="{{$testQuestion->id}}">{{$testQuestion->title}}</option>
@@ -268,8 +268,8 @@
                 dataTableData: [],
                 dataTable: {},
                 testQuestion: {
-                    exam_test_id: undefined,
-                    subject_id: undefined,
+                    exam_test_id: '',
+                    subject_id: '',
                     title: undefined,
                     mark: undefined,
                     status: true,
@@ -441,8 +441,8 @@
                 reset() {
                     this.mode = undefined;
                     this.testQuestion = {
-                        exam_test_id: undefined,
-                        subject_id: undefined,
+                        exam_test_id: '',
+                        subject_id: '',
                         title: undefined,
                         description: undefined,
                         attachment_url: undefined,
