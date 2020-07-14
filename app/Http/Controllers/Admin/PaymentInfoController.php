@@ -35,7 +35,7 @@ class PaymentInfoController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $query = $this->filterData($request, PaymentInfo::query()); //@todo need to pass the value => user_name also user_id
+                $query = $this->filterData($request, PaymentInfo::query());
                 $paymentInfos = $query->with(['approvedBy', 'user'])->latest()->get();
                 return Datatables::of(PaymentInfoResource::collection($paymentInfos))->make(true);
             }
@@ -59,6 +59,7 @@ class PaymentInfoController extends Controller
         try {
             DB::beginTransaction();
             $paymentInfo = PaymentInfo::findOrFail($id);
+            if ($paymentInfo->status == 1) return $this->invalidResponse('Already updated this transaction');
             $paymentInfoUpdate = $paymentInfo->update([
                 'status' => true,
                 'approved_by_id' => auth()->user()->id
