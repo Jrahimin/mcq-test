@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ExamTestResource extends JsonResource
 {
     public $preserveKeys = true;
+
     /**
      * Transform the resource into an array.
      *
@@ -17,15 +18,16 @@ class ExamTestResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'exam_pack_id' => $request->exam_pack_id,
-            'title' => $request->title,
-            'exam_schedule' => Carbon::parse($request->exam_schedule)->format('Y-m-d H:i:s'),
-            'duration_minutes' => $request->duration_minutes,
-            'price' => $request->price,
-            'mark_per_question' => $request->mark_per_question,
-            'negative_mark_per_question' => $request->negative_mark_per_question,
-            'type' => $request->type,
-            'status' => $request->status
+            'exam_pack_id' => $this->exam_pack_id,
+            'exam_pack_title' => $this->examPack->title ?? '',
+            'title' => $this->title,
+            'exam_schedule' => Carbon::parse($this->exam_schedule)->format('Y-m-d H:i:s'),
+            'duration_minutes' => $this->duration_minutes,
+            'price' => $this->price,
+            'mark_per_question' => $this->mark_per_question,
+            'negative_mark_per_question' => $this->negative_mark_per_question,
+            'type' => $this->type,
+            'status' => $this->status
         ];
     }
 }

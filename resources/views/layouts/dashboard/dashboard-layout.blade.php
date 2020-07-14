@@ -95,7 +95,7 @@ to get the desired effect
 
     window.responseProcess = (response, alert, callback) => {
         {
-            if (response.status === 'success' || response.code === 200) {
+            if (response.status == 'success' || response.code == 200) {
                 if (alert)
                     Swal.fire({
                         icon: 'success',

@@ -36,8 +36,8 @@ class ExamTestController extends Controller
         try {
             if ($request->ajax()) {
                 $query = $this->filterData($request, ExamTest::query());
-                $examTests = $query->latest();
-                return Datatables::of($examTests)->make(true);
+                $examTests = $query->with('examPack')->latest()->get();
+                return Datatables::of(ExamTestResource::collection($examTests))->make(true);
             }
             $packages = ExamPack::select('title', 'id')->where('status', 1)->get();
             return view('admin.exam-test', ['packages' => $packages, 'title' => 'Exam Test', 'path' => ['Exam-Test'], 'route' => 'exam-test']);

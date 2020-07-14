@@ -225,10 +225,10 @@
                             {
                                 className: 'details-control',
                                 orderable: true,
-                                data: 'exam_pack_id',
-                                name: 'exam_pack_id',
+                                data: 'exam_pack_title',
+                                name: 'exam_pack_title',
                                 defaultContent: '',
-                                title: 'Exam Pack ID'
+                                title: 'Exam Pack'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
