@@ -9,7 +9,7 @@
                         <div class="col-md-6 col-sm-8 col-xs-8 ow-pull-right no-padding">
                             <h4 data-animation="animated bounceInLeft">Welcome</h4>
                             <h3 data-animation="animated fadeInDown">To <span>{{ config('app.name') }}</span></h3>
-                            <p data-animation="animated bounceInRight">We belive nothing is more important than education. Prepare yourself</p>
+                            <p data-animation="animated bounceInRight">We believe nothing is more important than education. Prepare yourself</p>
                             <a href="#" title="Learn More" data-animation="animated zoomInUp">Learn More</a>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                         <div class="col-md-6 col-sm-8 col-xs-8 ow-pull-left no-padding">
                             <h4 data-animation="animated bounceInLeft">Welcome</h4>
                             <h3 data-animation="animated fadeInDown">To <span>{{ config('app.name') }}</span></h3>
-                            <p data-animation="animated bounceInRight">We belive nothing is more important than education. Prepare yourself</p>
+                            <p data-animation="animated bounceInRight">We believe nothing is more important than education. Prepare yourself</p>
                             <a href="#" title="Learn More" data-animation="animated zoomInUp">Learn More</a>
                         </div>
                     </div>
