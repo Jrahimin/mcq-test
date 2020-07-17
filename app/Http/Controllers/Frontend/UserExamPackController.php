@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ExamPackStoreRequest;
 use App\Models\ExamPack;
-use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,6 +27,7 @@ class UserExamPackController extends Controller
         $this->data['path'] = 'Exam-Pack';
         $this->data['title'] = 'Exam Pack';
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,8 +41,15 @@ class UserExamPackController extends Controller
                 return Datatables::of($examPacks)->make(true);
             }
             $data = $this->data;
-            $data['examTests'] = ExamTest::select('title', 'id')->where('status', 1)->get();
-            return view('admin.exam-pack', $data);
+            $data['examPacks'] = ExamPack::where('status', 1)->when($request->search, function ($q) use ($request) {
+                $q->where('title', 'like', "%{$request->search}%")
+                    ->orWhere('price', 'like', "%{$request->search}%")
+                    ->orWhere('from_date', 'like', "%{$request->search}%")
+                    ->orWhere('to_date', 'like', "%{$request->search}%");
+            })->paginate(9);
+            if ($request->search)
+                $data['search_key'] = $request->search;
+            return view('frontend.packages', $data);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -53,17 +60,22 @@ class UserExamPackController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(ExamPackStoreRequest $request)
+    public function buyPackage(Request $request)
     {
-        try {
-            $examPack = ExamPack::create($this->generateData($request));
 
-            return $this->successResponse('Exam pack stored successfully', $examPack);
+        try {
+            $examPack = ExamPack::findOrFail($request->exam_pack_id);
+            if(!$examPack)
+            if(auth()->user()->balance && auth()->user()->balance >= $examPack->price){
+                return redirect()->back()->withError('');
+            }else{
+                return redirect()->back()->withSuccess('');
+            }
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
+            return abort(403);
         }
     }
 
@@ -111,8 +123,8 @@ class UserExamPackController extends Controller
             'mock_test_count' => $request->mock_test_count,
             'model_test_count' => $request->model_test_count,
             'price' => $request->price,
-            'from_date' => $request->from_date?Carbon::parse($request->from_date)->format('Y-m-d H:i:s'):'',
-            'to_date' => $request->to_date?Carbon::parse($request->to_date)->format('Y-m-d H:i:s'):'',
+            'from_date' => $request->from_date ? Carbon::parse($request->from_date)->format('Y-m-d H:i:s') : '',
+            'to_date' => $request->to_date ? Carbon::parse($request->to_date)->format('Y-m-d H:i:s') : '',
             'status' => $request->status,
         ];
     }
