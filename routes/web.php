@@ -38,9 +38,8 @@ Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
 
     Route::get('packages', 'UserExamPackController@index')->name('packages');
 
-    Route::get('exam-schedule', function () {
-        return view('frontend.exam-schedule');
-    })->name('exam-schedule');
+    Route::get('exam-schedule','UserExamScheduleController@index')->name('exam-schedule');
+    Route::post('exam-schedule/buy','UserExamScheduleController@buyExam')->name('exam-buy');
 
     Route::get('about', function () {
         return view('frontend.about');
