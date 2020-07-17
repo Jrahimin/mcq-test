@@ -7,6 +7,9 @@ Route::get('test', function () {
 });
 
 Auth::routes();
+Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
+    Route::post('buy-package', 'UserExamPackController@buyPackage')->name('buy-package');
+});
 Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::resource('exam-test', 'ExamTestController');
@@ -17,7 +20,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
-Route::group(['prefix' => ''], function () {
+Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
     Route::get('home', function () {
         $slider_enable = true;
         return view('frontend.home', ['slider_enable' => $slider_enable]);
@@ -27,14 +30,16 @@ Route::group(['prefix' => ''], function () {
         return view('frontend.login');
     })->name('user-login');
 
+    Route::get('package', function () {
+
+        return view('frontend.package');
+    })->name('user-package');
+
     Route::get('user-registration', function () {
-        $slider_off = true;
         return view('frontend.registration');
     })->name('user-registration');
 
-    Route::get('packages', function () {
-        return view('frontend.packages');
-    })->name('packages');
+    Route::get('packages', 'UserExamPackController@index')->name('packages');
 
     Route::get('exam-schedule', function () {
         return view('frontend.exam-schedule');
