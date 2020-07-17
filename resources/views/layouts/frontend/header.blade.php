@@ -1,19 +1,6 @@
 <!-- Header -->
 <header class="header-main container-fluid no-padding">
-    <!-- Top Header -->
-    <div class="top-header container-fluid no-padding">
-        <div class="container">
-            <div class="topheader-left">
-                <a href="tel:+5198759822" title="5198759822"><i class="fa fa-mobile" aria-hidden="true"></i>(519) - 875 - 9822 </a>
-                <a href="mailto:Support@info.com" title="Support@info.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>Emailus: Support@info.com</a>
-            </div>
-            <div class="topheader-right">
-                <a href="#" title="Login"><i class="fa fa-sign-out" aria-hidden="true"></i>Login</a>
-                <a href="#" title="Register">Register</a>
-            </div>
-        </div>
-    </div><!-- Top Header /- -->
-
+    @include('layouts.frontend.header-top')
     <!-- Menu Block -->
     <div class="menu-block container-fluid no-padding">
         <!-- Container -->
@@ -29,59 +16,62 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a title="Logo" href="index-2.html" class="navbar-brand"><img src="{{asset('frontend/user-end/images/logo.png')}}" alt="logo"/>EduMax<span>Education of Best</span></a>
-                            <a href="index-2.html" class="mobile-logo" title="Logo"><h3>EduMax</h3></a>
+                            <a title="Logo" href="index-2.html" class="navbar-brand"><img src="{{asset('frontend/user-end/images/logo.png')}}" alt="logo"/>{{config('app.name')}}</span></a>
+                            <a href="index-2.html" class="mobile-logo" title="Logo"><h3>{{config('app.name')}}</h3></a>
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="navbar-collapse collapse" id="navbar">
                             <ul class="nav navbar-nav menubar">
-                                <li class="dropdown active">
-                                    <a aria-expanded="false" aria-haspopup="true" href="index-2.html" role="button" class="dropdown-toggle" title="Home">Home</a>
-                                    <i class="ddl-switch fa fa-angle-down"></i>
+                                <li><a title="Home" href="{{route('user-home')}}">Home</a></li>
+                                <li><a title="Packages" href="{{route('packages')}}">Packages</a></li>
+                                <li><a title="Event" href="{{route('exam-schedule')}}">Exam Schedule</a></li>
+                                <li><a title="About" href="{{route('about')}}">About</a></li>
+                                <li><a title="Contact" href="{{route('contact-us')}}">Contact</a></li>
+{{--                                <li class="dropdown active">--}}
+{{--                                    <a aria-expanded="false" aria-haspopup="true" href="index-2.html" role="button" class="dropdown-toggle" title="Home">Home</a>--}}
+{{--                                    <i class="ddl-switch fa fa-angle-down"></i>--}}
+{{--                                    <ul class="dropdown-menu">--}}
+{{--                                        <li><a title="Home 2" href="home2.html">Home 2</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </li>--}}
+                                <li class="dropdown">
+                                    <a aria-expanded="false" aria-haspopup="true" href="index-2.html" role="button" class="dropdown-toggle" title="User Profile">
+                                        <img src="{{ secure_asset('frontend/image/admin.png')}}"
+                                             class="img-circle elevation-2" alt="User Image" height="24px" width="24px">
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a title="Home 2" href="home2.html">Home 2</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a aria-expanded="false" aria-haspopup="true" role="button" class="dropdown-toggle" title="Courses" href="courses-page.html">Courses</a>
-                                    <i class="ddl-switch fa fa-angle-down"></i>
-                                    <ul class="dropdown-menu">
-                                        <li><a title="Courses Detail" href="coursesdetails-page.html">Courses Detail</a></li>
-                                    </ul>
-                                </li>
-                                <li><a title="Event" href="events-page.html">Event</a></li>
-                                <li><a title="About" href="about-page.html">About</a></li>
-                                <li class="dropdown">
-                                    <a aria-expanded="false" aria-haspopup="true" role="button" class="dropdown-toggle" title="Blog" href="blog-page.html">Blog</a>
-                                    <i class="ddl-switch fa fa-angle-down"></i>
-                                    <ul class="dropdown-menu">
-                                        <li><a title="Blog Post" href="blogpost-page.html">Blog Post</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a aria-expanded="false" aria-haspopup="true" role="button" class="dropdown-toggle" title="Pages" href="#">Pages</a>
-                                    <i class="ddl-switch fa fa-angle-down"></i>
-                                    <ul class="dropdown-menu">
                                         <li><a title="Home 2" href="home2.html">Home 2</a></li>
-                                        <li><a title="Course Detail" href="coursesdetails-page.html">Course Detail</a></li>
-                                        <li><a title="BlogPost" href="blogpost-page.html">BlogPost</a></li>
                                     </ul>
+{{--                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">--}}
+{{--                                        <div class="dropdown-divider"></div>--}}
+{{--                                        <a href="#" class="dropdown-item">--}}
+{{--                                            <i class="fas fa-user-edit mr-2"></i> Profile Update--}}
+{{--                                        </a>--}}
+{{--                                        <div class="dropdown-divider"></div>--}}
+{{--                                        <a href="#" class="dropdown-item">--}}
+{{--                                            <i class="fas fa-key mr-2"></i> Password Change--}}
+{{--                                        </a>--}}
+{{--                                        <div class="dropdown-divider"></div>--}}
+{{--                                        --}}{{-- <a href="{{ route('logout') }}" class="dropdown-item">--}}
+{{--                                            <i class="fas fa-power-off mr-2"></i> Logout--}}
+{{--                                        </a> --}}
+{{--                                        <a class="dropdown-item" href="{{ route('logout') }}"--}}
+{{--                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">--}}
+{{--                                            {{ __('Logout') }}--}}
+{{--                                        </a>--}}
+{{--                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"--}}
+{{--                                              style="display: none;">--}}
+{{--                                            @csrf--}}
+{{--                                        </form>--}}
+
+{{--                                    </div>--}}
                                 </li>
-                                <li><a title="Contact" href="contactus-page.html">Contact</a></li>
                             </ul>
                         </div>
                     </div>
                 </nav><!-- Navigation /- -->
-                <div class="menu-search">
-                    <div id="sb-search" class="sb-search">
-                        <form>
-                            <input class="sb-search-input" placeholder="Enter your search term..." type="text" value="" name="search" id="search" />
-                            <button class="sb-search-submit"><i class="fa fa-search"></i></button>
-                            <span class="sb-icon-search"></span>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div><!-- Container /- -->
     </div><!-- Menu Block /- -->
