@@ -12,7 +12,7 @@
 @endpush
 @section('main-section')
     <div id="#exam-schedule">
-        <div class="container-fluid no-padding pagebanner">
+        <div class="container-fluid no-padding pagebanner" width="50%;">
             <div class="container">
                 <div class="pagebanner-content">
                     <h3>Exam Schedules</h3>

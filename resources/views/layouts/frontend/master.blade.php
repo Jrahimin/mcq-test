@@ -57,6 +57,22 @@
     <![endif]-->
     @yield('style-lib')
     @stack('custom-css')
+
+    <style>
+        @media (min-width: 992px){
+            .ow-navigation .navbar-brand > img {
+                position: absolute;
+                left: 0;
+                top: -8px;
+                width: 53px;
+            }
+        }
+
+        .pagebanner {
+            min-height: 190px;
+        }
+
+    </style>
 </head>
 
 <body data-offset="200" data-spy="scroll" data-target=".ow-navigation">
