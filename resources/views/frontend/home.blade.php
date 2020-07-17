@@ -24,27 +24,71 @@
                 <a href="{{ route('packages') }}" title="View All">View All</a>
             </div>
             <div class="row">
-                @foreach($packages as $package)
+                @foreach($packages as $examPack)
                     <div class="col-md-4 col-sm-6 col-xs-6">
-                        <div class="welcome-box">
-                            <img src="{{asset('frontend/user-end/images/welcome3.jpg')}}" alt="welcome3" width="370"
-                                 height="440"/>
+                        <div class="welcome-box animated fadeInRight">
+                            <img src="{{asset('frontend/user-end/images/welcome1.jpg')}}" alt="welcome1" width="370"
+                                 height="440">
                             <div class="welcome-title">
-                                <h3>{{ $package->title }}</h3>
+                                <h3>{{$examPack->title}}</h3>
                             </div>
                             <div class="welcome-content">
+                                @if($examPack->dateForm && $examPack->dateTo)
+                                    <span><i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <strong>{{ $examPack->dateForm }} to {{ $examPack->dateTo }}</strong>
+                                    </span>
+                                @endif
+                                @if($examPack->details)
+                                    <p>{{$examPack->details}}</p>
+                                @endif
                                 <ul class="course-detail">
-                                    <li><i class="fa fa-calendar" aria-hidden="true"></i>
-                                        Package Validity : <span>{{ $package->from_date }} to {{ $package->to_date }}</span>
-                                    </li>
-                                    <li><i class="fa fa-money" aria-hidden="true"></i>
-                                        Price : <span>{{ $package->price }} BDT</span>
-                                    </li>
-                                    <li><i class="fa fa-graduation-cap" aria-hidden="true"></i>Package Details :
-                                        <br/><span>Model Test : {{ $package->model_test_count }} | Mini Test : {{ $package->mini_test_count }} | Mock Test : {{ $package->mock_test_count }}</span>
-                                    </li>
+                                    @if($examPack->price)
+                                        <li>
+                                            <span><i class="fa fa-money"
+                                                     aria-hidden="true"></i> Price: <strong>{{$examPack->price}}</strong> BDT</span>
+                                        </li>
+                                    @endif
+                                    <span style="color: white;"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Package Details</span><br>
+                                    @if($examPack->mini_test_count)
+                                        <li><i class="fa fa-book" aria-hidden="true"></i>
+                                            <span>{{$examPack->mini_test_count}} Mini Test</span>
+                                        </li>
+                                    @endif
+                                    @if($examPack->mock_test_count)
+                                        <li><i class="fa fa-book" aria-hidden="true"></i>
+                                            <span>{{$examPack->mock_test_count}} Mock Test</span>
+                                        </li>
+                                    @endif
+                                    @if($examPack->model_test_count)
+                                        <li><i class="fa fa-book" aria-hidden="true"></i>
+                                            <span>{{$examPack->model_test_count}} Model Test</span>
+                                        </li>
+                                    @endif
+                                    {{--                                    <li><i class="fa fa-graduation-cap" aria-hidden="true"></i>Degree Level : <span>Master’s Degree</span>--}}
+                                    {{--                                    </li>--}}
                                 </ul>
-                                <a href="coursesdetails-page.html" title="Apply now">Buy now</a>
+                                {{--                                <ul class="course-rating">--}}
+                                {{--                                    <li><a href="#" title="1 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                    <li><a href="#" title="2 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                    <li><a href="#" title="3 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                    <li><a href="#" title="4 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                    <li><a href="#" title="5 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                </ul>--}}
+                                <form action="{{route('buy-package')}}" method="POST" style="display: inline-block">
+                                    @csrf
+                                    <input type="text" hidden name="exam_pack_id" value="{{$examPack->id}}">
+                                    <button class="btn btn-warning" type="submit">Buy Now</button>
+                                </form>
+                                <div style="display: inline-block"  class="d-inline-block m-0 p-0">
+                                    <a class="btn btn-info" href="{{route('exam-schedule')}}?exam_pack_id={{$examPack->id}}">
+                                        Exam List
+                                    </a></div>
+                                <div class="mb-3"></div>
                             </div>
                         </div>
                     </div>
@@ -137,28 +181,7 @@
             <div class="event-block">
                 @foreach($exams as $exam)
                     <div class="event-box">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-4 col-xs-5">
-                                <img src="{{asset('frontend/user-end/images/event1.jpg')}}" alt="event1" width="260"
-                                     height="160"/>
-                            </div>
-                            <div class="col-md-7 col-sm-6 col-xs-7">
-                                <h3><a href="#" title="">{{ $exam->title }}</a></h3>
-                                <div class="event-meta">
-                                    <span><i aria-hidden="true" class="fa fa-clock-o"></i>{{ $exam->examTimeFrom }} to {{ $exam->examTimeTo }}</span>
-                                    <span><i aria-hidden="true" class="fa fa-clock-o"></i>Exam Time : {{ $exam->duration_minutes }} Minutes</span>
-                                </div>
-                                <div class="event-meta">
-                                    <span><i aria-hidden="true" class="fa fa-anchor"></i>Total Mark : {{ $exam->totalMark }}</span>
-                                    <span><i aria-hidden="true" class="fa fa-money"></i> Price : {{ $exam->price }} BDT</span>
-                                </div>
-                                {{--<p>On the other hand, we denounce with righteous indignation and dislike men who are so
-                                    beguiled and demoralized by the charms of pleasure of the moment.</p>--}}
-                            </div>
-                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                <a href="#" class="readmore" title="Read More">Buy now</a>
-                            </div>
-                        </div>
+                        @include('frontend.exam-schedule.exam-view')
                     </div>
                 @endforeach
             </div>
