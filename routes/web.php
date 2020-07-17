@@ -19,16 +19,17 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
 });
 Route::group(['prefix' => ''], function () {
     Route::get('home', function () {
-        return view('frontend.home');
+        $slider_enable = true;
+        return view('frontend.home', ['slider_enable' => $slider_enable]);
     })->name('user-home');
     Route::get('user-login', function () {
-        $slider_off = true;
-        return view('frontend.login', ['slider_off' => $slider_off]);
+
+        return view('frontend.login');
     })->name('user-login');
 
     Route::get('user-registration', function () {
-         $slider_off = true;
-        return view('frontend.registration', ['slider_off' => $slider_off]);
+        $slider_off = true;
+        return view('frontend.registration');
     })->name('user-registration');
 
     Route::get('packages', function () {

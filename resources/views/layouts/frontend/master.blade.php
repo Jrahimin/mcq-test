@@ -69,7 +69,7 @@
     </div>
 </div><!-- Loader /- -->
 @include('layouts.frontend.header')
-@if(!isset($slider_off))
+@if(isset($slider_enable) && $slider_enable)
     @include('layouts.frontend.slider')
 @endif
 @yield('main-section')
