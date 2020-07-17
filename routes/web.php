@@ -17,5 +17,9 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::put('payment-info/{id}', 'PaymentInfoController@update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
-
+Route::group(['prefix' => '4u'], function () {
+    Route::get('test', function (){
+        return view('layouts.frontend.master');
+    });
+});
 Auth::routes();
