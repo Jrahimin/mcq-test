@@ -5,8 +5,15 @@
 @endsection
 @push('custom-css')
     <style type="text/css">
-        thead input {
-            width: 100% !important;
+        .ow-pagination .pagination > li:first-child > a, .ow-pagination .pagination > li:last-child > a {
+            border: 1px solid #eaeaea;
+            height: 36px;
+            display: inline-block;
+            width: 105px;
+            padding: 0;
+            border-radius: 30px;
+            line-height: 34px;
+            text-decoration: none;
         }
     </style>
 @endpush
@@ -23,19 +30,19 @@
                 </div>
             </div>
         </div>
-        <div class="container event-section">
+        <div class="container welcome-section welcome2">
             <div class="section-padding"></div>
-            {{--<div class="search-result">
-                <span>Showing {{($examList->currentPage()*$examList->perPage())-1}} - {{($examList->currentPage()*$examList->perPage()-1)+$examList->count()-1}} of total {{$examList->total()}} packages</span>
+            <div class="search-result">
+                <span>Showing {{(($examList->currentPage()-1)*$examList->perPage())+1}} - {{(($examList->currentPage()-1)*$examList->perPage()+1)+$examList->count()-1}} of total {{$examList->total()}} packages</span>
                 <div class="input-group col-md-2">
-                    <form action="{{route('exam-buy')}}">
+                    <form action="{{route('packages')}}">
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
                         <span class="input-group-btn">
 					        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </span>
                     </form>
                 </div>
-            </div>--}}
+            </div>
             <div class="event-block">
                 @foreach($examList as $exam)
                     <div class="event-box animated fadeInRight">
@@ -43,7 +50,11 @@
                     </div>
                 @endforeach
             </div>
-            @php echo $examList->render(); @endphp
+            @if(isset($search_key))
+                @php echo $examList->appends(['search'=> $search_key])->render(); @endphp
+            @else
+                @php echo $examList->render(); @endphp
+            @endif
             <div class="section-padding"></div>
         </div>
     </div>

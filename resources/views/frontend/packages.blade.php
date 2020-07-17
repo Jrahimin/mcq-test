@@ -84,21 +84,7 @@
                                             <span>{{$examPack->model_test_count}} Model Test</span>
                                         </li>
                                     @endif
-                                    {{--                                    <li><i class="fa fa-graduation-cap" aria-hidden="true"></i>Degree Level : <span>Master’s Degree</span>--}}
-                                    {{--                                    </li>--}}
                                 </ul>
-                                {{--                                <ul class="course-rating">--}}
-                                {{--                                    <li><a href="#" title="1 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                    <li><a href="#" title="2 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                    <li><a href="#" title="3 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                    <li><a href="#" title="4 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                    <li><a href="#" title="5 Star"><i class="fa fa-star-o" aria-hidden="true"></i></a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                </ul>--}}
                                 <form action="{{route('buy-package')}}" method="POST" style="display: inline-block">
                                     @csrf
                                     <input type="text" hidden name="exam_pack_id" value="{{$examPack->id}}">
@@ -114,19 +100,11 @@
                     </div>
                 @endforeach
             </div>
-            <nav class="ow-pagination">
-                <ul class="pagination">
-                    <li>
-                        <a href="{{$examPacks->previousPageUrl()?(isset($search_key)&& $search_key!=''?'&'.$examPacks->previousPageUrl():$examPacks->previousPageUrl()):'/packages?'}}{{isset($search_key)?'search='.$search_key:''}}">Previous</a>
-                    </li>
-                    {{--                    @foreach($examPacks->getUrlRange($start, $end))--}}
-                    {{--                        <li><a href="{{$examPacks->previousPageUrl()}}">1</a></li>--}}
-                    {{--                    @endforeach--}}
-                    <li>
-                        <a href="{{$examPacks->nextPageUrl()?(isset($search_key)&& $search_key!=''?'&'.$examPacks->nextPageUrl():$examPacks->nextPageUrl()).'&':'/packages?'}}{{isset($search_key)?'search='.$search_key:''}}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            @if(isset($search_key))
+                @php echo $examPacks->appends(['search'=> $search_key])->render(); @endphp
+            @else
+                @php echo $examPacks->render(); @endphp
+            @endif
             <div class="section-padding"></div>
         </div>
     </div>
