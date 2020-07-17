@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ExamPackStoreRequest;
 use App\Models\ExamPack;
 use App\Traits\ApiResponseTrait;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -46,7 +47,7 @@ class UserExamPackController extends Controller
                     ->orWhere('price', 'like', "%{$request->search}%")
                     ->orWhere('from_date', 'like', "%{$request->search}%")
                     ->orWhere('to_date', 'like', "%{$request->search}%");
-            })->paginate(9);
+            })->latest()->paginate(9);
             if ($request->search)
                 $data['search_key'] = $request->search;
             return view('frontend.packages', $data);
@@ -60,22 +61,31 @@ class UserExamPackController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return void | \Illuminate\Http\RedirectResponse
      */
     public function buyPackage(Request $request)
     {
 
         try {
             $examPack = ExamPack::findOrFail($request->exam_pack_id);
-            if(!$examPack)
-            if(auth()->user()->balance && auth()->user()->balance >= $examPack->price){
-                return redirect()->back()->withError('');
-            }else{
-                return redirect()->back()->withSuccess('');
-            }
+            if ($examPack)
+                if (auth()->user()->balance && auth()->user()->balance >= $examPack->price) {
+
+                    $user = User::find(auth()->user()->id);
+                    $user->examPack()->attach($request->exam_pack_id, [
+                        'enrolment_price' => $examPack->price,
+                        'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+                    ]);
+                    $user->balance = $user->balance - $examPack->price;
+                    $user->save();
+
+                    return redirect()->back()->with('success_message', 'Your request successfully processed');
+                } else {
+                    return redirect()->back()->with('error_message', 'Your balance is low! Please try again after recharge');
+                }
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return abort(403);
+            return abort(500);
         }
     }
 
