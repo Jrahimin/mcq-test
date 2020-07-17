@@ -61,7 +61,7 @@
                                        placeholder="Enter Transaction Number" required
                                        value="{{old('transaction_code')}}">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary pull-right pl-5 pr-5"><i class="fa fa-money"></i> Payment</button>
                         </form>
                     </div>
                 </div>

@@ -51,7 +51,6 @@ class UserPaymentController extends Controller
      */
     public function paymentSubmit(Request $request)
     {
-
         try {
             $validator = Validator::make($request->all(),
                 [
