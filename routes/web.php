@@ -17,13 +17,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
-Route::group(['prefix' => ''], function () {
-    Route::get('home', function () {
-        $slider_enable = true;
-        return view('frontend.home', ['slider_enable' => $slider_enable]);
-    })->name('user-home');
-    Route::get('user-login', function () {
+Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
+    Route::get('home', 'UserHomeController@index')->name('user-home');
 
+    Route::get('user-login', function () {
         return view('frontend.login');
     })->name('user-login');
 
