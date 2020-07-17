@@ -18,7 +18,7 @@
     </style>
 @endpush
 @section('main-section')
-    <div id="#packages">
+    <div id="packages">
         <div class="container-fluid no-padding pagebanner">
             <div class="container">
                 <div class="pagebanner-content">
@@ -33,7 +33,7 @@
         <div class="container welcome-section welcome2">
             <div class="section-padding"></div>
             <div class="search-result">
-                <span>Showing {{($examPacks->currentPage()*$examPacks->perPage())-1}} - {{($examPacks->currentPage()*$examPacks->perPage()-1)+$examPacks->count()-1}} of total {{$examPacks->total()}} packages</span>
+                <span>Showing {{(($examPacks->currentPage()-1)*$examPacks->perPage())+1}} - {{(($examPacks->currentPage()-1)*$examPacks->perPage()+1)+$examPacks->count()-1}} of total {{$examPacks->total()}} packages</span>
                 <div class="input-group col-md-2">
                     <form action="{{route('packages')}}">
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
@@ -104,10 +104,10 @@
                                     <input type="text" hidden name="exam_pack_id" value="{{$examPack->id}}">
                                     <button class="btn btn-warning" type="submit">Buy Now</button>
                                 </form>
-                                <div style="display: inline-block"  class="d-inline-block m-0 p-0">
-                                    <a class="btn btn-info" href="{{route('exam-schedule')}}?exam_pack_id={{$examPack->id}}">
-                                    Exam List
-                                </a></div>
+                                <div style="display: inline-block" class="d-inline-block m-0 p-0">
+                                    <a class="btn btn-info"
+                                       href="{{route('exam-schedule')}}?exam_pack_id={{$examPack->id}}"> Exam List </a>
+                                </div>
                                 <div class="mb-3"></div>
                             </div>
                         </div>
@@ -136,12 +136,14 @@
 @endsection
 @push('custom-js')
     <script defer type="text/javascript">
-        @if(isset($success_message))
-            Swal.fire('Success!',"{{$success_message}}",'success');
-        @endif
-        @if(isset($error_message))
-        Swal.fire('Fail!',"{{$error_message}}",'error');
-        @endif
+        (function () {
+            @if(session()->has('success_message'))
+            Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+            @endif
+            @if(session()->has('error_message'))
+            Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+            @endif
+        })();
         new Vue({
             el: '#packages',
             data: {},
