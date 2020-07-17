@@ -13,8 +13,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
     Route::resource('user-management', 'UserManagementController');
-    Route::get('payment-info', 'PaymentInfoController@index');
-    Route::put('payment-info/{id}', 'PaymentInfoController@update');
+    Route::get('payment-info', 'PaymentInfoController@index')->name('payment-info.index');
+    Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
 Route::group(['prefix' => '4u'], function () {

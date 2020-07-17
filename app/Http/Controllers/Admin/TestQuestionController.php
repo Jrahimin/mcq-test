@@ -77,7 +77,6 @@ class TestQuestionController extends Controller
                 $answers[] = new Answer([
                     'question_id' => $testQuestion->id,
                     'answer' => $answer['answer'],
-                    'image_url' => $answer['image_url'] ?? '',
                     'is_correct' => !!$answer['is_correct'],
                     'status' => !!$answer['status'],
                 ]);
@@ -131,7 +130,6 @@ class TestQuestionController extends Controller
                 $answers[] = new Answer([
                     'question_id' => $testQuestion->id,
                     'answer' => $answer['answer'],
-                    'image_url' => $answer['image_url'],
                     'is_correct' => !!$answer['is_correct'],
                     'status' => !!$answer['status'],
                 ]);
