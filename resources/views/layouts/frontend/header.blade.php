@@ -47,10 +47,12 @@
                                            class="dropdown-toggle" title="User Profile">
                                             <img src="{{ secure_asset('frontend/image/admin.png')}}"
                                                  class="img-circle elevation-2" alt="User Image" height="24px"
-                                                 width="24px"> {{auth()->user()->name}}
+                                                 width="24px"> <span
+                                                class="text-warning">{{auth()->user()->name}}</span>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a title="Home 2" href="{{route('user-profile')}}"><i class="fa fa-edit"></i>  Profile</a></li>
+                                            <li><a title="User Profile" href="{{route('user-profile')}}"><i
+                                                        class="fa fa-edit"></i> Profile</a></li>
                                             <li><a class="dropdown-item" href="{{ route('logout') }}"
                                                    onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

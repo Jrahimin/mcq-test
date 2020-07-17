@@ -33,7 +33,7 @@
         <div class="container welcome-section welcome2">
             <div class="section-padding"></div>
             <div class="search-result">
-                <span>Showing {{($examPacks->currentPage()*$examPacks->perPage())-1}} - {{($examPacks->currentPage()*$examPacks->perPage()-1)+$examPacks->count()-1}} of total {{$examPacks->total()}} packages</span>
+                <span>Showing {{(($examPacks->currentPage()-1)*$examPacks->perPage())+1}} - {{(($examPacks->currentPage()-1)*$examPacks->perPage()+1)+$examPacks->count()-1}} of total {{$examPacks->total()}} packages</span>
                 <div class="input-group col-md-2">
                     <form action="{{route('packages')}}">
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
