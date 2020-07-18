@@ -18,4 +18,8 @@ class TestQuestion extends Model
     public function answers(){
         return $this->hasMany(Answer::class,'question_id');
     }
+
+    public function activeAnswers(){
+        return $this->hasMany(Answer::class,'question_id')->where('status',1);
+    }
 }

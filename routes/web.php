@@ -49,6 +49,8 @@ Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
     Route::get('exam-schedule','UserExamScheduleController@index')->name('exam-schedule');
     Route::post('exam-schedule/buy','UserExamScheduleController@buyExam')->name('exam-buy');
 
+    Route::get('user-exam','UserMcqTestController@generateExamQuestion')->name('user-exam');
+
     Route::get('about', function () {
         return view('frontend.about');
     })->name('about');
