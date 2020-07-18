@@ -65,14 +65,16 @@ class UserExamPackController extends Controller
      */
     public function buyPackage(Request $request)
     {
-
+        $this->validate($request,[
+            'exam_pack_id' => 'required|integer'
+        ]);
         try {
             $examPack = ExamPack::findOrFail($request->exam_pack_id);
             $user = $request->user();
 
             $isTaken = DB::table('exam_pack_user')->where(['user_id' => $user->id, 'exam_pack_id' => $request->exam_pack_id])->first();
             if($isTaken){
-                return redirect()->back()->with('error_message', 'You Have already bought this pack');
+                return redirect()->back()->with('error_message', 'You have already bought this pack');
             }
 
             if($user->balance < $examPack->price){

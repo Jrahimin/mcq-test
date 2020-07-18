@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamPack;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UserExamScheduleController extends Controller
@@ -65,18 +67,39 @@ class UserExamScheduleController extends Controller
      */
     public function buyExam(Request $request)
     {
+        $this->validate($request,[
+            'exam_id' => 'required|integer'
+        ]);
 
         try {
-            $examPack = ExamTest::findOrFail($request->id);
-            if(!$examPack)
-                if(auth()->user()->balance && auth()->user()->balance >= $examPack->price){
-                    return redirect()->back()->withError('');
-                }else{
-                    return redirect()->back()->withSuccess('');
-                }
+            $exam = ExamTest::findOrFail($request->exam_id);
+            $user = $request->user();
+
+            $isTaken = DB::table('exam_test_user')->where(['user_id' => $user->id, 'exam_test_id' => $request->exam_id])->first();
+            if($isTaken){
+                return redirect()->back()->with('error_message', 'You have already bought this exam');
+            }
+
+            if($user->balance < $exam->price){
+                return redirect()->back()->with('error_message', 'Your balance is low! Please try again after recharge');
+            }
+
+            DB::beginTransaction();
+
+            $user->decrement('balance', $exam->price);
+
+            $user->examTest()->attach($request->exam_id, [
+                'enrolment_price' => $exam->price,
+                'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success_message', 'Your request successfully processed');
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return abort(403);
+            return abort(500);
         }
     }
 }
