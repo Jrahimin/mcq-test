@@ -22,7 +22,7 @@
         <div class="container-fluid no-padding pagebanner" width="50%;">
             <div class="container">
                 <div class="pagebanner-content">
-                    <h3>Exam Schedule</h3>
+                    <h3>Exam Schedule <span class="text-primary">{{ $examPackTitle ? "For $examPackTitle" : '' }}</span></h3>
                     <ol class="breadcrumb">
                         <li><a href="{{route('user-home')}}">Home</a></li>
                         <li>Exam Schedule</li>
@@ -35,8 +35,9 @@
             <div class="search-result">
                 <span>Showing {{(($examList->currentPage()-1)*$examList->perPage())+1}} - {{(($examList->currentPage()-1)*$examList->perPage()+1)+$examList->count()-1}} of total {{$examList->total()}} packages</span>
                 <div class="input-group col-md-2">
-                    <form action="{{route('packages')}}">
+                    <form action="{{route('exam-schedule')}}">
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
+                        <input type="hidden" class="form-control" name="exam_pack_id" value="{{ request()->input('exam_pack_id') ?? '' }}">
                         <span class="input-group-btn">
 					        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </span>
@@ -45,17 +46,15 @@
             </div>
             <div class="event-block">
                 @foreach($examList as $exam)
-                    <div class="event-box animated fadeInRight">
+                    <div class="event-box">
                         @include('frontend.exam-schedule.exam-view')
                     </div>
                 @endforeach
             </div>
-            @if(isset($search_key))
-                @php echo $examList->appends(['search'=> $search_key])->render(); @endphp
-            @else
-                @php echo $examList->render(); @endphp
-            @endif
             <div class="section-padding"></div>
+
+            {{ $examList->appends(request()->query())->links() }}
+
         </div>
     </div>
 @endsection

@@ -47,9 +47,8 @@ class UserExamPackController extends Controller
                     ->orWhere('price', 'like', "%{$request->search}%")
                     ->orWhere('from_date', 'like', "%{$request->search}%")
                     ->orWhere('to_date', 'like', "%{$request->search}%");
-            })->latest()->paginate(2);
-            if ($request->search)
-                $data['search_key'] = $request->search;
+            })->latest()->paginate(1);
+
             return view('frontend.packages', $data);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

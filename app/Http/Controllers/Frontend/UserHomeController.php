@@ -17,7 +17,7 @@ class UserHomeController extends Controller
         $data['slider_enable'] = true;
         $data['title'] = 'Home';
         $data['packages'] = ExamPack::where('status', 1)->latest()->limit(3)->get();
-        $data['exams'] = ExamTest::where('status', 1)->latest()->limit(5)->get();
+        $data['exams'] = ExamTest::where('status', 1)->whereDate('exam_schedule', '>=', $today)->latest()->limit(5)->get();
         //dd($data['exams']->first()->toArray());
         return view('frontend.home', $data);
     }

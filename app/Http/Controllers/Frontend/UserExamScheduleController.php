@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExamPack;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -33,12 +34,20 @@ class UserExamScheduleController extends Controller
     public function index(Request $request)
     {
         try {
+            //dd($request->all());
             $data = $this->data;
-            $data['examList'] = ExamTest::where('status', 1)->when($request->search, function ($q) use ($request) {
+            $data['examPackTitle'] = null;
+
+            $query = ExamTest::where('status', 1);
+            if($request->filled('exam_pack_id')){
+                $query = $query->where('exam_pack_id', $request->exam_pack_id);
+                $data['examPackTitle'] = ExamPack::findOrFail($request->exam_pack_id)->title;
+            }
+
+            $data['examList'] = $query->when($request->search, function ($q) use ($request) {
                 $q->where('title', 'like', "%{$request->search}%")
                     ->orWhere('price', $request->search)
-                    ->orWhereDate('from_date', 'like', $request->search)
-                    ->orWhereDate('to_date', $request->search);
+                    ->orWhereDate('exam_schedule', $request->search);
             })->paginate(10);
 
             return view('frontend.exam-schedule.index', $data);
