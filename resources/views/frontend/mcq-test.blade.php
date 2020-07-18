@@ -379,29 +379,55 @@
             }
         }
 
+        .element-animation1 .active {
+            background-color: red;
+        }
+
+        .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
+            color: #fff;
+            background-color: #288a94;
+            border-color: #204d74;
+        }
     </style>
 @endpush
 @section('main-section')
     <div id="mcq-test" style="min-height: 725px">
-        <div class="container-fluid bg-info" style="min-height: 725px">
-            <div class="modal-dialog">
+        <div class="container-fluid bg-light" style="min-height: 725px">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <div class="col-md-8"><p class="">Time Left 30:45</p></div>
-                            <div class="col-md-4"><span>Total Question: 30</span></div>
+                            <div class="col-md-8"><strong><p class="text-info">Left @{{ parseInt(secLeft/60) }}
+                                        min:@{{secLeft%60}}sec</p></strong></div>
+                            <div class="col-md-4"><p>Total Question: <span class="badge badge-primary">30</span></p>
+                            </div>
                         </div>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="100"
-                                 aria-valuemin="0" aria-valuemax="50"></div>
+                            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
+                                 :style="{width: percentOfTimeProgress+'%'}" aria-valuenow="100"
+                                 aria-valuemin="0" :aria-valuemax="percentOfTimeProgress"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3><span class="label label-warning" id="qid">2</span> THREE is CORRECT</h3>
+                        <div class="row">
+                            <div class="col-md-1" style="min-height: 100px;margin-top: 4%;">
+                                <span class="label label-warning te" style="vertical-align: middle" id="qid">2</span>
+                            </div>
+                            <div class="col-md-11">
+                                <p> THREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
+                                    CORRECTTHREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
+                                    CORRECTTHREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
+                                    CORRECT
+                                    THREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
+                                    CORRECT
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="modal-body">
                         <div class="col-xs-3 col-xs-offset-5">
@@ -417,19 +443,19 @@
                             </div>
                         </div>
                         <div class="quiz" id="quiz" data-toggle="buttons">
-                            <label class="element-animation1 btn btn-lg btn-info btn-block">
+                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
                                 <input type="radio" name="q_answer" value="1">1 One
                             </label>
-                            <label class="element-animation1 btn btn-lg btn-info btn-block">
+                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
                                 <input type="radio" name="q_answer" value="1">1 One
                             </label>
-                            <label class="element-animation1 btn btn-lg btn-info btn-block">
+                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
                                 <input type="radio" name="q_answer" value="1">1 One
                             </label>
-                            <label class="element-animation1 btn btn-lg btn-info btn-block">
+                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
                                 <input type="radio" name="q_answer" value="1">1 One
                             </label>
@@ -454,12 +480,58 @@
     <script defer type="text/javascript">
         new Vue({
             el: '#mcq-test',
-            data: {},
+            data: {
+                second: 120,
+                percentOfTimeProgress: 100,
+                secLeft: 0,
+                exam_test_id: "{{$exam_test_id}}",
+                questions: [
+                    {
+                        question: 'what is ..',
+                        question_id:'1',
+                        options: [
+                            {
+                                option: ' option ',
+                                option_id: 'option_id',
+                            }
+                        ]
+                    }
+                ],
+
+        // {
+        //    answers: [
+        //         {
+        //             question_id: '1',
+        //             option_id: 'option_id',
+        //         },
+        //         {
+        //             question_id: '1',
+        //             option_id: 'option_id',
+        //         }
+        //     ],
+        // }
+            },
             methods: {
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
             },
             mounted() {
+                this.ajaxCall('exam-test/' + this.exam_test_id, {}, 'delete', (data, code) => {
+                    if (code === 200) {
+                        this.questions = data;
+                    }
+                }, false);
+                this.secLeft = this.second;
+                const intervalUnit = 1;
+                let interval = setInterval(() => {
+                    if (this.percentOfTimeProgress <= 0 || this.secLeft <= 0) {
+                        this.secLeft = 0;
+                        clearInterval(interval);
+                        sweetAlert('Fail!', 'Time over', 'warning');
+                    }
+                    this.secLeft -= intervalUnit;
+                    this.percentOfTimeProgress = 100 - (this.secLeft * 100 / this.second);
+                }, 1000 * intervalUnit);
             },
         })
     </script>

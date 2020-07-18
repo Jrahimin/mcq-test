@@ -20,8 +20,8 @@ class CreateExamTestUserPivotTable extends Migration
             $table->double('score')->default(0);
             $table->integer('total_correct')->default(0);
             $table->integer('total_wrong')->default(0);
-            $table->double('enrolment_price',8,2);
-            $table->dateTime('enrolment_date');
+            $table->double('enrolment_price', 8, 2)->nullable();
+            $table->dateTime('enrolment_date')->nullable();
             $table->timestamps();
         });
     }
