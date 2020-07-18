@@ -68,32 +68,41 @@ class UserExamPackController extends Controller
 
         try {
             $examPack = ExamPack::findOrFail($request->exam_pack_id);
-            if ($examPack)
-                if (auth()->user()->balance && auth()->user()->balance >= $examPack->price) {
-                    DB::beginTransaction();
-                    $user = User::find(auth()->user()->id);
-                    $user->examPack()->attach($request->exam_pack_id, [
-                        'enrolment_price' => $examPack->price,
-                        'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
-                    ]);
-                    $user->examTest()->saveMany($examPack->examTests);
-                    $exam_test_ids = $examPack->examTests->pluck('id')->toArray();
+            $user = $request->user();
 
-                    DB::table('exam_test_user')
-                        ->whereIn('exam_test_id', $exam_test_ids)
-                        ->where('user_id', $user->id)
-                        ->update([
-                            'enrolment_price' => $examPack->price,
-                            'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
-                        ]);
-                    $user->balance = $user->balance - $examPack->price;
-                    $user->save();
-                    DB::commit();
-                    return redirect()->back()->with('success_message', 'Your request successfully processed');
-                } else {
-                    return redirect()->back()->with('error_message', 'Your balance is low! Please try again after recharge');
-                }
-        } catch (\Exception $ex) {
+            $isTaken = DB::table('exam_pack_user')->where(['user_id' => $user->id, 'exam_pack_id' => $request->exam_pack_id])->first();
+            if($isTaken){
+                return redirect()->back()->with('error_message', 'You Have already bought this pack');
+            }
+
+            if($user->balance < $examPack->price){
+                return redirect()->back()->with('error_message', 'Your balance is low! Please try again after recharge');
+            }
+
+            DB::beginTransaction();
+
+            $user->decrement('balance', $examPack->price);
+
+            $user->examPack()->attach($request->exam_pack_id, [
+                'enrolment_price' => $examPack->price,
+                'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+            $user->examTest()->saveMany($examPack->examTests);
+            $exam_test_ids = $examPack->examTests->pluck('id')->toArray();
+
+            DB::table('exam_test_user')
+                ->whereIn('exam_test_id', $exam_test_ids)
+                ->where('user_id', $user->id)
+                ->update([
+                    'enrolment_price' => $examPack->price,
+                    'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success_message', 'Your request successfully processed');
+        }
+        catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return abort(500);
