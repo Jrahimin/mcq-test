@@ -49,6 +49,7 @@
                     <div class="event-box">
                         @include('frontend.exam-schedule.exam-view')
                     </div>
+                    <br/><hr>
                 @endforeach
             </div>
             <div class="section-padding"></div>
