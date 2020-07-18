@@ -76,6 +76,10 @@ class UserExamPackController extends Controller
                         'enrolment_price' => $examPack->price,
                         'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
                     ]);
+//                    $user->examTest()->attach($user->examPack, [
+//                        'enrolment_price' => $examPack->price,
+//                        'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+//                    ]);
                     $user->balance = $user->balance - $examPack->price;
                     $user->save();
 

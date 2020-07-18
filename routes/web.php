@@ -11,6 +11,9 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
     Route::post('buy-package', 'UserExamPackController@buyPackage')->name('buy-package');
     Route::get('make-payment', 'UserPaymentController@index')->name('make-payment');
     Route::post('payment-submit', 'UserPaymentController@paymentSubmit')->name('payment-submit');
+    Route::get('mcq-test', function (){
+        return view('frontend.mcq-test');
+    })->name('payment-submit');
     Route::post('user-profile', function () {
         abort(404);
     })->name('user-profile');
