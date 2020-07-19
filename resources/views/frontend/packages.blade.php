@@ -112,14 +112,14 @@
 @endsection
 @push('custom-js')
     <script defer type="text/javascript">
-        (function () {
+        /*(function () {
             @if(session()->has('success_message'))
             Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
             @endif
             @if(session()->has('error_message'))
             Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
             @endif
-        })();
+        })();*/
         new Vue({
             el: '#packages',
             data: {},

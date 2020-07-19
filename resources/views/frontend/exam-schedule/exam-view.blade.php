@@ -15,6 +15,10 @@
         </div>
     </div>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        <a href="#" class="readmore" title="Read More">Buy now</a>
+        <form action="{{route('buy-exam')}}" method="POST" style="display: inline-block">
+            @csrf
+            <input type="text" hidden name="exam_id" value="{{$exam->id}}">
+            <button class="btn btn-warning readmore" type="submit">Buy Now</button>
+        </form>
     </div>
 </div>

@@ -15,6 +15,12 @@
             line-height: 34px;
             text-decoration: none;
         }
+        .buyMore{
+            position: absolute;
+            margin-right: 48px;
+            padding: 2%;
+            margin-top: 15%;
+        }
     </style>
 @endpush
 @section('main-section')

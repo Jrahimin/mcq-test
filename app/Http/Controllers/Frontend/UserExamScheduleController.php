@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamPack;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -67,13 +68,14 @@ class UserExamScheduleController extends Controller
      */
     public function buyExam(Request $request)
     {
+
         $this->validate($request,[
             'exam_id' => 'required|integer'
         ]);
 
         try {
             $exam = ExamTest::findOrFail($request->exam_id);
-            $user = $request->user();
+            $user = User::find(1);
 
             $isTaken = DB::table('exam_test_user')->where(['user_id' => $user->id, 'exam_test_id' => $request->exam_id])->first();
             if($isTaken){
@@ -90,7 +92,8 @@ class UserExamScheduleController extends Controller
 
             $user->examTest()->attach($request->exam_id, [
                 'enrolment_price' => $exam->price,
-                'enrolment_date' => Carbon::now()->format('Y-m-d H:i:s')
+                'enrolment_date' => $exam->exam_schedule,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
 
             DB::commit();

@@ -8,9 +8,18 @@ Route::get('test', function () {
 
 Auth::routes();
 Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
+    Route::get('/', 'UserHomeController@index')->name('user-home');
     Route::post('buy-package', 'UserExamPackController@buyPackage')->name('buy-package');
     Route::get('make-payment', 'UserPaymentController@index')->name('make-payment');
     Route::post('payment-submit', 'UserPaymentController@paymentSubmit')->name('payment-submit');
+
+    Route::get('packages', 'UserExamPackController@index')->name('packages');
+
+    Route::get('exam-schedule','UserExamScheduleController@index')->name('exam-schedule');
+    Route::post('exam/buy','UserExamScheduleController@buyExam')->name('buy-exam');
+
+    Route::get('user-exam','UserMcqTestController@generateExamQuestion')->name('user-exam');
+
     Route::get('mcq-test', function (){
         return view('frontend.mcq-test');
     })->name('payment-submit');
@@ -18,7 +27,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
         abort(404);
     })->name('user-profile');
 });
-Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
@@ -29,8 +38,6 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
 Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
-    Route::get('home', 'UserHomeController@index')->name('user-home');
-
     Route::get('user-login', function () {
         return view('frontend.login');
     })->name('user-login');
@@ -43,13 +50,6 @@ Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
     Route::get('user-registration', function () {
         return view('frontend.registration');
     })->name('user-registration');
-
-    Route::get('packages', 'UserExamPackController@index')->name('packages');
-
-    Route::get('exam-schedule','UserExamScheduleController@index')->name('exam-schedule');
-    Route::post('exam-schedule/buy','UserExamScheduleController@buyExam')->name('exam-buy');
-
-    Route::get('user-exam','UserMcqTestController@generateExamQuestion')->name('user-exam');
 
     Route::get('about', function () {
         return view('frontend.about');

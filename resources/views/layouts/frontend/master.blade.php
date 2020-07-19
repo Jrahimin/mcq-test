@@ -314,8 +314,16 @@
                     });
                 });
         })();
-
     }
+
+    (function () {
+        @if(session()->has('success_message'))
+        Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+        @endif
+        @if(session()->has('error_message'))
+        Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+        @endif
+    })();
 </script>
 <!-- DataTables -->
 <script src="{{secure_asset('plugins/datatables/jquery.dataTables.js')}}"></script>
