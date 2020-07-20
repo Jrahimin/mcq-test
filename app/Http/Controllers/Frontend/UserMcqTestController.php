@@ -29,13 +29,13 @@ class UserMcqTestController extends Controller
     public function generateExamQuestion(Request $request)
     {
         try{
-            $exam = ExamTest::findOrFail($request->exam_id);
+            $exam = ExamTest::find($request->exam_id);
             $data = $this->data;
             $data['exam_test_id'] = $request->exam_id;
-            if($request->wantsJson()){
+
+            if(!$request->wantsJson()){
                 return view('frontend.mcq-test', $data);
             }
-
             $query = $exam->questions()->with('answers')->where('status', 1);
             if($request->subject_id){
                 $query = $query->where('subject_id', $request->subject_id);
@@ -47,7 +47,8 @@ class UserMcqTestController extends Controller
             $questionPaper['examInfo'] = array(
                 'title' => $exam->title,
                 'duration_sec' => $exam->duration_minutes*60,
-                'mark_per_question' => $exam->mark_per_question
+                'mark_per_question' => $exam->mark_per_question,
+                'question_count' => count($questionList)
             );
             foreach ($questionList as $question)
             {
@@ -56,8 +57,7 @@ class UserMcqTestController extends Controller
                 {
                     $optionList[] = array(
                         'option'     => $option->answer,
-                        'option_id'  => $option->id,
-                        'is_correct' => $option->is_correct
+                        'option_id'  => $option->id
                     );
                 }
 
@@ -82,7 +82,7 @@ class UserMcqTestController extends Controller
     public function submit(Request $request)
     {
         try{
-
+            dd($request->all());
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

@@ -15,14 +15,12 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
 
     Route::get('packages', 'UserExamPackController@index')->name('packages');
 
-    Route::get('exam-schedule','UserExamScheduleController@index')->name('exam-schedule');
-    Route::post('exam/buy','UserExamScheduleController@buyExam')->name('buy-exam');
+    Route::get('exam-schedule', 'UserExamScheduleController@index')->name('exam-schedule');
+    Route::post('exam/buy', 'UserExamScheduleController@buyExam')->name('buy-exam');
 
-    Route::get('user-exam','UserMcqTestController@generateExamQuestion')->name('user-exam');
+    Route::get('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
+    Route::get('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
 
-    Route::get('mcq-test', function (){
-        return view('frontend.mcq-test');
-    })->name('payment-submit');
     Route::post('user-profile', function () {
         abort(404);
     })->name('user-profile');

@@ -383,15 +383,30 @@
             background-color: red;
         }
 
+        .btn-primary.active:hover, .btn-primary:active, .open > .dropdown-toggle.btn-primary
+        .btn-primary:hover, .btn-primary:active, .open > .dropdown-toggle.btn-primary,
         .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-            color: #fff;
-            background-color: #288a94;
-            border-color: #204d74;
+            background-color: #04a973;
+        }
+
+        .btn-primary, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
+            background-color: #5b636ba8;
         }
     </style>
 @endpush
 @section('main-section')
     <div id="mcq-test" style="min-height: 725px">
+        <div class="container-fluid no-padding pagebanner">
+            <div class="container">
+                <div class="pagebanner-content">
+                    <h3>@{{ exam_title }}</h3>
+                    <ol class="breadcrumb">
+                        <li>Marks:</li>
+                        <li><strong>@{{ mark_per_question }}</strong>/question</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
         <div class="container-fluid bg-light" style="min-height: 725px">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -399,7 +414,8 @@
                         <div class="row">
                             <div class="col-md-8"><strong><p class="text-info">Left @{{ parseInt(secLeft/60) }}
                                         min:@{{secLeft%60}}sec</p></strong></div>
-                            <div class="col-md-4"><p>Total Question: <span class="badge badge-primary">30</span></p>
+                            <div class="col-md-4"><p>Total Question: <span class="badge badge-primary">@{{ question_count }}</span>
+                                </p>
                             </div>
                         </div>
                         <div class="progress">
@@ -415,57 +431,41 @@
                     <div class="modal-header">
                         <div class="row">
                             <div class="col-md-1" style="min-height: 100px;margin-top: 4%;">
-                                <span class="label label-warning te" style="vertical-align: middle" id="qid">2</span>
+                                <span class="label label-warning te" style="vertical-align: middle" id="qid">@{{ index+1 }}</span>
                             </div>
                             <div class="col-md-11">
-                                <p> THREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
-                                    CORRECTTHREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
-                                    CORRECTTHREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
-                                    CORRECT
-                                    THREE is CORRECT THREE is CORRECTTHREE is CORRECTTHREE is CORRECTTHREE is
-                                    CORRECT
+                                <p v-if="questions[index] && questions[index].question">
+                                    @{{ questions[index].question}}
                                 </p>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-body">
-                        <div class="col-xs-3 col-xs-offset-5">
-                            <div id="loadbar" style="display: none;">
-                                <div class="blockG" id="rotateG_01"></div>
-                                <div class="blockG" id="rotateG_02"></div>
-                                <div class="blockG" id="rotateG_03"></div>
-                                <div class="blockG" id="rotateG_04"></div>
-                                <div class="blockG" id="rotateG_05"></div>
-                                <div class="blockG" id="rotateG_06"></div>
-                                <div class="blockG" id="rotateG_07"></div>
-                                <div class="blockG" id="rotateG_08"></div>
-                            </div>
-                        </div>
-                        <div class="quiz" id="quiz" data-toggle="buttons">
-                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
+                        <div class="quiz" id="quiz" data-toggle="buttons"
+                             v-if="questions[index] && questions[index].options">
+                            <label :class="{...getRadioButtonClasses(option.option_id),'active':option.is_active}"
+                                   @click="answerHandle(option.option_id,i)"
+                                   v-for="(option,i) in questions[index].options">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="1">1 One
-                            </label>
-                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
-                                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="1">1 One
-                            </label>
-                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
-                                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="1">1 One
-                            </label>
-                            <label class="element-animation1 btn btn-lg btn-primary btn-block">
-                                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="1">1 One
+                                <input type="radio" v-model="answers[index].option_id"
+                                       :value="option.option_id"
+                                >@{{option.option}}
                             </label>
                         </div>
                     </div>
                     <div class="modal-footer text-muted">
                         <div class="row">
                             <div class="m-5 text-center">
-                                <button class="btn btn-primary"><i class="fa fa-backward"></i> Back</button>
-                                <button class="btn btn-primary"> Previous <i class="fa fa-forward"></i></button>
+                                <button class="btn btn-primary" @click="questionProcess(-1)" v-if="index>0"><i
+                                        class="fa fa-backward"></i> Previous
+                                </button>
+                                <button class="btn btn-primary" @click="answerSubmit()"
+                                        v-if="index === questions.length-1">
+                                    Submit
+                                </button>
+                                <button class="btn btn-primary" @click="questionProcess(1)"
+                                        v-else>
+                                    Next <i class="fa fa-forward"></i></button>
                             </div>
                         </div>
                     </div>
@@ -481,47 +481,80 @@
         new Vue({
             el: '#mcq-test',
             data: {
-                second: 120,
+                second: 0,
                 percentOfTimeProgress: 100,
                 secLeft: 0,
                 exam_test_id: "{{$exam_test_id}}",
-                questions: [
-                    {
-                        question: 'what is ..',
-                        question_id:'1',
-                        options: [
-                            {
-                                option: ' option ',
-                                option_id: 'option_id',
-                            }
-                        ]
-                    }
-                ],
-
-        // {
-        //    answers: [
-        //         {
-        //             question_id: '1',
-        //             option_id: 'option_id',
-        //         },
-        //         {
-        //             question_id: '1',
-        //             option_id: 'option_id',
-        //         }
-        //     ],
-        // }
+                index: 0,
+                exam_title: '',
+                mark_per_question: '',
+                question_count: '',
+                questions: [],
+                answers: [],
             },
             methods: {
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
+                questionProcess(step) {
+                    this.index += step;
+                    if (step === 1) {
+                        this.answers.push({
+                            question_id: this.questions[this.index].question_id,
+                            option_id: '',
+                        });
+                    } else {
+                        this.answers.pop();
+                    }
+                },
+                answerHandle(option_id, i) {
+                    this.answers[this.index].option_id = option_id;
+                    this.questions[this.index].options = this.questions[this.index].options.map(el => {
+                        el.is_active = false;
+                        return el;
+                    });
+                    this.questions[this.index].options[i].is_active = true;
+                },
+                answerSubmit() {
+                    this.ajaxCall('/user-exam-submit', {
+                        exam_id: "{{$exam_test_id}}",
+                        "answers": this.answers,
+                    }, 'post', (data, code) => {
+                        if (code === 200) {
+                            window.location.href = data.redirect_url;
+                        } else {
+                            sweetAlert('Error', "Something went wrong! please contact with A2B Publication", 'error');
+                        }
+                    }, false);
+                },
+                getRadioButtonClasses() {
+                    return {
+                        'element-animation1': true,
+                        'btn btn-lg': true,
+                        'btn-primary': true, 'btn-block': true,
+                    }
+                }
             },
             mounted() {
-                this.ajaxCall('exam-test/' + this.exam_test_id, {}, 'delete', (data, code) => {
+                this.ajaxCall('/user-exam', {params: {exam_id: "{{$exam_test_id}}"}}, 'get', (data, code) => {
                     if (code === 200) {
-                        this.questions = data;
+                        this.questions = data.questionList ? data.questionList.map(el => {
+                            el.options = el ? el.options.map(option => {
+                                option.is_active = false;
+                                return option;
+                            }) : [];
+                            return el;
+                        }) : [];
+                        this.answers.push({
+                            question_id: this.questions[0].question_id,
+                            option_id: '',
+                        });
+                        this.secLeft = data.examInfo.duration_sec;
+                        this.second = data.examInfo.duration_sec;
+                        this.exam_title = data.examInfo.title;
+                        this.mark_per_question = data.examInfo.mark_per_question;
+                        this.question_count = data.examInfo.question_count;
                     }
                 }, false);
-                this.secLeft = this.second;
                 const intervalUnit = 1;
                 let interval = setInterval(() => {
                     if (this.percentOfTimeProgress <= 0 || this.secLeft <= 0) {
