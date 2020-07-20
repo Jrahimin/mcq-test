@@ -44,6 +44,11 @@ class UserMcqTestController extends Controller
             $questionList = $query->get();
 
             $questionPaper = [];
+            $questionPaper['examInfo'] = array(
+                'title' => $exam->title,
+                'duration_sec' => $exam->duration_minutes*60,
+                'mark_per_question' => $exam->mark_per_question
+            );
             foreach ($questionList as $question)
             {
                 $optionList = [];
@@ -56,7 +61,7 @@ class UserMcqTestController extends Controller
                     );
                 }
 
-                $questionPaper[] = array(
+                $questionPaper['questionList'][] = array(
                     'question'    => $question->title,
                     'question_id' => $question->id,
                     'mark'        => $question->mark,
@@ -67,6 +72,17 @@ class UserMcqTestController extends Controller
             }
 
             return $this->successResponse('Question paper fetched', $questionPaper);
+        }
+        catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    public function submit(Request $request)
+    {
+        try{
+
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
