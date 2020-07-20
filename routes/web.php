@@ -25,7 +25,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
         abort(404);
     })->name('user-profile');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');

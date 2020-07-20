@@ -25,7 +25,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="{{secure_url('/')}}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="{{secure_url(route('dashboard'))}}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-area"></i>
                         <p>
                             Dashboard
@@ -46,21 +46,21 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['exam-pack','exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{secure_url('/exam-test')}}"
+                            <a href="{{secure_url(route('exam-test.index'))}}"
                                class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>Exam-Test</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{secure_url('/test-question')}}"
+                            <a href="{{secure_url(route('test-question.index'))}}"
                                class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Test Question</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{secure_url('/exam-pack')}}"
+                            <a href="{{secure_url(route('exam-pack.index'))}}"
                                class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Exam Package</p>
@@ -81,7 +81,7 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['user-management'])?'display:block;':''}}">
                         <li class="nav-item">
-                            <a href="{{secure_url('/user-management')}}"
+                            <a href="{{secure_url(route('user-management.index'))}}"
                                class="nav-link {{ request()->is('user-management') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
                                 <p>User Management</p>
@@ -90,7 +90,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{secure_url('/payment-info')}}" class="nav-link {{ request()->is('payment-info') ? 'active' : '' }}">
+                    <a href="{{secure_url(route('payment-info.index'))}}" class="nav-link {{ request()->is('payment-info') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-area"></i>
                         <p>
                             Payment Info
