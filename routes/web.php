@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ExamTest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {

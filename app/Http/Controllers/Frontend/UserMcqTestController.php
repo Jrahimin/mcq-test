@@ -36,7 +36,7 @@ class UserMcqTestController extends Controller
             if(!$request->wantsJson()){
                 return view('frontend.mcq-test', $data);
             }
-            $query = $exam->questions()->with('answers')->where('status', 1);
+            $query = $exam->questions()->with('activeAnswers')->where('status', 1);
             if($request->subject_id){
                 $query = $query->where('subject_id', $request->subject_id);
             }
@@ -82,11 +82,71 @@ class UserMcqTestController extends Controller
     public function submit(Request $request)
     {
         try{
-            dd($request->all());
+            $exam = ExamTest::findOrFail($request->exam_id);
+
+            $questions = $exam->questions()->where('status', 1)
+                ->with('activeAnswers')->get();
+
+            // Generate AnswerList -- Format --> list['question_id' => correctAnswerId]
+            $answerList = [];
+            foreach ($questions as $question)
+            {
+                $correctAnswer = $question->activeAnswers->where('is_correct', 1)->first();
+                $answerList[$question->id] = $correctAnswer->id;
+            }
+
+            // Generate User provided AnswerList -- Format --> list['question_id' => userGivenAnswerId]
+            $userAnswerList = [];
+            $totalMark = count($questions);
+            $attainedMark = 0;
+            foreach ($request->answers as $answer)
+            {
+                $userAnswerList[$answer['question_id']] = $answer['option_id'];
+
+                if($answerList[$answer['question_id']] == $answer['option_id']){    //if answerList correctAns matches user provided option_id -- mark++
+                    $attainedMark++;
+                }
+            }
+
+            // Generate preview of exam paper
+            $examPaperReview = [];
+            $examPaperReview['examInfo'] = array(
+                'title' => $exam->title,
+                'duration_sec' => $exam->duration_minutes*60,
+                'mark_per_question' => $exam->mark_per_question,
+                'question_count' => $totalMark,
+                'total_mark' => $totalMark,
+                'user_mark'  => $attainedMark
+            );
+
+            foreach ($questions as $question)
+            {
+                $optionList = [];
+                foreach ($question->activeAnswers as $option)
+                {
+                    $optionList[] = array(
+                        'option'     => $option->answer,
+                        'option_id'  => $option->id
+                    );
+                }
+
+                $examPaperReview['questionList'][] = array(
+                    'question'          => $question->title,
+                    'question_id'       => $question->id,
+                    'mark'              => $question->mark,
+                    'description'       => $question->description,
+                    'user_option_id'    => array_key_exists($question->id, $userAnswerList) ? $userAnswerList[$question->id] : null,
+                    'correct_option_id' => $answerList[$question->id],
+
+                    'options' => $optionList
+                );
+            }
+
+            return view('frontend.exam_review', compact($examPaperReview));
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return $this->exceptionResponse($this->exceptionMessage);
+            abort(500);
         }
     }
 }

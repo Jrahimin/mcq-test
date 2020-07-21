@@ -11,4 +11,8 @@ class Answer extends Model
     public function question(){
         return $this->belongsTo(TestQuestion::class);
     }
+
+    public function scopeCorrectAnswer($query){
+        return $query-where('is_correct', 1);
+    }
 }
