@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\ExamTestResource;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UserMcqTestController extends Controller
@@ -141,6 +142,9 @@ class UserMcqTestController extends Controller
                     'options' => $optionList
                 );
             }
+
+            DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
+                ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark]);
 
             return view('frontend.exam_review', compact($examPaperReview));
         }
