@@ -515,7 +515,7 @@
                     this.questions[this.index].options[i].is_active = true;
                 },
                 answerSubmit() {
-                    this.ajaxCall('/user-exam-submit', {
+                    this.ajaxCall('{{ route('user-exam-submit') }}', {
                         exam_id: "{{$exam_test_id}}",
                         "answers": this.answers,
                     }, 'post', (data, code) => {
@@ -535,7 +535,7 @@
                 }
             },
             mounted() {
-                this.ajaxCall('/user-exam', {params: {exam_id: "{{$exam_test_id}}"}}, 'get', (data, code) => {
+                this.ajaxCall('{{ route('user-exam') }}', {params: {exam_id: "{{$exam_test_id}}"}}, 'get', (data, code) => {
                     if (code === 200) {
                         this.questions = data.questionList ? data.questionList.map(el => {
                             el.options = el ? el.options.map(option => {

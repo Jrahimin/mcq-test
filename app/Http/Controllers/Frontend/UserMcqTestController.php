@@ -29,6 +29,10 @@ class UserMcqTestController extends Controller
 
     public function generateExamQuestion(Request $request)
     {
+        $this->validate($request,[
+            'exam_id' => 'required'
+        ]);
+
         try{
             $exam = ExamTest::find($request->exam_id);
             $data = $this->data;
@@ -96,18 +100,28 @@ class UserMcqTestController extends Controller
                 $answerList[$question->id] = $correctAnswer->id;
             }
 
+            Log::info("exam answer list : ".json_encode($answerList));
+
             // Generate User provided AnswerList -- Format --> list['question_id' => userGivenAnswerId]
             $userAnswerList = [];
             $totalMark = count($questions);
             $attainedMark = 0;
+            $noOfCorrectAnswer = 0;
+            $noOfWrongAnswer = 0;
             foreach ($request->answers as $answer)
             {
                 $userAnswerList[$answer['question_id']] = $answer['option_id'];
 
                 if($answerList[$answer['question_id']] == $answer['option_id']){    //if answerList correctAns matches user provided option_id -- mark++
                     $attainedMark++;
+                    $noOfCorrectAnswer++;
+                } else{
+                    $attainedMark -= $exam->negative_mark_per_question;
+                    $noOfWrongAnswer++;
                 }
             }
+
+            Log::info("user provided answer list : ".json_encode($userAnswerList));
 
             // Generate preview of exam paper
             $examPaperReview = [];
@@ -117,7 +131,9 @@ class UserMcqTestController extends Controller
                 'mark_per_question' => $exam->mark_per_question,
                 'question_count' => $totalMark,
                 'total_mark' => $totalMark,
-                'user_mark'  => $attainedMark
+                'user_mark'  => $attainedMark,
+                'correct_answer_count' => $noOfCorrectAnswer,
+                'wrong_answer_count' => $noOfWrongAnswer
             );
 
             foreach ($questions as $question)
@@ -143,10 +159,12 @@ class UserMcqTestController extends Controller
                 );
             }
 
+            Log::info("Exam paper review : ".json_encode($examPaperReview));
+
             DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
                 ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark]);
 
-            return view('frontend.exam_review', compact($examPaperReview));
+            return $this->successResponse('Exam result preview', $examPaperReview);
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

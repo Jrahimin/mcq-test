@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
     Route::post('exam/buy', 'UserExamScheduleController@buyExam')->name('buy-exam');
 
     Route::get('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
-    Route::get('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
+    Route::post('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
 
     Route::post('user-profile', function () {
         abort(404);
