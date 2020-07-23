@@ -22,6 +22,7 @@ class CreateExamTestsTable extends Migration
             $table->double('price', 8, 2);
             $table->double('mark_per_question')->default(1.0);
             $table->double('negative_mark_per_question')->nullable();
+            $table->integer('pass_mark')->nullable();
             $table->tinyInteger('type');
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
