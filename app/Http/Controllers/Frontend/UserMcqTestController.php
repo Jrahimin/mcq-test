@@ -147,6 +147,8 @@ class UserMcqTestController extends Controller
                     );
                 }
 
+                $userOptionId = array_key_exists($question->id, $userAnswerList) ? $userAnswerList[$question->id] : null;
+                $correctOptionId = $answerList[$question->id];
                 $examPaperReview['questionList'][] = array(
                     'question'          => $question->title,
                     'question_id'       => $question->id,
@@ -154,6 +156,7 @@ class UserMcqTestController extends Controller
                     'description'       => $question->description,
                     'user_option_id'    => array_key_exists($question->id, $userAnswerList) ? $userAnswerList[$question->id] : null,
                     'correct_option_id' => $answerList[$question->id],
+                    'is_user_correct'   => (bool) ($userOptionId && $userOptionId == $correctOptionId),
 
                     'options' => $optionList
                 );
