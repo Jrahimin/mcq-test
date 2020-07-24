@@ -42,6 +42,12 @@ class UserMcqTestController extends Controller
             if (!$request->wantsJson()) {
                 return view('frontend.mcq-test', $data);
             }
+
+            $isTaken = DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)->first();
+            if($isTaken){
+                return $this->invalidResponse('Sorry! You have already participated in this exam.');
+            }
+
             $query = $exam->questions()->with('activeAnswers')->where('status', 1);
             if ($request->subject_id) {
                 $query = $query->where('subject_id', $request->subject_id);
@@ -164,7 +170,7 @@ class UserMcqTestController extends Controller
             Log::info("Exam paper review : " . json_encode($examPaperReview));
 
             DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
-                ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark]);
+                ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark, 'status' => 1]);
 
             return $this->successResponse('Exam result preview', $examPaperReview);
         } catch (\Exception $ex) {

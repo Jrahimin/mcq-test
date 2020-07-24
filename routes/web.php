@@ -5,10 +5,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    $exam = ExamTest::find(1);
-    $examEndTime = Carbon::parse($exam->exam_schedule)->addMinutes($exam->duration_minutes)->format('Y-m-d H:i').':59';
-    $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
-    dd((Carbon::parse($examEndTime)->diffInSeconds(Carbon::parse($now)))/60);
     return "test route";
 });
 
@@ -27,9 +23,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
     Route::post('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
     Route::post('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
 
-    Route::post('user-profile', function () {
-        abort(404);
-    })->name('user-profile');
+    Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');

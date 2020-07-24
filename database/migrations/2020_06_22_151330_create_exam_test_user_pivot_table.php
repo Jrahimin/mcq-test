@@ -22,6 +22,7 @@ class CreateExamTestUserPivotTable extends Migration
             $table->integer('total_wrong')->default(0);
             $table->double('enrolment_price', 8, 2)->nullable();
             $table->dateTime('enrolment_date')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0 : not participated. 1 : participated');
             $table->timestamps();
         });
     }
