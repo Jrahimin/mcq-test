@@ -15,10 +15,22 @@
         </div>
     </div>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        <form action="{{route('buy-exam')}}" method="POST" style="display: inline-block">
-            @csrf
-            <input type="text" hidden name="exam_id" value="{{$exam->id}}">
-            <button class="btn btn-warning readmore" type="submit">Buy Now</button>
-        </form>
+        @if($exam->is_bought && $exam->is_running)
+            <form action="{{route('user-exam', ["exam_id" => $exam->id])}}" method="POST" style="display: inline-block">
+                @csrf
+                <input type="text" hidden name="exam_id" value="{{$exam->id}}">
+                <button class="btn btn-lg btn-success readmore2" type="submit">Participate</button>
+            </form>
+        @elseif(!$exam->is_bought && $exam->is_expired)
+            <form action="#" style="display: inline-block">
+                <button class="btn btn-lg btn-danger readmore2">Expired</button>
+            </form>
+        @elseif(!$exam->is_bought)
+            <form action="{{route('buy-exam')}}" method="POST" style="display: inline-block">
+                @csrf
+                <input type="text" hidden name="exam_id" value="{{$exam->id}}">
+                <button class="btn btn-lg btn-warning readmore2" type="submit">Buy</button>
+            </form>
+        @endif
     </div>
 </div>

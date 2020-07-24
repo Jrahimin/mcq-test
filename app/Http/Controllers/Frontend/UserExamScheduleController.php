@@ -9,6 +9,9 @@ use App\Traits\ApiResponseTrait;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +40,6 @@ class UserExamScheduleController extends Controller
     public function index(Request $request)
     {
         try {
-            //dd($request->all());
             $data = $this->data;
             $data['examPackTitle'] = null;
 
@@ -47,11 +49,33 @@ class UserExamScheduleController extends Controller
                 $data['examPackTitle'] = ExamPack::findOrFail($request->exam_pack_id)->title;
             }
 
-            $data['examList'] = $query->when($request->search, function ($q) use ($request) {
+            $examList = $query->when($request->search, function ($q) use ($request) {
                 $q->where('title', 'like', "%{$request->search}%")
                     ->orWhere('price', $request->search)
                     ->orWhereDate('exam_schedule', $request->search);
-            })->paginate(10);
+            })->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
+                $item->is_bought = false;
+                if(auth()->check()){
+                    if(auth()->user()->examTest->where('id')->first()){
+                        $item->is_bought = true;
+                    }
+                }
+
+                $item->is_running = false;
+                $item->is_expired = false;
+                $examEndTime = Carbon::parse($item->exam_schedule)->addMinutes($item->duration_minutes)->format('Y-m-d H:i').':59';
+                $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
+                if($now >= $item->exam_schedule && $now <= $examEndTime){
+                    $item->is_running = true;
+                }
+                if($now >= $item->exam_schedule){
+                    $item->is_expired = true;
+                }
+
+                return $item;
+            });
+
+            $data['examList'] = $this->paginate($examList);
 
             return view('frontend.exam-schedule.index', $data);
         } catch (\Exception $ex) {
@@ -104,5 +128,12 @@ class UserExamScheduleController extends Controller
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return abort(500);
         }
+    }
+
+    protected function paginate($items, $perPage = 5, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

@@ -15,11 +15,25 @@
             line-height: 34px;
             text-decoration: none;
         }
-        .buyMore{
+        .readmore2 {
+            color: #333;
+            font-size: 13px;
+            line-height: 24px;
+            letter-spacing: 0.26px;
+            font-weight: 700;
+            font-family: 'Roboto Slab', serif;
+            text-decoration: none;
+            text-transform: capitalize;
+            display: inline-block;
+            text-align: center;
+            right: 48px;
             position: absolute;
-            margin-right: 48px;
-            padding: 2%;
-            margin-top: 15%;
+            padding-top: 10px;
+            margin-top: 20px;
+            transition: all 1s ease 0s;
+            -webkit-transition: all 1s ease 0s;
+            -moz-transition: all 1s ease 0s;
+            -o-transition: all 1s ease 0s;
         }
     </style>
 @endpush
@@ -39,7 +53,7 @@
         <div class="container welcome-section welcome2">
             <div class="section-padding"></div>
             <div class="search-result">
-                <span>Showing {{(($examList->currentPage()-1)*$examList->perPage())+1}} - {{(($examList->currentPage()-1)*$examList->perPage()+1)+$examList->count()-1}} of total {{$examList->total()}} packages</span>
+                <span>Showing {{(($examList->currentPage()-1)*$examList->perPage())+1}} - {{(($examList->currentPage()-1)*$examList->perPage()+1)+$examList->count()-1}} of total {{$examList->total()}} exams</span>
                 <div class="input-group col-md-2">
                     <form action="{{route('exam-schedule')}}">
                         <input type="text" class="form-control" name="search" placeholder="Search packages">

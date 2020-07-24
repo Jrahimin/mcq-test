@@ -616,7 +616,7 @@
                 }
             },
             mounted() {
-                this.ajaxCall('{{ route('user-exam') }}', {params: {exam_id: "{{$exam_test_id}}"}}, 'get', (data, code) => {
+                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {
                     if (code === 200) {
                         this.questions = data.questionList ? data.questionList.map(el => {
                             el.options = el ? el.options.map(option => {

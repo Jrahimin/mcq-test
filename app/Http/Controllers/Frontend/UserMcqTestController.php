@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\ExamTestResource;
 use App\Models\ExamTest;
 use App\Traits\ApiResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -48,10 +49,16 @@ class UserMcqTestController extends Controller
 
             $questionList = $query->get();
 
+            // duration in sec if exam already running
+            $examEndTime = Carbon::parse($exam->exam_schedule)->addMinutes($exam->duration_minutes)->format('Y-m-d H:i').':59';
+            $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
+            $secDiff = Carbon::parse($examEndTime)->diffInSeconds(Carbon::parse($now));
+            $remainingSecFromNow = $secDiff < $exam->duration_minutes * 60 ? $secDiff : $exam->duration_minutes * 60;
+
             $questionPaper = [];
             $questionPaper['examInfo'] = array(
                 'title' => $exam->title,
-                'duration_sec' => $exam->duration_minutes * 60,
+                'duration_sec' => $remainingSecFromNow,
                 'mark_per_question' => $exam->mark_per_question,
                 'question_count' => count($questionList)
             );
