@@ -2,6 +2,7 @@
 
 use App\Models\ExamTest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {

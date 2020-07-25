@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     public function examTest(){
-        return $this->belongsToMany(ExamTest::class);
+        return $this->belongsToMany(ExamTest::class)->withPivot('score');
     }
 
     public function payments(){
