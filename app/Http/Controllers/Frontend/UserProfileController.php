@@ -50,6 +50,7 @@ class UserProfileController extends Controller
                     $userExam = $examForAllUsers->where('exam_test_id', $exam->id)->where('user_id', $user->id)->first();
                     $scoreAboveCount = $examForAllUsers->where('exam_test_id', $exam->id)->where('score', '>', $userExam->score)->count();
                     $exam->position = ++$scoreAboveCount;
+                    $exam->totalExminee = $examForAllUsers->count();
 
                     return $exam;
                 });
