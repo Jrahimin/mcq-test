@@ -12,11 +12,31 @@ use Illuminate\Support\Facades\Log;
 class CommonExamPreviewController extends Controller
 {
     use ApiResponseTrait;
+
+    protected $exceptionMessage;
+    protected $data;
+
+    public function __construct()
+    {
+        $this->exceptionMessage = "Something went wrong. Please try again later.";
+
+        $this->data = [];
+        $this->data['route'] = 'exam-preview';
+        $this->data['path'] = 'exam-preview';
+        $this->data['title'] = 'Exam Preview';
+    }
+
     public function generateExamPreview(Request $request)
     {
+        $this->validate($request, [
+            'exam_id' => 'required'
+        ]);
+
         try {
+            $data = $this->data;
+            $data['exam_test_id'] = $request->exam_id;
             if (!$request->wantsJson()) {
-                return view('common.exam-preview', ['exam_test_id' => $request->exam_id]);
+                return view('common.exam-preview', $data);
             }
 
             $exam = ExamTest::findOrFail($request->exam_id);
@@ -68,7 +88,8 @@ class CommonExamPreviewController extends Controller
             return $this->successResponse('Exam Paper Preview', $examPaperReview);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            abort(500);
+
+            return $this->exceptionResponse($this->exceptionMessage);
         }
     }
 }
