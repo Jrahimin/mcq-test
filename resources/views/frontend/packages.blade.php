@@ -1,7 +1,37 @@
 @extends('layouts.frontend.master')
 @section('title',$title??'Dynamic')
 @section('style-lib')
+    <style>
 
+        /*.welcome-box {*/
+        /*    position: relative !important;*/
+        /*    margin-bottom: 30px !important;*/
+        /*    transition: none !important;*/
+        /*    -webkit-transition: none !important;*/
+        /*    -moz-transition: none !important;*/
+        /*    -o-transition: none !important;*/
+        /*    overflow: hidden !important;*/
+        /*}*/
+
+        /*.fadeInRight {*/
+        /*    -webkit-animation-name: none !important;*/
+        /*}*/
+
+        /*.animated {*/
+        /*    -webkit-animation-duration: 1s;*/
+        /*    animation-duration: 1s;*/
+        /*    -webkit-animation-fill-mode: both;*/
+        /*    animation-fill-mode: both;*/
+        /*}*/
+        /*.welcome-content {*/
+        /*     opacity: 1 !important;*/
+        /*     transition: none !important;*/
+        /*     -webkit-transition: none;*/
+        /*!important*/
+        /*    -moz-transition: none !important;*/
+        /*    -o-transition: none !important;*/
+        /*}*/
+    </style>
 @endsection
 @push('custom-css')
     <style type="text/css">
@@ -114,10 +144,10 @@
     <script defer type="text/javascript">
         /*(function () {
             @if(session()->has('success_message'))
-            Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+        Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
             @endif
-            @if(session()->has('error_message'))
-            Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+        @if(session()->has('error_message'))
+        Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
             @endif
         })();*/
         new Vue({

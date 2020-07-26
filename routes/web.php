@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    return "test route";
+    return Carbon::now()->format('Y-m-d H:i:s');
 });
 
 Auth::routes();

@@ -137,7 +137,16 @@
                                                 <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
-                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a></th>
+                                                <th>
+                                                    <form action="{{route('exam-preview')}}"
+                                                          method="POST" style="display: inline-block">
+                                                        @csrf
+                                                        <input type="text" hidden name="exam_id" :value="exam.id">
+                                                        <button class="btn btn-sm btn-info readmore2" type="submit"><i
+                                                                class="fa fa-eye"></i> Preview
+                                                        </button>
+                                                    </form>
+                                                </th>
                                             </tr>
                                         </table>
                                     </div>
@@ -165,7 +174,8 @@
                                                 <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
-                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a></th>
+                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i
+                                                            class="fa fa-eye"></i> Preview</a></th>
                                             </tr>
                                         </table>
                                     </div>

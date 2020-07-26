@@ -399,16 +399,69 @@
         <div class="container-fluid no-padding pagebanner">
             <div class="container">
                 <div class="pagebanner-content">
-                    <h3>@{{ exam_title }}</h3>
+                    <h3>@{{ exam_info_response.title }}</h3>
                     <ol class="breadcrumb">
                         <li>Marks:</li>
-                        <li><strong>@{{ mark_per_question }}</strong>/question</li>
+                        <li><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</li>
                     </ol>
                 </div>
             </div>
         </div>
-        @include('frontend.exam-test.exam')
-        @include('frontend.exam-test.exam-preview')
+        <div class="container-fluid" style="margin-top: 3%">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <h3 class="text-center">Exam Review</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="badge">@{{ exam_info_response.question_count }}</span>
+                            Number of Question
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">@{{ exam_info_response.total_mark }}</span>
+                            Total Mark
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-primary" style="background-color: rgba(23,196,49,0.62)">@{{ exam_info_response.duration_sec/60 }} Min.</span>
+                            Duration
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <h4 class="text-center"><u>Answer Sheet</u></h4>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1" style="padding: 2%; background-color: rgba(195,205,205,0.2)"
+                     v-for="question_response of question_list_response">
+                    <div class="accordion md-accordion accordion-blocks"
+                         aria-multiselectable="true">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mt-1 mb-0" style="padding-left: 2%">
+                                    @{{ question_response.question }}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li v-for="option of question_response.options"
+                                        :style="{'background':question_response.correct_option_id == option.option_id?'rgba(0,180,78,0.46)':'',margin:'1%'}">
+                                        @{{ option.option }}
+                                        <span v-if="question_response.correct_option_id == option.option_id"
+                                              class="pull-right" style="padding-right: 1%;color: green"><i
+                                                class="glyphicon glyphicon-ok"></i></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-padding"></div>
+        </div>
+
     </div>
 @endsection
 @section('script-lib')
@@ -418,56 +471,19 @@
         new Vue({
             el: '#mcq-test',
             data: {
-                second: 0,
-                percentOfTimeProgress: 100,
-                secLeft: 0,
                 exam_test_id: "{{$exam_test_id}}",
-                index: 0,
-                exam_title: '',
-                mark_per_question: '',
-                question_count: '',
-                questions: [],
-                answers: [],
-                is_exam_completed: false,
                 question_list_response: [],
-                exam_info_response: {},
+                exam_info_response: {
+                    duration_sec: '',
+                    mark_per_question: '',
+                    question_count: '',
+                    title: '',
+                    total_mark: '',
+                },
             },
             methods: {
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
-                questionProcess(step) {
-                    this.index += step;
-                    if (step === 1) {
-                        this.answers.push({
-                            question_id: this.questions[this.index].question_id,
-                            option_id: '',
-                        });
-                    } else {
-                        this.answers.pop();
-                    }
-                },
-                answerHandle(option_id, i) {
-                    this.answers[this.index].option_id = option_id;
-                    this.questions[this.index].options = this.questions[this.index].options.map(el => {
-                        el.is_active = false;
-                        return el;
-                    });
-                    this.questions[this.index].options[i].is_active = true;
-                },
-                answerSubmit() {
-                    this.ajaxCall('{{ route('user-exam-submit') }}', {
-                        exam_id: "{{$exam_test_id}}",
-                        "answers": this.answers,
-                    }, 'post', (data, code) => {
-                        if (code === 200) {
-                            this.is_exam_completed = true;
-                            this.question_list_response = data.questionList || [];
-                            this.exam_info_response = data.examInfo || {};
-                        } else {
-                            sweetAlert('Error', "Something went wrong! please contact with A2B Publication", 'error');
-                        }
-                    }, false);
-                },
                 getRadioButtonClasses() {
                     return {
                         'element-animation1': true,
@@ -475,40 +491,12 @@
                         'btn-primary': true, 'btn-block': true,
                     }
                 },
-                examStart() {
-                    const intervalUnit = 1;
-                    let interval = setInterval(() => {
-                        if (this.percentOfTimeProgress <= 0 || this.secLeft <= 0) {
-                            this.secLeft = 0;
-                            clearInterval(interval);
-                            sweetAlert('Fail!', 'Time over', 'warning');
-                            this.answerSubmit()
-                        }
-                        this.secLeft -= intervalUnit;
-                        this.percentOfTimeProgress = 100 - (this.secLeft * 100 / this.second);
-                    }, 1000 * intervalUnit);
-                }
             },
             mounted() {
-                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {
+                this.ajaxCall('{{ route('exam-preview') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {
                     if (code === 200) {
-                        this.questions = data.questionList ? data.questionList.map(el => {
-                            el.options = el ? el.options.map(option => {
-                                option.is_active = false;
-                                return option;
-                            }) : [];
-                            return el;
-                        }) : [];
-                        this.answers.push({
-                            question_id: this.questions[0].question_id,
-                            option_id: '',
-                        });
-                        this.secLeft = data.examInfo.duration_sec;
-                        this.second = data.examInfo.duration_sec;
-                        this.exam_title = data.examInfo.title;
-                        this.mark_per_question = data.examInfo.mark_per_question;
-                        this.question_count = data.examInfo.question_count;
-                        this.examStart();
+                        this.question_list_response = data.questionList;
+                        this.exam_info_response = data.examInfo;
                     } else {
                         sweetAlert({
                             title: "Fail",

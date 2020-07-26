@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExamTest;
+use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CommonExamPreviewController extends Controller
 {
+    use ApiResponseTrait;
     public function generateExamPreview(Request $request)
     {
         try {
-            $exam = ExamTest::findOrFail($request->exam_id);
+            if (!$request->wantsJson()) {
+                return view('common.exam-preview', ['exam_test_id' => $request->exam_id]);
+            }
 
+            $exam = ExamTest::findOrFail($request->exam_id);
             $questions = $exam->questions()->where('status', 1)
                 ->with('activeAnswers')->get();
 
