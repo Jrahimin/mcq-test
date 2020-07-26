@@ -24,7 +24,7 @@ class ExamTest extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('score', 'total_correct', 'total_wrong');
     }
 
     public function getExamTimeFromAttribute()

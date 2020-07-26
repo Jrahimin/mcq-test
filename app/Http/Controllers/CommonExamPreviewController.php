@@ -92,4 +92,26 @@ class CommonExamPreviewController extends Controller
             return $this->exceptionResponse($this->exceptionMessage);
         }
     }
+
+    public function getExamRanking(Request $request)
+    {
+        $this->validate($request, [
+            'exam_id' => 'required'
+        ]);
+
+        try{
+            $exam = ExamTest::findOrFail($request->exam_id);
+            $examUsersRank = $exam->user()->orderBy('exam_test_user.score', 'desc')->paginate(50);
+
+            $data['examInfo'] = $exam;
+            $data['userRank'] = $examUsersRank;
+
+            return view('common.user-rank', $data);
+        }
+        catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+
+            abort(500);
+        }
+    }
 }

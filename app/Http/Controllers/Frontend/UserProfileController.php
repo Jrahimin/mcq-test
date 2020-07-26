@@ -52,6 +52,7 @@ class UserProfileController extends Controller
                     $exam->totalExminee = $examForAllUsers->count();
                     $exam->userScore = $exam->pivot->score;
                     $exam->exam_schedule = Carbon::parse($exam->exam_schedule)->format('Y-m-d');
+
                     return $exam;
                 });
             } else {
@@ -60,6 +61,36 @@ class UserProfileController extends Controller
 
             return $this->successResponse('User exams fetched', $userExams);
         } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    public function getUserScoreChartData(Request $request)
+    {
+        try{
+            $user = $request->user();
+
+            $userLastExams = $user->examTest()->latest('exam_schedule')->limit(10)->get();
+
+            $examTitles = [];
+            $scores = [];
+            $colors = [];
+            foreach ($userLastExams as $exam)
+            {
+                $examTitles[] = $exam->title;
+                $scores[] = $exam->pivot->score;
+                $colors[] = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+            }
+
+            $chartData['examTitles'] = $examTitles ? $examTitles : ['No Exam'];
+            $chartData['scores']     = $scores ? $scores : [0];
+            $chartData['colors']     = $colors ? $colors : [sprintf('#%06X', mt_rand(0, 0xFFFFFF))];
+
+            return $this->successResponse('chart data', $chartData);
+        }
+        catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
             return $this->exceptionResponse($this->exceptionMessage);

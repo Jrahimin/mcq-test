@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    return Carbon::now()->format('Y-m-d H:i:s');
+    $user = \App\User::find(2);
+    $userLastExams = $user->examTest()->latest('exam_schedule')->limit(10)->first();
+    dd($userLastExams->pivot->score);
+    return "this is test";
 });
 
 Auth::routes();
@@ -26,6 +29,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
 
     Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
     Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
+    Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
 });
 
 Route::group(['middleware' => 'auth'], function () {
