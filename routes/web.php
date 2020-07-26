@@ -26,6 +26,11 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
 
     Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
 });
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('exam-preview', 'CommonExamPreviewController@generateExamPreview')->name('exam-preview');
+});
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::resource('exam-test', 'ExamTestController');
