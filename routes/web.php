@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
     Route::post('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
 
     Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
+    Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');

@@ -31,6 +31,10 @@
                 <input type="text" hidden name="exam_id" value="{{$exam->id}}">
                 <button class="btn btn-lg btn-warning readmore2" type="submit">Buy</button>
             </form>
+        @else
+            <form action="#" style="display: inline-block">
+                <button class="btn btn-lg btn-info readmore2"><i class="fa fa-eye"></i> Details</button>
+            </form>
         @endif
     </div>
 </div>
