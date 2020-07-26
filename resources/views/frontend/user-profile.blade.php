@@ -7,7 +7,7 @@
 @endpush
 
 @section('main-section')
-    <div class="container-fluid">
+    <div class="container-fluid" id="user_profile">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <section id="content" class="container">
             <!-- Begin .page-heading -->
@@ -32,9 +32,9 @@
                 <div class="col-md-4">
                     <div class="panel">
                         <div class="panel-heading">
-              <span class="panel-icon">
-                <i class="fa fa-star"></i>
-              </span>
+                          <span class="panel-icon">
+                            <i class="fa fa-star"></i>
+                          </span>
                             <span class="panel-title"> Basic Info</span>
                         </div>
                         <div class="panel-body pn">
@@ -55,7 +55,8 @@
                                     </td>
                                     <td>Total Paid</td>
                                     <td>
-                                        <i class="text-danger pr10"></i>{{ $userInfo->totalPaid }} BDT</td>
+                                        <i class="text-danger pr10"></i>{{ $userInfo->totalPaid }} BDT
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -81,9 +82,9 @@
                     </div>
                     <div class="panel">
                         <div class="panel-heading">
-              <span class="panel-icon">
-                <i class="fa fa-pencil"></i>
-              </span>
+                              <span class="panel-icon">
+                                <i class="fa fa-pencil"></i>
+                              </span>
                             <span class="panel-title">Exam Packs</span>
                         </div>
                         <div class="panel-body pb5">
@@ -100,7 +101,6 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-
                     <div class="tab-block">
                         <ul class="nav nav-tabs">
                             <li class="active">
@@ -115,78 +115,65 @@
                         </ul>
                         <div class="tab-content p30" style="height: 730px;">
                             <div id="tab1" class="tab-pane active">
-                                <div class="media">
-                                    <a class="pull-left" href="#"> <img class="media-object mn thumbnail mw50" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..."> </a>
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb20">Simon Rivers Posted
-                                            <small> - 3 hours ago</small>
-                                        </h5>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="mw140 mr25 mb20">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" class="mw140 mr25 mb20">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="mw140 mb20">
-                                        <div class="media-links">
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-thumbs-o-up text-primary mr5"></span> Like </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-share text-primary mr5"></span> Share </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-floppy-o text-primary mr5"></span> Save </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-comment text-primary mr5"></span> Comment </span>
-                                        </div>
+                                <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Participated Exams</div>
+                                    <div class="panel-body">
+                                        <!-- Table -->
+                                        <table class="table">
+                                            <tr>
+                                                <th>Test Name</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Score</th>
+                                                <th>Position</th>
+                                                <th>Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr v-for="exam of user_exam_list">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
+                                                <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a></th>
+                                            </tr>
+                                        </table>
                                     </div>
+
                                 </div>
-                                <div class="media mt25">
-                                    <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..."> </a>
-                                    <div class="media-body mb5">
-                                        <h5 class="media-heading mbn">Simon Rivers Posted
-                                            <small> - 3 hours ago</small>
-                                        </h5>
-                                        <p> Omg so freaking sweet dude.</p>
-                                        <div class="media pb10">
-                                            <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..."> </a>
-                                            <div class="media-body mb5">
-                                                <h5 class="media-heading mbn">Jessica Wong
-                                                    <small> - 3 hours ago</small>
-                                                </h5>
-                                                <p>Omgosh I'm in love</p>
-                                            </div>
-                                        </div>
-                                        <div class="media mtn">
-                                            <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="..."> </a>
-                                            <div class="media-body mb5">
-                                                <h5 class="media-heading mbn">Jessica Wong
-                                                    <small> - 3 hours ago</small>
-                                                </h5>
-                                                <p>Omgosh I'm in love</p>
-                                            </div>
-                                        </div>
+                                <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Participated Exams</div>
+                                    <div class="panel-body">
+                                        <!-- Table -->
+                                        <table class="table">
+                                            <tr>
+                                                <th>Test Name</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Score</th>
+                                                <th>Position</th>
+                                                <th>Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr v-for="exam of user_exam_list">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
+                                                <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a></th>
+                                            </tr>
+                                        </table>
                                     </div>
+
                                 </div>
-                                <div class="media mt25">
-                                    <a class="pull-left" href="#"> <img class="media-object thumbnail mw50" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="..."> </a>
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb20">Simon Rivers Posted
-                                            <small> - 3 hours ago</small>
-                                        </h5>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="mw140 mr25 mb20">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="mw140 mr25 mb20">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="mw140 mb20">
-                                        <div class="media-links">
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-thumbs-o-up text-primary mr5"></span> Like </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-share text-primary mr5"></span> Share </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-floppy-o text-primary mr5"></span> Save </span>
-                                            <span class="text-light fs12 mr10">
-                        <span class="fa fa-comment text-primary mr5"></span> Comment </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div id="tab2" class="tab-pane"></div>
+                                <div id="tab3" class="tab-pane"></div>
                             </div>
-                            <div id="tab2" class="tab-pane"></div>
-                            <div id="tab3" class="tab-pane"></div>
                         </div>
                     </div>
                 </div>
@@ -195,3 +182,25 @@
     </div>
 @endsection
 
+@push('custom-js')
+    <script>
+        new Vue({
+            el: '#user_profile',
+            data: {
+                user_exam_list: [],
+            },
+            methods: {
+                ajaxCall: window.ajaxCall,
+                responseProcess: window.responseProcess,
+            },
+            mounted() {
+                this.ajaxCall('{{ route('user-exam-list') }}', {is_participated: true}, 'post', (data, code) => {
+                    if (code === 200) {
+                        this.user_exam_list = data;
+                        console.log(this.user_exam_list);
+                    }
+                }, false);
+            }
+        })
+    </script>
+@endpush

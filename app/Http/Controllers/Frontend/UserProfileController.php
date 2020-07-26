@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +22,7 @@ class UserProfileController extends Controller
 
         $this->data = [];
         $this->data['route'] = 'user-profile';
-        $this->data['path']  = 'User-Profile';
+        $this->data['path'] = 'User-Profile';
         $this->data['title'] = 'User Profile';
     }
 
@@ -40,27 +41,25 @@ class UserProfileController extends Controller
 
     public function getUserExams(Request $request)
     {
-        try{
+        try {
             $user = $request->user();
-
-            if($request->is_participated){
+            if ($request->is_participated) {
                 $examForAllUsers = DB::table('exam_test_user')->where('status', 1)->get();
-
-                $userExams = $user->examTest()->where('exam_test_user.status', 1)->get()->map(function ($exam) use ($user, $examForAllUsers){
+                $userExams = $user->examTest()->where('exam_test_user.status', 1)->get()->map(function ($exam) use ($user, $examForAllUsers) {
                     $userExam = $examForAllUsers->where('exam_test_id', $exam->id)->where('user_id', $user->id)->first();
                     $scoreAboveCount = $examForAllUsers->where('exam_test_id', $exam->id)->where('score', '>', $userExam->score)->count();
                     $exam->position = ++$scoreAboveCount;
                     $exam->totalExminee = $examForAllUsers->count();
-
+                    $exam->userScore = $exam->pivot->score;
+                    $exam->exam_schedule = Carbon::parse($exam->exam_schedule)->format('Y-m-d');
                     return $exam;
                 });
-            } else{
+            } else {
                 $userExams = $user->examTest;
             }
 
             return $this->successResponse('User exams fetched', $userExams);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
             return $this->exceptionResponse($this->exceptionMessage);
