@@ -82,25 +82,25 @@
                             </table>
                         </div>
                     </div>
-                    <div class="panel">
-                        <div class="panel-heading">
-                              <span class="panel-icon">
-                                <i class="fa fa-pencil"></i>
-                              </span>
-                            <span class="panel-title">Exam Packs</span>
-                        </div>
-                        <div class="panel-body pb5">
+{{--                    <div class="panel">--}}
+{{--                        <div class="panel-heading">--}}
+{{--                              <span class="panel-icon">--}}
+{{--                                <i class="fa fa-pencil"></i>--}}
+{{--                              </span>--}}
+{{--                            <span class="panel-title">Exam Packs</span>--}}
+{{--                        </div>--}}
+{{--                        <div class="panel-body pb5">--}}
 
-                            <h6>Experience</h6>
+{{--                            <h6>Experience</h6>--}}
 
-                            <h4>Facebook Internship</h4>
-                            <p class="text-muted"> University of Missouri, Columbia
-                                <br> Student Health Center, June 2010 - 2012
-                            </p>
+{{--                            <h4>Facebook Internship</h4>--}}
+{{--                            <p class="text-muted"> University of Missouri, Columbia--}}
+{{--                                <br> Student Health Center, June 2010 - 2012--}}
+{{--                            </p>--}}
 
-                            <hr class="short br-lighter">
-                        </div>
-                    </div>
+{{--                            <hr class="short br-lighter">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
                 <div class="col-md-8">
                     <div class="tab-block">
@@ -111,9 +111,9 @@
                             <li>
                                 <a href="#up-coming-exam" data-toggle="tab">Exams & Pack</a>
                             </li>
-                            <li>
-                                <a href="#tab3" data-toggle="tab">Media</a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="#tab3" data-toggle="tab">Media</a>--}}
+{{--                            </li>--}}
                         </ul>
                         <div class="tab-content p30" style="height: 730px;">
                             <div id="activity" class="tab-pane active">
@@ -200,19 +200,22 @@
                                             <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Valid From</th>
+                                                <th>Valid Till</th>
                                                 <th>Mock Test</th>
                                                 <th>Model Test</th>
                                                 <th>Mini Test</th>
-                                                <th>Type</th>
                                                 <th>Price (BDT)</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="exam of user_packages">
+                                            <tr v-for="exam of user_exam_packages">
                                                 <th>@{{ exam.title }}</th>
-                                                <th>@{{ exam.exam_schedule }}</th>
-                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
-                                                <th>@{{ exam.typeName }}</th>
+                                                <th>@{{ exam.dateFrom }}</th>
+                                                <th>@{{ exam.dateTo }}</th>
+                                                <th>@{{ exam.mock_test_count }}</th>
+                                                <th>@{{ exam.model_test_count }}</th>
+                                                <th>@{{ exam.mini_test_count }}</th>
                                                 <th>@{{ exam.price }}</th>
                                             </tr>
                                             </tbody>
@@ -222,7 +225,7 @@
 
                                 </div>
                             </div>
-                            <div id="tab3" class="tab-pane"></div>
+{{--                            <div id="tab3" class="tab-pane"></div>--}}
                         </div>
                     </div>
                 </div>
@@ -242,19 +245,35 @@
             data: {
                 user_exam_list: [],
                 user_up_coming_exam_list: [],
+                user_exam_packages: [],
             },
             methods: {
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
             },
             mounted() {
+                this.ajaxCall('{{ route('user-pack-list') }}', {}, 'post', (data, code) => {
+                    if (code === 200) {
+                        this.user_exam_packages = data;
+                        setTimeout(() => {
+                            $("#packages-table").DataTable({
+                                processing: true,
+                                pagingType: "full_numbers",
+                                pageLength: 5,
+                                lengthMenu: [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]]
+                            });
+                        }, 1000);
+                    }
+                }, false);
                 this.ajaxCall('{{ route('user-exam-list') }}', {is_participated: true}, 'post', (data, code) => {
                     if (code === 200) {
                         this.user_exam_list = data;
                         setTimeout(() => {
                             $("#participated_exam_table").DataTable({
                                 processing: true,
-                                pagingType: "full_numbers"
+                                pagingType: "full_numbers",
+                                pageLength: 5,
+                                lengthMenu: [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]]
                             });
                         }, 1000);
                     }
@@ -265,7 +284,9 @@
                         setTimeout(() => {
                             $("#upcoming-exam-table").DataTable({
                                 processing: true,
-                                pagingType: "full_numbers"
+                                pagingType: "full_numbers",
+                                pageLength: 5,
+                                lengthMenu: [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]]
                             });
                         }, 1000);
                     }

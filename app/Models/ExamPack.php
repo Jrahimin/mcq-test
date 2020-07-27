@@ -17,7 +17,7 @@ class ExamPack extends Model
     public function examTests(){
         return $this->hasMany(ExamTest::class);
     }
-    public function getDateFormAttribute(){
+    public function getDateFromAttribute(){
         return Carbon::parse($this->from_date)->format('M d, Y');
     }
     public function getDateToAttribute(){

@@ -83,9 +83,9 @@
                                 <h3>{{$examPack->title}}</h3>
                             </div>
                             <div class="welcome-content">
-                                @if($examPack->dateForm && $examPack->dateTo)
+                                @if($examPack->dateFrom && $examPack->dateTo)
                                     <span><i class="fa fa-calendar" aria-hidden="true"></i>
-                                        <strong>{{ $examPack->dateForm }} to {{ $examPack->dateTo }}</strong>
+                                        <strong>{{ $examPack->dateFrom }} to {{ $examPack->dateTo }}</strong>
                                     </span>
                                 @endif
                                 @if($examPack->details)
