@@ -29,6 +29,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
 
     Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
     Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
+    Route::post('user-pack-list', 'UserProfileController@getUserExamPack')->name('user-pack-list');
     Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
 });
 

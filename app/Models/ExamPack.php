@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExamPack extends Model
 {
     protected $guarded=['id'];
+    protected $appends = ['dateFrom', 'dateTo'];
 
     public function user(){
         return $this->belongsToMany(User::class);

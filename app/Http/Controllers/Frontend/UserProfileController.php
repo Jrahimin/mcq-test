@@ -67,6 +67,21 @@ class UserProfileController extends Controller
         }
     }
 
+    public function getUserExamPack(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            $userExamPacks = $user->examPack;
+
+            return $this->successResponse('User exam packs fetched', $userExamPacks);
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
     public function getUserScoreChartData(Request $request)
     {
         try {
