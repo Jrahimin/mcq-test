@@ -56,7 +56,7 @@ class UserProfileController extends Controller
                     return $exam;
                 });
             } else {
-                $userExams = $user->examTest;
+                $userExams = $user->examTest()->where('exam_schedule','>=',Carbon::now()->format('Y-m-d H:i:s'))->get();
             }
 
             return $this->successResponse('User exams fetched', $userExams);
@@ -69,28 +69,26 @@ class UserProfileController extends Controller
 
     public function getUserScoreChartData(Request $request)
     {
-        try{
+        try {
             $user = $request->user();
 
-            $userLastExams = $user->examTest()->latest('exam_schedule')->limit(10)->get();
+            $userLastExams = $user->examTest()->where('exam_test_user.status', 1)->latest('exam_schedule')->limit(10)->get();
 
             $examTitles = [];
             $scores = [];
             $colors = [];
-            foreach ($userLastExams as $exam)
-            {
+            foreach ($userLastExams as $exam) {
                 $examTitles[] = $exam->title;
                 $scores[] = $exam->pivot->score;
-                $colors[] = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+                $colors[] = sprintf('#%06X', mt_rand(0x000000A0, 0xFFFFFFA0));
             }
 
             $chartData['examTitles'] = $examTitles ? $examTitles : ['No Exam'];
-            $chartData['scores']     = $scores ? $scores : [0];
-            $chartData['colors']     = $colors ? $colors : [sprintf('#%06X', mt_rand(0, 0xFFFFFF))];
+            $chartData['scores'] = $scores ? $scores : [0];
+            $chartData['colors'] = $colors ? $colors : [sprintf('#%06X', mt_rand(0x000000A0, 0xFFFFFFA0))];
 
             return $this->successResponse('chart data', $chartData);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
             return $this->exceptionResponse($this->exceptionMessage);

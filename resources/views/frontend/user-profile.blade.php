@@ -4,6 +4,8 @@
 @endsection
 @push('custom-css')
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/user-end/css/user_profile.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/chart.js/Chart.min.css') }}">
+    <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
 @endpush
 
 @section('main-section')
@@ -104,60 +106,34 @@
                     <div class="tab-block">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#tab1" data-toggle="tab">Activity</a>
+                                <a href="#activity" data-toggle="tab">Activity</a>
                             </li>
                             <li>
-                                <a href="#tab2" data-toggle="tab">Social</a>
+                                <a href="#up-coming-exam" data-toggle="tab">Exams & Pack</a>
                             </li>
                             <li>
                                 <a href="#tab3" data-toggle="tab">Media</a>
                             </li>
                         </ul>
                         <div class="tab-content p30" style="height: 730px;">
-                            <div id="tab1" class="tab-pane active">
-                                <div class="panel panel-default">
+                            <div id="activity" class="tab-pane active">
+                                <div class="panel panel-primary">
                                     <!-- Default panel contents -->
-                                    <div class="panel-heading">Participated Exams</div>
+                                    <div class="panel-heading">My Progress (exam score)</div>
                                     <div class="panel-body">
                                         <!-- Table -->
-                                        <table class="table">
-                                            <tr>
-                                                <th>Test Name</th>
-                                                <th>Date</th>
-                                                <th>Duration</th>
-                                                <th>Score</th>
-                                                <th>Position</th>
-                                                <th>Type</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            <tr v-for="exam of user_exam_list">
-                                                <th>@{{ exam.title }}</th>
-                                                <th>@{{ exam.exam_schedule }}</th>
-                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
-                                                <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
-                                                <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
-                                                <th>@{{ exam.typeName }}</th>
-                                                <th>
-                                                    <form action="{{route('exam-preview')}}"
-                                                          method="POST" style="display: inline-block">
-                                                        @csrf
-                                                        <input type="text" hidden name="exam_id" :value="exam.id">
-                                                        <button class="btn btn-sm btn-info readmore2" type="submit"><i
-                                                                class="fa fa-eye"></i> Preview
-                                                        </button>
-                                                    </form>
-                                                </th>
-                                            </tr>
-                                        </table>
+                                        <canvas class="chart chartjs-render-monitor" id="main-chart" height="300"
+                                                width="1549" style="display: block;"></canvas>
                                     </div>
 
                                 </div>
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <!-- Default panel contents -->
                                     <div class="panel-heading">Participated Exams</div>
                                     <div class="panel-body">
                                         <!-- Table -->
-                                        <table class="table">
+                                        <table class="table table-bordered table-striped" id="participated_exam_table">
+                                            <thead>
                                             <tr>
                                                 <th>Test Name</th>
                                                 <th>Date</th>
@@ -167,6 +143,8 @@
                                                 <th>Type</th>
                                                 <th>Action</th>
                                             </tr>
+                                            </thead>
+                                            <tbody>
                                             <tr v-for="exam of user_exam_list">
                                                 <th>@{{ exam.title }}</th>
                                                 <th>@{{ exam.exam_schedule }}</th>
@@ -177,13 +155,74 @@
                                                 <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i
                                                             class="fa fa-eye"></i> Preview</a></th>
                                             </tr>
+                                            </tbody>
                                         </table>
                                     </div>
 
                                 </div>
-                                <div id="tab2" class="tab-pane"></div>
-                                <div id="tab3" class="tab-pane"></div>
                             </div>
+                            <div id="up-coming-exam" class="tab-pane">
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Upcoming Exams</div>
+                                    <div class="panel-body">
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped" id="upcoming-exam-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Test Name</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Type</th>
+                                                <th>Price (BDT)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="exam of user_up_coming_exam_list">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th>@{{ exam.price }}</th>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Packages</div>
+                                    <div class="panel-body">
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped" id="packages-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Mock Test</th>
+                                                <th>Model Test</th>
+                                                <th>Mini Test</th>
+                                                <th>Type</th>
+                                                <th>Price (BDT)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="exam of user_packages">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th>@{{ exam.price }}</th>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="tab3" class="tab-pane"></div>
                         </div>
                     </div>
                 </div>
@@ -191,13 +230,18 @@
         </section>
     </div>
 @endsection
-
+@section('script-lib')
+    <script src="{{secure_asset('plugins/chart.js/Chart.min.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{secure_asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+@endsection
 @push('custom-js')
     <script>
         new Vue({
             el: '#user_profile',
             data: {
                 user_exam_list: [],
+                user_up_coming_exam_list: [],
             },
             methods: {
                 ajaxCall: window.ajaxCall,
@@ -207,10 +251,94 @@
                 this.ajaxCall('{{ route('user-exam-list') }}', {is_participated: true}, 'post', (data, code) => {
                     if (code === 200) {
                         this.user_exam_list = data;
-                        console.log(this.user_exam_list);
+                        setTimeout(() => {
+                            $("#participated_exam_table").DataTable({
+                                processing: true,
+                                pagingType: "full_numbers"
+                            });
+                        }, 1000);
+                    }
+                }, false);
+                this.ajaxCall('{{ route('user-exam-list') }}', {}, 'post', (data, code) => {
+                    if (code === 200) {
+                        this.user_up_coming_exam_list = data || [];
+                        setTimeout(() => {
+                            $("#upcoming-exam-table").DataTable({
+                                processing: true,
+                                pagingType: "full_numbers"
+                            });
+                        }, 1000);
+                    }
+                }, false);
+                this.ajaxCall('{{ route('user-score-chart') }}', {}, 'post', (data, code) => {
+                    if (code === 200) {
+                        // Sales graph chart
+                        var salesGraphChartCanvas = $('#main-chart').get(0).getContext('2d');
+                        //$('#revenue-chart').get(0).getContext('2d');
+
+                        var salesGraphChartData = {
+                            labels: data.examTitles || [],
+                            datasets: [
+                                {
+                                    label: 'Score',
+                                    fill: true,
+                                    borderWidth: 1,
+                                    // lineTension: 0,
+                                    // spanGaps: true,
+                                    borderColor: '#e5d0d0',
+                                    // pointRadius: 3,
+                                    // pointHoverRadius: 7,
+                                    // pointColor: '#efefef',
+                                    // pointBackgroundColor: ['#dc4c4c', '#1d4aad'],
+                                    backgroundColor: data.colors || [],
+                                    data: data.scores || []
+                                }
+                            ]
+                        }
+
+                        var salesGraphChartOptions = {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            legend: {
+                                display: false,
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: '#131313',
+                                    },
+                                    gridLines: {
+                                        display: false,
+                                        color: '#efefef',
+                                        drawBorder: false,
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        stepSize: 5000,
+                                        fontColor: '#efefef',
+                                        beginAtZero: true,
+                                        precision: 0
+                                    },
+                                    gridLines: {
+                                        display: true,
+                                        color: '#efefef',
+                                        drawBorder: false,
+                                    },
+                                }]
+                            }
+                        }
+
+                        // This will get the first returned node in the jQuery collection.
+                        var salesGraphChart = new Chart(salesGraphChartCanvas, {
+                                type: 'bar',
+                                data: salesGraphChartData,
+                                options: salesGraphChartOptions
+                            }
+                        )
                     }
                 }, false);
             }
-        })
+        });
     </script>
 @endpush
