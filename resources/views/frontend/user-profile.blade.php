@@ -153,10 +153,13 @@
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
                                                 <th>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a>
-                                                        <a class="btn btn-info btn-sm" :href="exam_rank_route+'?exam_id='+exam.id"><i class="fa fa-list"></i> Rank List</a>
-                                                    </div>
+                                                    <form action="{{route('exam-preview')}}" method="POST">
+                                                        @csrf
+                                                        <input type="text" name="exam_id" :value="exam.id" hidden>
+                                                        <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Preview</button>
+                                                    </form>
+
+                                                    <a class="btn btn-info btn-sm" :href="exam_rank_route+'?exam_id='+exam.id"><i class="fa fa-list"></i> Rank List</a>
                                                 </th>
                                             </tr>
                                             </tbody>
