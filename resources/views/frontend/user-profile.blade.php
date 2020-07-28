@@ -152,8 +152,13 @@
                                                 <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
-                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i
-                                                            class="fa fa-eye"></i> Preview</a></th>
+                                                <th>
+                                                    <form action="{{route('exam-preview')}}" method="POST">
+                                                        @csrf
+                                                        <input type="text" name="exam_id" :value="exam.id" hidden>
+                                                        <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Preview</button>
+                                                    </form>
+                                                </th>
                                             </tr>
                                             </tbody>
                                         </table>
