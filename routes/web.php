@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('exam-preview', 'CommonExamPreviewController@generateExamPreview')->name('exam-preview');
+    Route::get('exam-ranking', 'CommonExamPreviewController@getExamRanking')->name('exam-ranking');
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {

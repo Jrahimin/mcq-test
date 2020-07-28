@@ -152,8 +152,12 @@
                                                 <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
-                                                <th><a class="btn btn-info btn-sm" :href="'/'+exam.id"><i
-                                                            class="fa fa-eye"></i> Preview</a></th>
+                                                <th>
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-info btn-sm" :href="'/'+exam.id"><i class="fa fa-eye"></i> Preview</a>
+                                                        <a class="btn btn-info btn-sm" :href="exam_rank_route+'?exam_id='+exam.id"><i class="fa fa-list"></i> Rank List</a>
+                                                    </div>
+                                                </th>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -246,6 +250,7 @@
                 user_exam_list: [],
                 user_up_coming_exam_list: [],
                 user_exam_packages: [],
+                exam_rank_route : '{{ route('exam-ranking') }}'
             },
             methods: {
                 ajaxCall: window.ajaxCall,
@@ -324,27 +329,16 @@
                                 display: false,
                             },
                             scales: {
-                                xAxes: [{
-                                    ticks: {
-                                        fontColor: '#131313',
-                                    },
-                                    gridLines: {
-                                        display: false,
-                                        color: '#efefef',
-                                        drawBorder: false,
-                                    }
-                                }],
                                 yAxes: [{
                                     ticks: {
-                                        stepSize: 5000,
-                                        fontColor: '#efefef',
+                                        fontColor: '#74abef',
                                         beginAtZero: true,
                                         precision: 0
                                     },
                                     gridLines: {
-                                        display: true,
-                                        color: '#efefef',
-                                        drawBorder: false,
+                                        display: false,
+                                        color: 'rgba(180,223,251,0.77)',
+                                        drawBorder: true,
                                     },
                                 }]
                             }
