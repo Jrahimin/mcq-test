@@ -37,7 +37,7 @@
                         <div class="col-md-6 col-md-offset-3 p-5 pb-7 border-dark border_card">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="text-center">Payment</h3>
+                                    <h3 class="text-center">Recharge</h3>
                                     <hr>
                                 </div>
                                 <div class="card-body">

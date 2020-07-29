@@ -43,6 +43,17 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label for="category_id">Select Category</label>
+                                            <select class="form-control" id="category_id" v-model="examTest.category_id">
+                                                <option value="">Select Category</option>
+                                                @foreach($categories as $key => $category)
+                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label for="title">Title</label>
                                             <validation-provider rules="required"
                                                                  v-slot="{ errors }">
@@ -66,8 +77,6 @@
                                             </validation-provider>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="duration_minutes">Exam Duration in minutes</label>
@@ -100,8 +109,6 @@
                                                    oninput="document.getElementById('mark_per_question').value=document.getElementById('mark_per_question').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="negative_mark_per_question">Negative Mark Per Question</label>
@@ -196,6 +203,7 @@
                     "price": undefined,
                     "mark_per_question": undefined,
                     "negative_mark_per_question": undefined,
+                    category_id: '',
                     "type": '',
                     "status": true,
                 },
@@ -234,6 +242,13 @@
                                 name: 'exam_pack_title',
                                 defaultContent: '',
                                 title: 'Exam Pack'
+                            }, {
+                                className: 'details-control',
+                                orderable: true,
+                                data: 'name',
+                                name: 'name',
+                                defaultContent: '',
+                                title: 'Category'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
@@ -359,6 +374,7 @@
                         "price": undefined,
                         "mark_per_question": undefined,
                         "negative_mark_per_question": undefined,
+                        category_id: '',
                         "type": '',
                         "status": true,
                     };

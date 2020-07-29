@@ -31,9 +31,9 @@ class ExamTestRequest extends FormRequest
             'title' => 'required|string|min:3',
             'exam_schedule' => 'required|date',
             'duration_minutes' => 'nullable|integer',
-            'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'mark_per_question' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'negative_mark_per_question' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'price' => 'required|numeric',
+            'mark_per_question' => 'required|numeric',
+            'negative_mark_per_question' => 'nullable|numeric',
             'type' => 'required',
         ];
     }

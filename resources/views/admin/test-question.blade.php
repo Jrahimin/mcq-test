@@ -68,10 +68,11 @@
                                                 <label for="exam_schedule">Question Mark</label>
                                                 <validation-provider rules="required"
                                                                      v-slot="{ errors }">
-                                                    <input type="number" v-bind:class="errors[0]?'border-danger':''"
+                                                    <input type="text" v-bind:class="errors[0]?'border-danger':''"
                                                            class="form-control" id="mark"
                                                            placeholder="Enter question mark"
-                                                           v-model="testQuestion.mark">
+                                                           v-model="testQuestion.mark"
+                                                           oninput="document.getElementById('mark').value=document.getElementById('mark').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                                 </validation-provider>
                                             </div>
                                         </div>
@@ -106,7 +107,7 @@
                                             <div class="form-group">
                                                 <validation-provider rules="required"
                                                                      v-slot="{ errors }">
-                                                    <label for="answer">Option</label>
+                                                    <label for="answer">Option @{{ i+1 }}</label>
                                                     <input type="text" v-bind:class="errors[0]?'border-danger':''"
                                                            class="form-control" id="answer"
                                                            placeholder="Enter Answer"
