@@ -49,7 +49,8 @@
                                                 <input type="text" class="form-control" id="title"
                                                        placeholder="Enter exam title"
                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.title">
+                                                       v-model="examTest.title"
+                                                >
                                             </validation-provider>
                                         </div>
                                     </div>
@@ -70,10 +71,11 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="duration_minutes">Exam Duration in minutes</label>
-                                            <input type="number" class="form-control"
+                                            <input type="text" class="form-control"
                                                    id="duration_minutes"
                                                    placeholder="Enter exam duration"
-                                                   v-model="examTest.duration_minutes">
+                                                   v-model="examTest.duration_minutes"
+                                                   oninput="document.getElementById('duration_minutes').value=document.getElementById('duration_minutes').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -81,19 +83,21 @@
                                             <label for="price">Price</label>
                                             <validation-provider rules="required"
                                                                  v-slot="{ errors }">
-                                                <input type="number" class="form-control" id="price"
+                                                <input type="text" class="form-control" id="price"
                                                        placeholder="Enter exam price"
                                                        v-bind:class="errors[0]?'border-danger':''"
-                                                       v-model="examTest.price">
+                                                       v-model="examTest.price"
+                                                       oninput="document.getElementById('price').value=document.getElementById('price').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                             </validation-provider>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="menu">Mark Per Question</label>
-                                            <input type="number" class="form-control" id="mark_per_question"
+                                            <input type="text" class="form-control" id="mark_per_question"
                                                    placeholder="Enter mark per question"
-                                                   v-model="examTest.mark_per_question">
+                                                   v-model="examTest.mark_per_question"
+                                                   oninput="document.getElementById('mark_per_question').value=document.getElementById('mark_per_question').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                         </div>
                                     </div>
                                 </div>
@@ -101,10 +105,11 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="negative_mark_per_question">Negative Mark Per Question</label>
-                                            <input type="number" class="form-control"
+                                            <input type="text" class="form-control"
                                                    id="negative_mark_per_question"
                                                    placeholder="Enter negative Mark per question"
-                                                   v-model="examTest.negative_mark_per_question">
+                                                   v-model="examTest.negative_mark_per_question"
+                                                   oninput="document.getElementById('negative_mark_per_question').value=document.getElementById('negative_mark_per_question').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
