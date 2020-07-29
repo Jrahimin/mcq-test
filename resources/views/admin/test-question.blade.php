@@ -77,7 +77,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-8">
                                             <div class="form-group">
                                                 <label for="title">Question</label>
                                                 <validation-provider rules="required"
@@ -89,8 +89,6 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" id="exampleCheck1"
@@ -99,10 +97,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
+                                    <h4 class="text-center"><u>Question Options</u></h4><br>
                                     <div class="row border-primary mb-2 p-2"
                                          v-for="(as,i) in testQuestion.answers"
                                          style="background-color:rgba(119,175,175,0.59)">
-                                        <div class="col-md-10">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <validation-provider rules="required"
                                                                      v-slot="{ errors }">
@@ -114,24 +114,23 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input type="checkbox"
-                                                           class="form-check-input" id="is_correct"
-                                                           v-model="as.is_correct">
-                                                    <label class="form-check-label" for="exam_schedule">IS Correct</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input type="checkbox"
-                                                           class="form-check-input" id="status"
-                                                           v-model="as.status">
-                                                    <label class="form-check-label" for="exam_schedule">IS Active</label>
-                                                </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="is_correct"
+                                                       v-model="as.is_correct">
+                                                <label class="form-check-label" for="exam_schedule">IS Correct</label>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="status"
+                                                       v-model="as.status">
+                                                <label class="form-check-label" for="exam_schedule">IS Active</label>
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-10">
                                             <div class="float-right">
                                                 <a href="javascript:void(0)" class="badge badge-danger" v-if="i>3"

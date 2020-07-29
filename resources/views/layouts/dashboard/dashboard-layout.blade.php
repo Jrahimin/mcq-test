@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="{{secure_asset('plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+            .form-check {
+                padding-top: 10% !important;
+            }
+    </style>
     @yield('style-lib')
     @stack('custom-css')
 </head>
