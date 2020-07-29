@@ -191,55 +191,53 @@
         <!-- Search Courses -->
         <div class="container-fluid no-padding searchcourses">
             <div class="container">
-                <div class="search-content">
-                    <div class="searchcourses-block">
-                        <h3>Over 3,000+ students trust us world wide. Get free online courses tips, Subscribe us</h3>
-                    </div>
-                    <div class="course-search-block">
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <select class="selectpicker">
-                                <option>All Categories</option>
-                                <option>Categories 1</option>
-                                <option>Categories 2</option>
-                                <option>Categories 3</option>
-                            </select>
+                <form action="{{ route('exam-schedule') }}" method="GET">
+                    <div class="search-content">
+                        <div class="searchcourses-block">
+                            <h3>Explore our Exam and Model Tests. Get prepared to achieve your future goal</h3>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <select class="selectpicker">
-                                <option>Course Level</option>
-                                <option>Level 1</option>
-                                <option>Level 2</option>
-                                <option>Level 3</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 col-sm-6  col-xs-12 search_box">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Course Keyword . . . ">
-                                <span class="input-group-btn">
-								<button class="btn" type="button" title="Search courses">Search courses</button>
+                        <div class="course-search-block">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <select name="category_id" class="selectpicker">
+                                    <option value="">Select Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <select name="type" class="selectpicker">
+                                    <option value="">Select Exam Type</option>
+                                    <option value="{{ \App\Enums\ExamTypes::MODELTEST }}">Model Test</option>
+                                    <option value="{{ \App\Enums\ExamTypes::MOCKTEST }}">Mini Test</option>
+                                    <option value="{{ \App\Enums\ExamTypes::MINITEST }}">Mock Test</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-sm-6  col-xs-12 search_box">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" class="form-control" placeholder="Course Keyword . . . ">
+                                    <span class="input-group-btn">
+								<button class="btn" type="submit" title="Search Exam" formtarget="_blank">Search Exam Tests</button>
 							</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-categories">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <p><i class="fa fa-graduation-cap" aria-hidden="true"></i><span>Students are getting Enrolled and Preparing</span></p>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <p><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span>Exclusive Online Tests Available</span></p>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <p><i class="fa fa-tencent-weibo" aria-hidden="true"></i><span>Participate through any Devices anytime</span></p>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <p><i class="fa fa-user-md" aria-hidden="true"></i><span>Instructors are Available to provide guidance</span></p>
                             </div>
                         </div>
                     </div>
-                    <div class="search-categories">
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <p><i class="fa fa-graduation-cap" aria-hidden="true"></i><span>Over 500 students Enrolled Learn Skills</span>
-                            </p>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <p><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span>More than 300+ Online Courses Available</span>
-                            </p>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <p><i class="fa fa-tencent-weibo" aria-hidden="true"></i><span>Learn Skills on any Devices anytime</span>
-                            </p>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <p><i class="fa fa-user-md"
-                                  aria-hidden="true"></i><span>More than 320 Instructors Available</span></p>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div><!-- Search Courses /- -->
     </div>

@@ -115,11 +115,13 @@
                                         </li>
                                     @endif
                                 </ul>
-                                <form action="{{route('buy-package')}}" method="POST" style="display: inline-block">
-                                    @csrf
-                                    <input type="text" hidden name="exam_pack_id" value="{{$examPack->id}}">
-                                    <button class="btn btn-warning" type="submit">Buy Now</button>
-                                </form>
+                                @if(!auth()->check() || !auth()->user()->examPack()->where('exam_pack_user.exam_pack_id', $examPack->id)->first())
+                                    <form action="{{route('buy-package')}}" method="POST" style="display: inline-block">
+                                        @csrf
+                                        <input type="text" hidden name="exam_pack_id" value="{{$examPack->id}}">
+                                        <button class="btn btn-warning" type="submit">Buy Now</button>
+                                    </form>
+                                @endif
                                 <div style="display: inline-block" class="d-inline-block m-0 p-0">
                                     <a class="btn btn-info"
                                        href="{{route('exam-schedule')}}?exam_pack_id={{$examPack->id}}"> Exam List </a>

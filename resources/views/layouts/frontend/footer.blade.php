@@ -93,13 +93,13 @@
                     </button>
                 </div>
                 <div id="navbar2" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    {{--<ul class="nav navbar-nav">
                         <li><a href="index-2.html" title="Home">Home</a></li>
                         <li><a href="courses-page.html" title="COURSE">COURS</a></li>
                         <li><a href="events-page.html" title="Events">Events</a></li>
                         <li><a href="blog-page.html" title="Blog">Blog</a></li>
                         <li><a href="about-page.html" title="About">About</a></li>
-                    </ul>
+                    </ul>--}}
                 </div>
             </nav>
         </div><!-- Footer Bottom /- -->

@@ -49,11 +49,20 @@ class UserExamScheduleController extends Controller
                 $data['examPackTitle'] = ExamPack::findOrFail($request->exam_pack_id)->title;
             }
 
-            $examList = $query->when($request->search, function ($q) use ($request) {
+            $query = $query->when($request->search, function ($q) use ($request) {
                 $q->where('title', 'like', "%{$request->search}%")
                     ->orWhere('price', $request->search)
                     ->orWhereDate('exam_schedule', $request->search);
-            })->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
+            });
+
+            if($request->category_id)
+                $query = $query->where('category_id', $request->category_id);
+            if($request->type)
+                $query = $query->where('type', $request->type);
+            if($request->keyword)
+                $query = $query->where('title', 'like', "%{$request->keyword}%");
+
+            $examList = $query->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
                 $item->is_bought = false;
                 if(auth()->check()){
                     if(auth()->user()->examTest->where('id')->first()){

@@ -80,6 +80,12 @@
             right: 0;
             margin-bottom: 0;
         }
+
+        .footer-bottom {
+            border-top: 1px solid #343434;
+            padding-top: 6px;
+            padding-bottom: 4px;
+        }
         body {
             margin-bottom:50px;
         }
