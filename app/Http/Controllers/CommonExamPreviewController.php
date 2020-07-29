@@ -106,7 +106,7 @@ class CommonExamPreviewController extends Controller
             $data['examInfo'] = $exam;
             $data['userRank'] = $examUsersRank;
 
-            return view('common.user-rank', $data);
+            return view('common.user-rank.rank_index', $data);
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
