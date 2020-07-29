@@ -27,6 +27,10 @@ class ExamTest extends Model
         return $this->belongsToMany(User::class)->withPivot('score', 'total_correct', 'total_wrong');
     }
 
+    public function category(){
+        return $this->belongsTo(ExamCategory::class);
+    }
+
     public function getExamTimeFromAttribute()
     {
         return Carbon::parse($this->exam_schedule)->format('h:i A');
