@@ -60,7 +60,7 @@
     @stack('custom-css')
 
     <style>
-        @media (min-width: 992px){
+        @media (min-width: 992px) {
             .ow-navigation .navbar-brand > img {
                 position: absolute;
                 left: 0;
@@ -71,6 +71,17 @@
 
         .pagebanner {
             min-height: 190px;
+        }
+
+        .footer-main {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-bottom: 0;
+        }
+        body {
+            margin-bottom:50px;
         }
 
     </style>
