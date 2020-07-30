@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Traits\ApiResponseTrait;
@@ -83,9 +84,10 @@ class UserManagementController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function update(UserStoreRequest $request, User $user)
+    public function update(UserStoreRequest $request)
     {
         try {
+            $user = User::findOrFail($request->id);
             $user->update($this->generateData($request));
             return $this->successResponse('User stored successfully', $user);
         } catch (\Exception $ex) {
@@ -118,7 +120,7 @@ class UserManagementController extends Controller
             'email' => $request->email,
             'mobile_no' => $request->mobile_no,
             'address' => $request->address,
-            'type' => $request->type ?? 0,
+            'type' => $request->type ?? UserTypes::ADMIN,
             'status' => !!$request->status,
             'password' => bcrypt($request->password),
         ];
