@@ -43,7 +43,8 @@ class UserMcqTestController extends Controller
                 return view('frontend.mcq-test', $data);
             }
 
-            $isTaken = DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)->first();
+            $isTaken = DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
+                ->where('status', 1)->first();
             if($isTaken){
                 return $this->invalidResponse('Sorry! You have already participated in this exam.');
             }
