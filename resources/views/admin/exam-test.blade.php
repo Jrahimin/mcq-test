@@ -128,11 +128,20 @@
                                                         v-bind:class="errors[0]?'border-danger':''"
                                                         v-model="examTest.type">
                                                     <option value="">Select Type</option>
-                                                    <option value="1">MODEL TEST</option>
-                                                    <option value="2">MOCK TEST</option>
-                                                    <option value="3">MINI TEST</option>
+                                                    <option value="{{ \App\Enums\ExamTypes::MODELTEST }}">MODEL TEST</option>
+                                                    <option value="{{ \App\Enums\ExamTypes::MOCKTEST }}">MOCK TEST</option>
+                                                    <option value="{{ \App\Enums\ExamTypes::MINITEST }}">MINI TEST</option>
                                                 </select>
                                             </validation-provider>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="duration_minutes">Pass Mark</label>
+                                            <input type="text" class="form-control"
+                                                   id="pass_mark"
+                                                   placeholder="Enter Pass Mark"
+                                                   v-model="examTest.pass_mark">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -203,7 +212,8 @@
                     "price": undefined,
                     "mark_per_question": undefined,
                     "negative_mark_per_question": undefined,
-                    category_id: '',
+                    "category_id": '',
+                    "pass_mark": undefined,
                     "type": '',
                     "status": true,
                 },
@@ -374,7 +384,8 @@
                         "price": undefined,
                         "mark_per_question": undefined,
                         "negative_mark_per_question": undefined,
-                        category_id: '',
+                        "category_id": '',
+                        "pass_mark": undefined,
                         "type": '',
                         "status": true,
                     };
