@@ -135,7 +135,7 @@
                                             </validation-provider>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    {{--<div class="col-md-4">
                                         <div class="form-group">
                                             <label for="duration_minutes">Pass Mark</label>
                                             <input type="text" class="form-control"
@@ -143,7 +143,7 @@
                                                    placeholder="Enter Pass Mark"
                                                    v-model="examTest.pass_mark">
                                         </div>
-                                    </div>
+                                    </div>--}}
                                     <div class="col-md-4">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="exampleCheck1"

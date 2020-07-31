@@ -126,6 +126,7 @@ class ExamTestController extends Controller
             'price' => $request->price,
             'mark_per_question' => $request->mark_per_question,
             'negative_mark_per_question' => $request->negative_mark_per_question,
+            'pass_mark' => $request->pass_mark,
             'type' => $request->type,
             'status' => $request->status
         ];
