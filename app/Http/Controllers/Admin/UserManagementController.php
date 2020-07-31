@@ -49,7 +49,7 @@ class UserManagementController extends Controller
                 return Datatables::of($userManagements)->make(true);
             }
             $data = $this->data;
-            $data['userTypes'] = (object)[1 => 'Super Admin', 2 => 'Account', 3 => 'Sub Admin', 4 => 'Basic User'];//super-admin,account,sub-admin,basic
+            $data['userTypes'] = (object)[UserTypes::SUPERADMIN => 'Super Admin', UserTypes::ADMIN => 'Admin', UserTypes::ACCOUNTANT => 'Accountant'];
             if ($request->from_date) $data['from_date'] = $request->from_date;
             if (isset($request->status)) $data['status'] = $request->status;
             return view('admin.user-management', $data);

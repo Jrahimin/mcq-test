@@ -36,7 +36,7 @@
                                             <validation-provider rules="required"
                                                                  v-slot="{ errors }">
                                                 <input type="text" class="form-control" id="name"
-                                                       placeholder="Enter package title"
+                                                       placeholder="Enter Name"
                                                        v-bind:class="errors[0]?'border-danger':''"
                                                        v-model="userManagement.name">
                                             </validation-provider>
