@@ -78,7 +78,7 @@
 
                                             <select type="text" class="form-control" id="type"
                                                     v-model="userManagement.type">
-                                                <option></option>
+                                                <option value="">Select Type</option>
                                                 @foreach($userTypes as $key=>$userType)
                                                     <option value="{{$key}}">{{$userType}}</option>
                                                 @endforeach
@@ -165,7 +165,7 @@
                     "balance": undefined,
                     "mobile_no": undefined,
                     "address": undefined,
-                    "type": undefined,
+                    "type": '',
                     "status": true,
                     "password": undefined,
                 },
@@ -306,7 +306,7 @@
                         "balance": undefined,
                         "mobile_no": undefined,
                         "address": undefined,
-                        "type": undefined,
+                        "type": '',
                         "status": true,
                         "password": undefined,
                     };
