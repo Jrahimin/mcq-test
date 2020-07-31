@@ -27,7 +27,7 @@
                 @foreach($packages as $examPack)
                     <div class="col-md-4 col-sm-6 col-xs-6">
                         <div class="welcome-box animated fadeInRight">
-                            <img src="{{asset('frontend/user-end/images/welcome1.jpg')}}" alt="welcome1" width="370"
+                            <img src="{{asset('frontend/user-end/images/welcome6.jpg')}}" alt="welcome1" width="370"
                                  height="440">
                             <div class="welcome-title">
                                 <h3>{{$examPack->title}}</h3>

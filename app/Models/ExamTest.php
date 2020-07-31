@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExamTest extends Model
 {
     protected $guarded = ['id'];
-    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName'];
+    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName', 'examScheduleDate'];
 
     public function questions()
     {
@@ -34,6 +34,14 @@ class ExamTest extends Model
     public function getExamTimeFromAttribute()
     {
         return Carbon::parse($this->exam_schedule)->format('h:i A');
+    }
+
+    public function getExamScheduleDateAttribute()
+    {
+        if (!$this->exam_schedule)
+            return "";
+
+        return Carbon::parse($this->exam_schedule)->format('M d, Y');
     }
 
     public function getExamTimeToAttribute()

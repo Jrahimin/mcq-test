@@ -29,7 +29,7 @@
             right: 48px;
             position: absolute;
             padding-top: 10px;
-            margin-top: 20px;
+            margin-top: 25px;
             transition: all 1s ease 0s;
             -webkit-transition: all 1s ease 0s;
             -moz-transition: all 1s ease 0s;

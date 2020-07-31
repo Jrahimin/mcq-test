@@ -12,9 +12,9 @@
                     Support@info.com</a>
             </div>
             <div class="topheader-right">
-                <a href="{{route('user-login')}}" title="Login"><i class="fa fa-sign-out"
+                <a href="{{route('login')}}" title="Login"><i class="fa fa-sign-out"
                                                                    aria-hidden="true"></i>Login</a>
-                <a href="{{route('user-registration')}}" title="Register">Register</a>
+                <a href="{{route('register')}}" title="Register">Register</a>
             </div>
         </div>
     </div>

@@ -160,7 +160,7 @@
                                                 <th>
                                                     <form action="{{route('exam-preview')}}" method="POST">
                                                         @csrf
-                                                        <input type="text" name="exam_id" :value="exam.id" hidden>
+                                                        <input type="hidden" name="exam_id" :value="exam.id">
                                                         <button class="btn btn-primary btn-sm"
                                                                 style="padding-left: 12px; padding-right: 14px;"><i
                                                                 class="fa fa-eye"></i> Preview

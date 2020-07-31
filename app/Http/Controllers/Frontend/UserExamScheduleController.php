@@ -108,7 +108,7 @@ class UserExamScheduleController extends Controller
 
         try {
             $exam = ExamTest::findOrFail($request->exam_id);
-            $user = User::find(1);
+            $user = $request->user();
 
             $isTaken = DB::table('exam_test_user')->where(['user_id' => $user->id, 'exam_test_id' => $request->exam_id])->first();
             if($isTaken){

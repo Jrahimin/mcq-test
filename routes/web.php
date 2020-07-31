@@ -13,24 +13,28 @@ Route::get('test', function () {
 });
 
 Auth::routes();
-Route::group(['namespace' => 'Frontend', 'middleware' => 'auth'], function () {
+Route::group(['namespace' => 'Frontend'], function () {
+
     Route::get('/', 'UserHomeController@index')->name('user-home');
-    Route::post('buy-package', 'UserExamPackController@buyPackage')->name('buy-package');
-    Route::get('make-payment', 'UserPaymentController@index')->name('make-payment');
-    Route::post('payment-submit', 'UserPaymentController@paymentSubmit')->name('payment-submit');
-
     Route::get('packages', 'UserExamPackController@index')->name('packages');
-
     Route::get('exam-schedule', 'UserExamScheduleController@index')->name('exam-schedule');
-    Route::post('exam/buy', 'UserExamScheduleController@buyExam')->name('buy-exam');
 
-    Route::post('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
-    Route::post('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
+    Route::group(['middleware' => 'auth'], function () {
+        Route::post('buy-package', 'UserExamPackController@buyPackage')->name('buy-package');
+        Route::get('make-payment', 'UserPaymentController@index')->name('make-payment');
+        Route::post('payment-submit', 'UserPaymentController@paymentSubmit')->name('payment-submit');
 
-    Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
-    Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
-    Route::post('user-pack-list', 'UserProfileController@getUserExamPack')->name('user-pack-list');
-    Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
+
+        Route::post('exam/buy', 'UserExamScheduleController@buyExam')->name('buy-exam');
+
+        Route::post('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
+        Route::post('user-exam-submit', 'UserMcqTestController@submit')->name('user-exam-submit');
+
+        Route::get('user-profile', 'UserProfileController@getUserInfo')->name('user-profile');
+        Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
+        Route::post('user-pack-list', 'UserProfileController@getUserExamPack')->name('user-pack-list');
+        Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
+    });
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -49,18 +53,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
 });
 Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
-    Route::get('user-login', function () {
+    /*Route::get('user-login', function () {
         return view('frontend.login');
-    })->name('user-login');
+    })->name('user-login');*/
 
     Route::get('package', function () {
 
         return view('frontend.package');
     })->name('user-package');
 
-    Route::get('user-registration', function () {
+    /*Route::get('user-registration', function () {
         return view('frontend.registration');
-    })->name('user-registration');
+    })->name('user-registration');*/
 
     Route::get('about', function () {
         return view('frontend.about');
