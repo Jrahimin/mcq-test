@@ -57,22 +57,27 @@ class PaymentInfoController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
             $paymentInfo = PaymentInfo::findOrFail($id);
-            if ($paymentInfo->status == 1) return $this->invalidResponse('Already updated this transaction');
-            $paymentInfoUpdate = $paymentInfo->update([
-                'status' => true,
-                'approved_by_id' => auth()->user()->id
-            ]);
             $user = User::findOrFail($paymentInfo->user_id);
-            $balance = isset($user->balance) ? $user->balance + $paymentInfo->amount : $paymentInfo->amount;
-            $user = $user->update(['balance' => $balance]);
-            if ($paymentInfoUpdate && $user) {
-                DB::commit();
-                return $this->successResponse('Payment Status updated successfully', collect(new PaymentInfoResource($paymentInfo)));
-            }
-            DB::rollBack();
-            return $this->invalidResponse($this->exceptionMessage);
+
+            if($paymentInfo->status)
+                return $this->invalidResponse('Already updated this transaction');
+
+            $amount = $request->amount ?? $paymentInfo->amount;
+
+            DB::beginTransaction();
+
+            $paymentInfo->update([
+                'status' => true,
+                'approved_by_id' => auth()->user()->id,
+                'amount' => $amount
+            ]);
+
+            $user->increment('balance', $amount);
+
+            DB::commit();
+
+            return $this->successResponse('Payment Status updated successfully', collect(new PaymentInfoResource($paymentInfo)));
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

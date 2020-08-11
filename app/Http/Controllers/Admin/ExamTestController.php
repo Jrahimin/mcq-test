@@ -122,6 +122,7 @@ class ExamTestController extends Controller
             'category_id' => $request->category_id,
             'title' => $request->title,
             'exam_schedule' => Carbon::parse($request->exam_schedule)->format('Y-m-d H:i:s'),
+            'exam_schedule_to' => Carbon::parse($request->exam_schedule_to)->format('Y-m-d H:i:s'),
             'duration_minutes' => $request->duration_minutes,
             'price' => $request->price,
             'mark_per_question' => $request->mark_per_question,

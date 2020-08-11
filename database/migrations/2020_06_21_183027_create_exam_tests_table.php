@@ -19,6 +19,7 @@ class CreateExamTestsTable extends Migration
             $table->unsignedInteger('category_id')->index()->nullable();
             $table->string('title');
             $table->dateTime('exam_schedule');
+            $table->dateTime('exam_schedule_to');
             $table->integer('duration_minutes')->nullable();
             $table->double('price', 8, 2);
             $table->double('mark_per_question')->default(1.0);

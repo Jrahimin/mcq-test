@@ -32,7 +32,7 @@
                                 <li><a title="Event" href="{{route('exam-schedule')}}">Exam Schedule</a></li>
                                 @if(auth()->check())
                                     <li><a title="Payment" href="{{route('make-payment')}}">Recharge</a></li>
-                                #@endif
+                                @endif
                                 <li><a title="About" href="{{route('about')}}">About</a></li>
                                 <li><a title="Contact" href="{{route('contact-us')}}">Contact</a></li>
                                 {{--                                <li class="dropdown active">--}}

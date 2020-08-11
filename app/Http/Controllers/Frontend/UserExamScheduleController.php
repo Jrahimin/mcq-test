@@ -72,12 +72,12 @@ class UserExamScheduleController extends Controller
 
                 $item->is_running = false;
                 $item->is_expired = false;
-                $examEndTime = Carbon::parse($item->exam_schedule)->addMinutes($item->duration_minutes)->format('Y-m-d H:i').':59';
+                $examEndTime = Carbon::parse($item->exam_schedule_to)->format('Y-m-d H:i').':59';
                 $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
                 if($now >= $item->exam_schedule && $now <= $examEndTime){
                     $item->is_running = true;
                 }
-                if($now >= $item->exam_schedule){
+                if($now >= $item->exam_schedule_to){
                     $item->is_expired = true;
                 }
 

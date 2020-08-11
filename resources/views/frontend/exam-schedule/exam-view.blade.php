@@ -6,7 +6,7 @@
     <div class="col-md-7 col-sm-6 col-xs-7">
         <h3><a href="#" title="">{{ $exam->title }}</a></h3>
         <div class="event-meta">
-            <span><i aria-hidden="true" class="fa fa-clock-o"></i> {{ $exam->examScheduleDate }} | {{ $exam->examTimeFrom }} to {{ $exam->examTimeTo ? $exam->examTimeTo : 'undefined' }}</span>
+            <span><i aria-hidden="true" class="fa fa-clock-o"></i> {{ $exam->examScheduleDateFrom }} | {{ $exam->examTimeFrom }} to {{ $exam->examScheduleDateTo }} | {{ $exam->examTimeTo ? $exam->examTimeTo : 'undefined' }}</span>
             <span><i aria-hidden="true" class="fa fa-clock-o"></i>Duration : {{ $exam->duration_minutes ? $exam->duration_minutes : 'undefined' }} Minutes</span>
         </div>
         <div class="event-meta">
