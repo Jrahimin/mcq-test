@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\TestQuestion;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -20,6 +21,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
+        Log::debug("Question import rows collection : ".json_encode($rows));
+
         foreach ($rows as $row) {
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
@@ -47,8 +50,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 'title'        => $row['question'],
             ]);
 
-            for ($i = 1; $i < 6; $i++) {
-                if (!$row['option_' . $i])
+            for ($i = 1; $i < 10; $i++) {
+                if (!isset($row['option_' . $i]))
                     break;
 
                 Answer::create([
