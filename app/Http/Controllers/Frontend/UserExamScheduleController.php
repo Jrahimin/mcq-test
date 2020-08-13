@@ -65,7 +65,7 @@ class UserExamScheduleController extends Controller
             $examList = $query->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
                 $item->is_bought = false;
                 if(auth()->check()){
-                    if(auth()->user()->examTest->where('id')->first()){
+                    if(auth()->user()->examTest->where('id', $item->id)->first()){
                         $item->is_bought = true;
                     }
                 }
