@@ -84,7 +84,7 @@ class UserExamScheduleController extends Controller
                 return $item;
             });
 
-            $data['examList'] = $this->paginate($examList);
+            $data['examList'] = $this->paginate($examList,5);
 
             return view('frontend.exam-schedule.index', $data);
         } catch (\Exception $ex) {
@@ -139,10 +139,11 @@ class UserExamScheduleController extends Controller
         }
     }
 
-    protected function paginate($items, $perPage = 5, $page = null, $options = [])
+    protected function paginate($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath()]);
     }
 }
