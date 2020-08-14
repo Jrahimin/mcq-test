@@ -48,7 +48,7 @@ class UserExamPackController extends Controller
                     ->orWhere('price', 'like', "%{$request->search}%")
                     ->orWhere('from_date', 'like', "%{$request->search}%")
                     ->orWhere('to_date', 'like', "%{$request->search}%");
-            })->latest()->paginate(10);
+            })->latest()->paginate(1);
 
             return view('frontend.packages', $data);
         } catch (\Exception $ex) {
