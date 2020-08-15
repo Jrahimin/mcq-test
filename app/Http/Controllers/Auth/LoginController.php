@@ -42,11 +42,24 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function authenticated($request , $user){
+    public function authenticated($request, $user)
+    {
         $user = auth()->user();
-        if($user->type == UserTypes::USER)
+        if ($user->type == UserTypes::USER)
             return redirect()->route('user-home');
 
         return redirect()->route('dashboard');
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        $request['status'] = 1;
+        return $request->only($this->username(), 'password', 'status');
     }
 }

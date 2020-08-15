@@ -30,6 +30,7 @@ class ExamTestRequest extends FormRequest
             'exam_pack_id' => 'nullable|exists:exam_packs,id',
             'title' => 'required|string|min:3',
             'exam_schedule' => 'required|date',
+            'exam_schedule_to' => 'required|date',
             'duration_minutes' => 'nullable|integer',
             'price' => 'required|numeric',
             'mark_per_question' => 'required|numeric',

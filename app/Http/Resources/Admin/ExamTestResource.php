@@ -18,19 +18,22 @@ class ExamTestResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->category->name??'',
-            'category_id' => $this->category->id??'',
+            'name' => $this->category->name ?? '',
+            'category_id' => $this->category->id ?? '',
             'id' => $this->id,
             'exam_pack_id' => $this->exam_pack_id,
             'exam_pack_title' => $this->examPack->title ?? '',
             'title' => $this->title,
-            'exam_schedule' => Carbon::parse($this->exam_schedule)->format('Y-m-d H:i:s'),
+            'exam_schedule' => $this->exam_schedule ? Carbon::parse($this->exam_schedule)->format('Y-m-d H:i:s') : '',
+            'exam_schedule_to' => $this->exam_schedule_to ? Carbon::parse($this->exam_schedule_to)->format('Y-m-d H:i:s') : '',
             'duration_minutes' => $this->duration_minutes,
             'price' => $this->price,
             'mark_per_question' => $this->mark_per_question,
             'negative_mark_per_question' => $this->negative_mark_per_question,
             'type' => $this->type,
-            'status' => $this->status
+            'status' => $this->status,
+            'pass_mark' => $this->pass_mark,
+            'total_mark' => $this->totalMark
         ];
     }
 }
