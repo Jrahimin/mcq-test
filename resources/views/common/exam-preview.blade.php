@@ -437,11 +437,12 @@
                                   style="background-color: rgba(23,196,49,0.62)">@{{ exam_info_response.duration_sec/60 }} Min.</span>
                             Duration
                         </li>
-                        <li class="list-group-item">
-
-                            <span class="badge badge-warning float-right"><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</span>
-                            Mark
-                        </li>
+                        @if(auth()->user()->type!=4)
+                            <li class="list-group-item">
+                                <span class="badge badge-warning float-right"><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</span>
+                                Mark
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
