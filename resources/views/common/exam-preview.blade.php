@@ -1,4 +1,4 @@
-@extends('layouts.frontend.master')
+@extends(auth()->user()->type==4?'layouts.frontend.master':'layouts.dashboard.dashboard-layout')
 @section('title',$title??'Dynamic')
 @section('style-lib')
 @endsection
@@ -394,47 +394,66 @@
         }
     </style>
 @endpush
-@section('main-section')
+@section(auth()->user()->type==4?'main-section':'main-content')
     <div id="mcq-test" style="min-height: 725px">
-        <div class="container-fluid no-padding pagebanner">
-            <div class="container">
-                <div class="pagebanner-content">
-                    <h3>@{{ exam_info_response.title }}</h3>
-                    <ol class="breadcrumb">
-                        <li>Marks:</li>
-                        <li><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</li>
-                    </ol>
+        @if(auth()->user()->type==4)
+            <div class="container-fluid no-padding pagebanner">
+                <div class="container">
+                    <div class="pagebanner-content">
+                        <h3>@{{ exam_info_response.title }}</h3>
+                        <ol class="breadcrumb">
+                            <li>Marks:</li>
+                            <li><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
-        </div>
+        @else
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>@{{ exam_info_response.title }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="container-fluid" style="margin-top: 3%">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-4 {{auth()->user()->type==4?'col-md-offset-4':'offset-md-4'}}">
                     <h3 class="text-center">Exam Review</h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <span class="badge">@{{ exam_info_response.question_count }}</span>
+                            <span class="badge badge-info float-right">@{{ exam_info_response.question_count }}</span>
                             Number of Question
                         </li>
                         <li class="list-group-item">
-                            <span class="badge">@{{ exam_info_response.total_mark }}</span>
+                            <span class="badge badge-info float-right">@{{ exam_info_response.total_mark }}</span>
                             Total Mark
                         </li>
                         <li class="list-group-item">
-                            <span class="badge badge-primary" style="background-color: rgba(23,196,49,0.62)">@{{ exam_info_response.duration_sec/60 }} Min.</span>
+                            <span class="badge badge-primary float-right"
+                                  style="background-color: rgba(23,196,49,0.62)">@{{ exam_info_response.duration_sec/60 }} Min.</span>
                             Duration
+                        </li>
+                        <li class="list-group-item">
+
+                            <span class="badge badge-warning float-right"><strong>@{{ exam_info_response.mark_per_question }}</strong>/question</span>
+                            Mark
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-4 {{auth()->user()->type==4?'col-md-offset-4':'offset-md-4'}}">
                     <h4 class="text-center"><u>Answer Sheet</u></h4>
                 </div>
             </div>
             <hr>
             <div class="row">
-                <div class="col-md-5 col-md-offset-1" style="padding: 2%; background-color: rgba(195,205,205,0.2)"
+                <div class="col-md-5 {{auth()->user()->type==4?'col-md-offset-1':'offset-md-1'}}"
+                     style="padding: 2%; background-color: rgba(195,205,205,0.2)"
                      v-for="question_response of question_list_response">
                     <div class="accordion md-accordion accordion-blocks"
                          aria-multiselectable="true">
@@ -451,7 +470,7 @@
                                         @{{ option.option }}
                                         <span v-if="question_response.correct_option_id == option.option_id"
                                               class="pull-right" style="padding-right: 1%;color: green"><i
-                                                class="glyphicon glyphicon-ok"></i></span>
+                                                class="{{auth()->user()->type==4?'glyphicon glyphicon-ok':'fa fa-check float-right pt-1 pr-1'}}"></i></span>
                                     </li>
                                 </ul>
                             </div>
