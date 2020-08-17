@@ -370,7 +370,7 @@
                                 data: 'id', render(data, row, type) {
                                     return `<button class='badge badge-info btn btn-info edit_discount'> <i class="fa fa-edit"></i> Edit</button>
                                             <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-trash"></i> Delete</button>
-                                            <a href="/exam-ranking?exam_id=${data}" class='badge badge-info btn btn-primary'> <i class="fa fa-list"></i> Rank</a>
+                                            <a href="exam-ranking?exam_id=${data}" class='badge badge-info btn btn-primary'> <i class="fa fa-list"></i> Rank</a>
                                             <form method="post" action="{{url('exam-preview')}}"><input type="text" hidden name="exam_id" value="${data}"> @csrf <button type="submit" class='badge badge-info btn btn-primary'> <i class="fa fa-street-view"></i> Preview</button></form>
                                             `;
                                 },
