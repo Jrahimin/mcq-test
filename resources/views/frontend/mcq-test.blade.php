@@ -516,7 +516,7 @@
                             icon: "warning",
                             buttons: true,
                             dangerMode: true,
-                        }).then(() => window.location.href = '/exam-schedule');
+                        }).then(() => window.location.href = "{{route('exam-schedule.index')}}");
                     }
                 }, false);
             },
