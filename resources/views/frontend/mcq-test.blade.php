@@ -512,11 +512,11 @@
                     } else {
                         sweetAlert({
                             title: "Fail",
-                            text: "Sorry! You have already participated in this exam.",
+                            text: "Sorry! You have already participated in this exam.", // TODO Error message set
                             icon: "warning",
                             buttons: true,
                             dangerMode: true,
-                        }).then(() => window.location.href = "{{route('exam-schedule.index')}}");
+                        }).then(() => window.location.href = "{{route('exam-schedule')}}");
                     }
                 }, false);
             },

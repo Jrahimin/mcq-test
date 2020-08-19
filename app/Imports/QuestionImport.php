@@ -51,7 +51,7 @@ class QuestionImport implements ToCollection, WithHeadingRow
             ]);
 
             for ($i = 1; $i < 10; $i++) {
-                if (!isset($row['option_' . $i]))
+                if (!isset($row['option_' . $i]) || $row['option_' . $i] == '')
                     break;
 
                 Answer::create([
