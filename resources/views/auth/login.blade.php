@@ -1,37 +1,7 @@
 @extends('layouts.frontend.master')
 @section('title',$title??'Dynamic')
 @section('style-lib')
-    {{--    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">--}}
     <style>
-
-        /*.welcome-box {*/
-        /*    position: relative !important;*/
-        /*    margin-bottom: 30px !important;*/
-        /*    transition: none !important;*/
-        /*    -webkit-transition: none !important;*/
-        /*    -moz-transition: none !important;*/
-        /*    -o-transition: none !important;*/
-        /*    overflow: hidden !important;*/
-        /*}*/
-
-        /*.fadeInRight {*/
-        /*    -webkit-animation-name: none !important;*/
-        /*}*/
-
-        /*.animated {*/
-        /*    -webkit-animation-duration: 1s;*/
-        /*    animation-duration: 1s;*/
-        /*    -webkit-animation-fill-mode: both;*/
-        /*    animation-fill-mode: both;*/
-        /*}*/
-        /*.welcome-content {*/
-        /*     opacity: 1 !important;*/
-        /*     transition: none !important;*/
-        /*     -webkit-transition: none;*/
-        /*!important*/
-        /*    -moz-transition: none !important;*/
-        /*    -o-transition: none !important;*/
-        /*}*/
     </style>
 @endsection
 @push('custom-css')
@@ -73,7 +43,6 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
-
                                 <div class="form-group row">
                                     <label for="email"
                                            class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
