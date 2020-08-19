@@ -72,6 +72,7 @@
                     <br/><hr>
                 @endforeach
             </div>
+            <br/>
             <div class="section-padding"></div>
 
             {{ $examList->appends(request()->query())->links() }}

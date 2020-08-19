@@ -17,10 +17,10 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a title="{{config('app.name')}}" href="index-2.html" class="navbar-brand"><img
+                            <a title="{{config('app.name')}}" href="{{route('user-home')}}" class="navbar-brand"><img
                                     width="60px;" src="{{asset('frontend/user-end/images/logo.png')}}"
                                     alt="{{config('app.name')}}"/>{{config('app.name')}} <span>Education of Best</span></a>
-                            <a href="index-2.html" class="mobile-logo" title="{{config('app.name')}}">
+                            <a href="{{route('user-home')}}" class="mobile-logo" title="{{config('app.name')}}">
                                 <h3>{{config('app.name')}}</h3></a>
                         </div>
                     </div>

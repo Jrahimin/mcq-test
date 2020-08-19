@@ -18,15 +18,14 @@
         }
 
         .login_box_area {
-            padding: 4%;
+            padding: 2%;
             border: 2px solid #99b6c7;
-            /* margin: 6%; */
             box-shadow: #0c525d;
-            margin-top: 10%;
+            margin-top: 2%;
         }
 
         .login_title {
-            margin-bottom: 10%;
+            margin-bottom: 5%;
             font-size: 2em;
             text-align: center;
             text-decoration: underline;
@@ -92,16 +91,16 @@
                                 </div>
 
                                 <div class="form-group row mb-0">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <button type="submit" class="btn btn-primary">
+                                    <div class="col-md-10">
+                                        <button type="submit" class="btn btn-primary pull-right">
                                             {{ __('Login') }}
                                         </button>
 
-                                        @if (Route::has('password.request'))
+                                        {{--@if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                                 {{ __('Forgot Your Password?') }}
                                             </a>
-                                        @endif
+                                        @endif--}}
                                     </div>
                                 </div>
                             </form>
