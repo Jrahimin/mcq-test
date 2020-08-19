@@ -147,18 +147,25 @@
                     });
                 });
                 $('#paymentInfo-table tbody').on('click', '.delete_discount', function () {
-                    swal({
+                    that.dataTableData = that.dataTable.rows().data();
+                    let selectedIndex = that.dataTable.row($(this).parent().parent()).index();
+                    Swal.fire({
                         title: "Are you sure?",
-                        text: "Once update, you will not be able to recover this data",
+                        text: "The payment amount is: ",
+                        type: "input",
+                        input: 'number',
                         icon: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        animation: "slide-from-top",
+                        inputPlaceholder: "Update the amount",
+                        inputValue: that.dataTableData[selectedIndex].amount,
                         buttons: true,
                         dangerMode: true,
                     }).then((willDelete) => {
-                        if (willDelete) {
+                        if (willDelete.isConfirmed && willDelete.value && +willDelete.value != NaN) {
                             that.state = undefined;
-                            that.dataTableData = that.dataTable.rows().data();
-                            let selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                            that.ajaxCall('payment-info/' + that.dataTableData[selectedIndex].id, {}, 'put', (data, code) => {
+                            that.ajaxCall('payment-info/' + that.dataTableData[selectedIndex].id, {amount: willDelete.value}, 'put', (data, code) => {
                                 if (code === 200) {
                                     that.dataTableData[selectedIndex] = data;
                                     that.dataTable.clear();
