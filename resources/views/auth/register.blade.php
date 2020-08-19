@@ -1,11 +1,44 @@
-@extends('layouts.app')
+@extends('layouts.frontend.master')
+@section('title',$title??'Dynamic')
+@section('style-lib')
+    <style>
+    </style>
+@endsection
+@push('custom-css')
+    <style type="text/css">
+        .ow-pagination .pagination > li:first-child > a, .ow-pagination .pagination > li:last-child > a {
+            border: 1px solid #eaeaea;
+            height: 36px;
+            display: inline-block;
+            width: 105px;
+            padding: 0;
+            border-radius: 30px;
+            line-height: 34px;
+            text-decoration: none;
+        }
 
-@section('content')
+        .login_box_area {
+            padding: 4%;
+            border: 2px solid #99b6c7;
+            /* margin: 6%; */
+            box-shadow: #0c525d;
+            margin-top: 10%;
+        }
+
+        .login_title {
+            margin-bottom: 10%;
+            font-size: 2em;
+            text-align: center;
+            text-decoration: underline;
+        }
+    </style>
+@endpush
+@section('main-section')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+        <div class="col-md-8 col-md-offset-2 login_box_area" style="background:#d0e6ec3d">
+            <div class="card" style="background:  #d0e6ec0d">
+                <div class="card-header login_title">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -62,7 +95,7 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
@@ -75,3 +108,28 @@
     </div>
 </div>
 @endsection
+@section('script-lib')
+
+@endsection
+@push('custom-js')
+    <script defer type="text/javascript">
+        /*(function () {
+            @if(session()->has('success_message'))
+        Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+            @endif
+        @if(session()->has('error_message'))
+        Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+            @endif
+        })();*/
+        new Vue({
+            el: '#packages',
+            data: {},
+            methods: {
+                ajaxCall: window.ajaxCall,
+                responseProcess: window.responseProcess,
+            },
+            mounted() {
+            },
+        })
+    </script>
+@endpush
