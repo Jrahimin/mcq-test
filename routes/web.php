@@ -1,14 +1,8 @@
 <?php
 
-use App\Models\ExamTest;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    $user = \App\User::find(2);
-    $userLastExams = $user->examTest()->latest('exam_schedule')->limit(10)->first();
-    dd($userLastExams->pivot->score);
     return "this is test";
 });
 
