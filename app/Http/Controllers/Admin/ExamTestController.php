@@ -12,6 +12,7 @@ use App\Traits\ApiResponseTrait;
 use App\Traits\QueryTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\Types\Collection;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
@@ -59,11 +60,31 @@ class ExamTestController extends Controller
     public function store(ExamTestRequest $request)
     {
         try {
+            DB::beginTransaction();
+
             $examTest = ExamTest::create($this->dataPrepare($request));
+
+            // if exam pack belongs to user. new exam will be assigned to the users.
+            if($request->exam_pack_id){
+                $examPack = ExamPack::findOrFail($request->exam_pack_id);
+
+                foreach ($examPack->user as $user)
+                {
+                    $user->examTest()->attach($examTest->id, [
+                        'enrolment_price' => $examTest->price,
+                        'enrolment_date' => $examTest->exam_schedule,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    ]);
+                }
+            }
+
+            DB::commit();
+
             if ($examTest)
                 return $this->successResponse('Exam test updated successfully', collect(new ExamTestResource($examTest)));
             return $this->invalidResponse($this->exceptionMessage);
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }

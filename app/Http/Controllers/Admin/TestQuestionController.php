@@ -99,8 +99,9 @@ class TestQuestionController extends Controller
 
         try {
             Excel::import(new QuestionImport($request), $request->file('question'));
-            return redirect()->back();
+            return redirect()->back()->with(['success' => 'Exam Question has been uploaded successfully']);
         } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return redirect()->back()->withErrors(['Something went wrong! please provide a valid file format']);
         }
