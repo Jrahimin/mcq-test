@@ -52,7 +52,6 @@ class UserProfileController extends Controller
                     $exam->totalExminee = $examForAllUsers->count();
                     $exam->userScore = $exam->pivot->score;
                     $exam->exam_schedule = Carbon::parse($exam->exam_schedule)->format('Y-m-d');
-
                     return $exam;
                 });
             } else {

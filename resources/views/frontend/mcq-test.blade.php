@@ -392,6 +392,17 @@
         .btn-primary, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
             background-color: #5b636ba8;
         }
+
+        ._question_m_p {
+            margin: 1% 4%;
+        }
+
+        ._question_m_p_q {
+            margin: 1% 4%;
+            background: #e6e8e682;
+            box-shadow: 1px 1px 5px 5px #abb5b1;
+            padding: 2%;
+        }
     </style>
 @endpush
 @section('main-section')
@@ -499,9 +510,11 @@
                             }) : [];
                             return el;
                         }) : [];
-                        this.answers.push({
-                            question_id: this.questions[0].question_id,
-                            option_id: '',
+                        this.questions.forEach(question => {
+                            this.answers.push({
+                                question_id: question.question_id,
+                                option_id: '',
+                            });
                         });
                         this.secLeft = data.examInfo.duration_sec;
                         this.second = data.examInfo.duration_sec;
@@ -520,6 +533,11 @@
                     }
                 }, false);
             },
+            computed: {
+                currentPageData: (index) => {
+                    return this.questions.slice(index);
+                }
+            }
         })
     </script>
 @endpush

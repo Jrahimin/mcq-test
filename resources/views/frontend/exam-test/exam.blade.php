@@ -5,7 +5,8 @@
                 <div class="row">
                     <div class="col-md-8"><strong><p class="text-info">Left @{{ parseInt(secLeft/60) }}
                                 min:@{{secLeft%60}}sec</p></strong></div>
-                    <div class="col-md-4"><p>Total Question: <span class="badge badge-primary">@{{ question_count }}</span>
+                    <div class="col-md-4"><p>Total Question: <span
+                                class="badge badge-primary">@{{ question_count }}</span>
                         </p>
                     </div>
                 </div>
@@ -17,49 +18,65 @@
             </div>
         </div>
     </div>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row">
-                    <div class="col-md-1" style="min-height: 100px;margin-top: 4%;">
-                        <span class="label label-warning te" style="vertical-align: middle" id="qid">@{{ index+1 }}</span>
-                    </div>
-                    <div class="col-md-11">
-                        <p v-if="questions[index] && questions[index].question">
-                            @{{ questions[index].question}}
-                        </p>
-                    </div>
-                </div>
+    {{--    <div class="modal-dialog modal-lg">--}}
+    {{--        <div class="modal-content">--}}
+    {{--            <div class="modal-header">--}}
+    {{--                <div class="row">--}}
+    {{--                    <div class="col-md-1" style="min-height: 100px;margin-top: 4%;">--}}
+    {{--                        <span class="label label-warning te" style="vertical-align: middle" id="qid">@{{ index+1 }}</span>--}}
+    {{--                    </div>--}}
+    {{--                    <div class="col-md-11">--}}
+    {{--                        <p v-if="questions[index] && questions[index].question">--}}
+    {{--                            @{{ questions[index].question}}--}}
+    {{--                        </p>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--            <div class="modal-body">--}}
+    {{--                <div class="quiz" id="quiz" data-toggle="buttons"--}}
+    {{--                     v-if="questions[index] && questions[index].options">--}}
+    {{--                    <label :class="{...getRadioButtonClasses(option.option_id),'active':option.is_active}"--}}
+    {{--                           @click="answerHandle(option.option_id,i)"--}}
+    {{--                           v-for="(option,i) in questions[index].options">--}}
+    {{--                        <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>--}}
+    {{--                        <input type="radio" v-model="answers[index].option_id"--}}
+    {{--                               :value="option.option_id"--}}
+    {{--                        >@{{option.option}}--}}
+    {{--                    </label>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--            <div class="modal-footer text-muted">--}}
+    {{--                <div class="row">--}}
+    {{--                    <div class="m-5 text-center">--}}
+    {{--                        <button class="btn btn-primary" @click="questionProcess(-1)" v-if="index>0"><i--}}
+    {{--                                class="fa fa-backward"></i> Previous--}}
+    {{--                        </button>--}}
+    {{--                        <button class="btn btn-primary" @click="answerSubmit()"--}}
+    {{--                                v-if="index === questions.length-1">--}}
+    {{--                            Submit--}}
+    {{--                        </button>--}}
+    {{--                        <button class="btn btn-primary" @click="questionProcess(1)"--}}
+    {{--                                v-else>--}}
+    {{--                            Next <i class="fa fa-forward"></i></button>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </div>--}}
+    <div class="row">
+        <div class="col-md-5 _question_m_p_q question" v-for="(question,index) of questions" :key="index">
+            <h4>@{{index+1}}. @{{ question.question}} <span class="badge pull-right bg-success"> Mark: @{{ question.mark }}</span></h4>
+{{--            <span>(@{{ question.description }})</span>--}}
+            <div class="radio" v-for="(option,i) in question.options" :key="i">
+                <label><input type="radio" :value="option.option_id" v-model="answers[index].option_id">@{{option.option}}</label>
             </div>
-            <div class="modal-body">
-                <div class="quiz" id="quiz" data-toggle="buttons"
-                     v-if="questions[index] && questions[index].options">
-                    <label :class="{...getRadioButtonClasses(option.option_id),'active':option.is_active}"
-                           @click="answerHandle(option.option_id,i)"
-                           v-for="(option,i) in questions[index].options">
-                        <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                        <input type="radio" v-model="answers[index].option_id"
-                               :value="option.option_id"
-                        >@{{option.option}}
-                    </label>
-                </div>
-            </div>
-            <div class="modal-footer text-muted">
-                <div class="row">
-                    <div class="m-5 text-center">
-                        <button class="btn btn-primary" @click="questionProcess(-1)" v-if="index>0"><i
-                                class="fa fa-backward"></i> Previous
-                        </button>
-                        <button class="btn btn-primary" @click="answerSubmit()"
-                                v-if="index === questions.length-1">
-                            Submit
-                        </button>
-                        <button class="btn btn-primary" @click="questionProcess(1)"
-                                v-else>
-                            Next <i class="fa fa-forward"></i></button>
-                    </div>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button class="btn btn-primary btn-lg" @click="answerSubmit()" style="background: #28a745; margin-top:2%">
+                Submit
+            </button>
         </div>
     </div>
 </div>

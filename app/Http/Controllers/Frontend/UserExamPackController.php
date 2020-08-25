@@ -91,7 +91,6 @@ class UserExamPackController extends Controller
             ]);
             $user->examTest()->saveMany($examPack->examTests);
             $exam_test_ids = $examPack->examTests->pluck('id')->toArray();
-
             DB::table('exam_test_user')
                 ->whereIn('exam_test_id', $exam_test_ids)
                 ->where('user_id', $user->id)

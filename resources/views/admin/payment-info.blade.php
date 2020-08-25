@@ -114,7 +114,7 @@
                                 },
                                 name: 'status',
                                 defaultContent: '',
-                                title: 'Status'
+                                title: 'Status & Action'
                             }
                         ],
                         order: [[1, 'asc']],
