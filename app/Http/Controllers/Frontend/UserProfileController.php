@@ -49,7 +49,7 @@ class UserProfileController extends Controller
                     $userExam = $examForAllUsers->where('exam_test_id', $exam->id)->where('user_id', $user->id)->first();
                     $scoreAboveCount = $examForAllUsers->where('exam_test_id', $exam->id)->where('score', '>', $userExam->score)->count();
                     $exam->position = ++$scoreAboveCount;
-                    $exam->totalExminee = $examForAllUsers->count();
+                    $exam->totalExminee = $examForAllUsers->where('exam_test_id', $exam->id)->count();
                     $exam->userScore = $exam->pivot->score;
                     $exam->exam_schedule = Carbon::parse($exam->exam_schedule)->format('Y-m-d');
                     return $exam;

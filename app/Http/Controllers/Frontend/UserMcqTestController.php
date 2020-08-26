@@ -171,7 +171,7 @@ class UserMcqTestController extends Controller
             Log::info("Exam paper review : " . json_encode($examPaperReview));
 
             DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
-                ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark, 'status' => 1]);
+                ->update(['score' => $attainedMark, 'total_correct' => $noOfCorrectAnswer, 'total_wrong' => $noOfWrongAnswer, 'status' => 1]);
 
             return $this->successResponse('Exam result preview', $examPaperReview);
         }
