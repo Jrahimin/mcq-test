@@ -162,14 +162,14 @@
                                                         @csrf
                                                         <input type="hidden" name="exam_id" :value="exam.id">
                                                         <button class="btn btn-primary btn-sm"
-                                                                style="padding-left: 12px; padding-right: 14px;"><i
+                                                                style="padding-left: 12px; padding-right: 14px;" formtarget="_blank"><i
                                                                 class="fa fa-eye"></i> Preview
                                                         </button>
                                                     </form>
 
                                                     <a class="btn btn-primary btn-sm"
                                                        :href="exam_rank_route+'?exam_id='+exam.id"
-                                                       style="margin-top: 3%"><i class="fa fa-list"></i> Rank List</a>
+                                                       style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List</a>
                                                 </th>
                                             </tr>
                                             </tbody>

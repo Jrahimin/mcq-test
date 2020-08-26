@@ -57,10 +57,15 @@ class UserMcqTestController extends Controller
             $questionList = $query->get();
 
             // duration in sec if exam already running
-            $examEndTime = Carbon::parse($exam->exam_schedule_to)->addMinutes($exam->duration_minutes)->format('Y-m-d H:i').':59';
-            $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
-            $secDiff = Carbon::parse($examEndTime)->diffInSeconds(Carbon::parse($now));
-            $remainingSecFromNow = $secDiff < $exam->duration_minutes * 60 ? $secDiff : $exam->duration_minutes * 60;
+            if($exam->duration_minutes){
+                $examEndTime = Carbon::parse($exam->exam_schedule_to)->addMinutes($exam->duration_minutes)->format('Y-m-d H:i').':59';
+                $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
+                $secDiff = Carbon::parse($examEndTime)->diffInSeconds(Carbon::parse($now));
+                $remainingSecFromNow = $secDiff < $exam->duration_minutes * 60 ? $secDiff : $exam->duration_minutes * 60;
+            } else{
+                $remainingSecFromNow = 24*60;
+            }
+
 
             $questionPaper = [];
             $questionPaper['examInfo'] = array(
