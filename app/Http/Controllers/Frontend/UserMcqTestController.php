@@ -63,7 +63,7 @@ class UserMcqTestController extends Controller
                 $secDiff = Carbon::parse($examEndTime)->diffInSeconds(Carbon::parse($now));
                 $remainingSecFromNow = $secDiff < $exam->duration_minutes * 60 ? $secDiff : $exam->duration_minutes * 60;
             } else{
-                $remainingSecFromNow = 24*60;
+                $remainingSecFromNow = 24*60*60;
             }
 
 
