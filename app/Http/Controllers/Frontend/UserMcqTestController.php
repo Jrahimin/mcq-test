@@ -125,10 +125,10 @@ class UserMcqTestController extends Controller
             foreach ($request->answers as $answer) {
                 $userAnswerList[$answer['question_id']] = $answer['option_id'];
 
-                if ($answer['option_id'] && $answerList[$answer['question_id']] == $answer['option_id']) {    //if answerList correctAns matches user provided option_id -- mark++
+                if ($answerList[$answer['question_id']] == $answer['option_id']) {    //if answerList correctAns matches user provided option_id -- mark++
                     $attainedMark++;
                     $noOfCorrectAnswer++;
-                } else {
+                } elseif($answer['option_id']) {
                     $attainedMark -= $exam->negative_mark_per_question;
                     $noOfWrongAnswer++;
                 }
