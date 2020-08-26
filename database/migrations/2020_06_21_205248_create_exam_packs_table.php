@@ -22,6 +22,7 @@ class CreateExamPacksTable extends Migration
             $table->double('price',10,2);
             $table->dateTime('from_date')->nullable();
             $table->dateTime('to_date')->nullable();
+            $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
