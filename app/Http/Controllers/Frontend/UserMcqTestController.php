@@ -174,9 +174,10 @@ class UserMcqTestController extends Controller
                 ->update(['score' => $attainedMark, 'total_correct' => $attainedMark, 'total_wrong' => $totalMark - $attainedMark, 'status' => 1]);
 
             return $this->successResponse('Exam result preview', $examPaperReview);
-        } catch (\Exception $ex) {
+        }
+        catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            abort(500);
+            return $this->exceptionResponse($this->exceptionMessage);
         }
     }
 }
