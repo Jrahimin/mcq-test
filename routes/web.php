@@ -42,6 +42,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
     Route::resource('user-management', 'UserManagementController');
+    Route::post('user-management/balance-adjust/{id}', 'UserManagementController@balanceAdjust');
     Route::get('payment-info', 'PaymentInfoController@index')->name('payment-info.index');
     Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');

@@ -146,6 +146,37 @@
             <!-- /.col -->
         </div>
         <!-- /.col -->
+        <div class="modal fade" id="balance_adjustment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-block">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 v-if="userManagement" class="modal-title"
+                            id="exampleModalLabel">
+                            @{{ 'Adjust Balance for '+
+                            (userManagement.name||'')+
+                            '('+(userManagement.email||'')+')'
+                            }}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Amount(BDT)</label>
+                            <input type="number" class="form-control" id="adjust_amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Reason</label>
+                            <textarea class="form-control" id="balance_adjust_reason"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="balanceAdjustment()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.container-fluid -->
 @endsection
@@ -253,8 +284,11 @@
                                 orderable: true,
                                 data: 'id', render(data, row, type) {
                                     return `<button class='badge badge-info btn btn-info edit_discount'> <i class="fa fa-edit"></i>Edit</button>
-                                            <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-remove"></i>Delete</button>
-                                            `;
+                                            <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-trash"> </i>Delete</button>
+                                              @if(auth()->user()->type==1)
+                                    <button class='badge badge-warning btn btn-warning balance_adjustment'> <i class="fa fa-gift"></i> Refund</button>
+@endif
+                                    `;
                                 },
                                 defaultContent: 'Action',
                                 title: 'Action'
@@ -318,6 +352,18 @@
                 closeEditor() {
                     this.mode = undefined;
                 },
+                balanceAdjustment() {
+                    const amount = document.getElementById('adjust_amount').value;
+                    const reason = document.getElementById('balance_adjust_reason').value;
+                    this.ajaxCall('user-management/balance-adjust/' + this.dataTableData[this.selectedIndex].id, {
+                        amount,
+                        reason
+                    }, 'post', (data, code) => {
+                        if (code === 200) {
+                            $("#balance_adjustment").modal('hide');
+                        }
+                    }, true);
+                }
             },
             mounted() {
                 const that = this;
@@ -367,6 +413,13 @@
                             }, true);
                         }
                     });
+                });
+                $('#userManagement-table tbody').on('click', '.balance_adjustment', function () {
+                    that.reset();
+                    that.dataTableData = that.dataTable.rows().data();
+                    that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
+                    that.userManagement = that.dataTableData[that.selectedIndex];
+                    $("#balance_adjustment").modal('show');
                 });
             },
         })

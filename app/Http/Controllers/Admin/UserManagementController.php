@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\UserTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
+use App\Models\Refund;
 use App\Traits\ApiResponseTrait;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class UserManagementController extends Controller
@@ -108,6 +111,43 @@ class UserManagementController extends Controller
             $user->delete();
             return $this->successResponse('User deleted successfully', null);
         } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function balanceAdjust(Request $request, int $id)
+    {
+        try {
+            if (auth()->user()->type != 1) return $this->unauthorizedResponse('You are not authorized person! please don\'t disturb :)');
+            $validator = Validator::make($request->all(), [
+                'amount' => 'required|integer|not_in:0',
+                'reason' => 'required|string|min:5',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->invalidResponse($validator->errors()->first());
+            }
+            DB::beginTransaction();
+            $user = User::findOrFail($id);
+            $last_balace = $user->balance + $request->amount;
+            $user->update(['balance' => $last_balace]);
+            Refund::create([
+                'amount' => $request->amount,
+                'reason' => $request->reason,
+                'user_id' => $id,
+                'refunded_by' => auth()->user()->id
+            ]);
+            DB::commit();
+            return $this->successResponse('Balance Adjustment updated. Last Balance: ' . $last_balace, null);
+        } catch (\Exception $ex) {
+            DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
         }
