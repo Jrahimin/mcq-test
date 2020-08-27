@@ -65,7 +65,7 @@ class UserExamPackController extends Controller
      */
     public function buyPackage(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'exam_pack_id' => 'required|integer'
         ]);
         try {
@@ -73,11 +73,11 @@ class UserExamPackController extends Controller
             $user = $request->user();
 
             $isTaken = DB::table('exam_pack_user')->where(['user_id' => $user->id, 'exam_pack_id' => $request->exam_pack_id])->first();
-            if($isTaken){
+            if ($isTaken) {
                 return redirect()->back()->with('error_message', 'You have already bought this pack');
             }
 
-            if($user->balance < $examPack->price){
+            if ($user->balance < $examPack->price) {
                 return redirect()->back()->with('error_message', 'Your balance is low! Please try again after recharge');
             }
 
@@ -102,11 +102,27 @@ class UserExamPackController extends Controller
             DB::commit();
 
             return redirect()->back()->with('success_message', 'Your request successfully processed');
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return abort(500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function detail(Request $request, int $id)
+    {
+        try {
+            $examPack = ExamPack::findOrFail($id);
+            return view('frontend.package', ['exam_pack' => $examPack]);
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            abort(404);
         }
     }
 }

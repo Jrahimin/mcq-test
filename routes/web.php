@@ -11,6 +11,7 @@ Route::group(['namespace' => 'Frontend'], function () {
 
     Route::get('/', 'UserHomeController@index')->name('user-home');
     Route::get('packages', 'UserExamPackController@index')->name('packages');
+    Route::get('package/{id}', 'UserExamPackController@detail')->name('exam-pack-detail');
     Route::get('exam-schedule', 'UserExamScheduleController@index')->name('exam-schedule');
 
     Route::group(['middleware' => 'auth'], function () {

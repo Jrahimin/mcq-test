@@ -126,6 +126,10 @@
                                     <a class="btn btn-info"
                                        href="{{route('exam-schedule')}}?exam_pack_id={{$examPack->id}}"> Exam List </a>
                                 </div>
+                                <div style="display: inline-block" class="d-inline-block m-0 p-0">
+                                    <a class="btn btn-info"
+                                       href="{{url('package/'.$examPack->id)}}"> Details </a>
+                                </div>
                                 <div class="mb-3"></div>
                             </div>
                         </div>

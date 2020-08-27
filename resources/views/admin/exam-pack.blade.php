@@ -1,7 +1,8 @@
 @extends('layouts.dashboard.dashboard-layout')
 @section('title',$title??'Dynamic')
 @section('style-lib')
-
+    <!-- summernote style -->
+    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
 @endsection
 @push('custom-css')
     <style type="text/css">
@@ -103,7 +104,18 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="package_description">Description</label>
+                                            <div class="mb-3">
+                                        <textarea id="package_description" class="textarea form-control"
+                                                  placeholder="Please enter package description" style="width: 100%; height: 200px; font-size: 14px;
+                                        line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-check">
@@ -157,7 +169,7 @@
     <!-- /.container-fluid -->
 @endsection
 @section('script-lib')
-
+    <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 @endsection
 @push('custom-js')
     <script defer type="text/javascript">
@@ -174,6 +186,7 @@
                     "price": undefined,
                     "from_date": undefined,
                     "to_date": undefined,
+                    description: '',
                     "status": true,
                 },
                 mode: undefined,
@@ -251,6 +264,13 @@
                                 defaultContent: '',
                                 title: 'To Date'
                             }, {
+                                className: 'none',
+                                orderable: false,
+                                data: 'description',
+                                name: 'description',
+                                defaultContent: '',
+                                title: 'Description'
+                            }, {
                                 className: 'all',
                                 orderable: true,
                                 data: 'status', render(data, row, type) {
@@ -283,6 +303,7 @@
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
                 submit() {
+                    this.examPack.description = $("#package_description").summernote('code');
                     this.error = undefined;
                     let url = 'exam-pack';
                     let method = 'post';
@@ -312,6 +333,7 @@
                     }, true)
                 },
                 reset() {
+                    setTimeout(() => $('.textarea').summernote('reset'), 100);
                     this.mode = undefined;
                     this.examPack = {
                         "title": undefined,
@@ -321,6 +343,7 @@
                         "price": undefined,
                         "from_date": undefined,
                         "to_date": undefined,
+                        "description": '',
                         "status": true,
                     };
                 },
@@ -357,6 +380,9 @@
                     that.examPack = that.dataTableData[that.selectedIndex];
                     that.examPack.from_date = that.examPack.from_date.substr(0, 10) + "T" + that.examPack.from_date.substr(11, 5);
                     that.examPack.to_date = that.examPack.to_date.substr(0, 10) + "T" + that.examPack.to_date.substr(11, 5);
+                    setTimeout(() => {
+                        $("#package_description").summernote('code', that.dataTableData[that.selectedIndex].description);
+                    }, 500);
                 });
 
                 $('#examPack-table tbody').on('click', '.delete_discount', function () {

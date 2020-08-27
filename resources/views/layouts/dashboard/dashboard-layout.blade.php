@@ -31,6 +31,9 @@
             .form-check {
                 padding-top: 10% !important;
             }
+            .content-wrapper>.content{
+                padding: 15px 0.5em !important;
+            }
     </style>
     @yield('style-lib')
     @stack('custom-css')

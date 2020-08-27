@@ -147,23 +147,29 @@
         </div>
         <!-- /.col -->
         <div class="modal fade" id="balance_adjustment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-block">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 v-if="userManagement" class="modal-title"
-                            id="exampleModalLabel">
-                            @{{ 'Adjust Balance for '+
-                            (userManagement.name||'')+
-                            '('+(userManagement.email||'')+')'
-                            }}
+                        <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true"><i class="fa fa-times-circle text-danger"></i></span></button>
+                        <h4 class="modal-title"
+                            id="exampleModalLabel">Adjust Balance
                         </h4>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group" v-if="userManagement">
+                            <label for="recipient-name" class="control-label">Name</label>
+                            <input type="text" readonly class="form-control" id="name_b_a" :value="userManagement.name">
+                        </div>
+                        <div class="form-group" v-if="userManagement">
+                            <label for="recipient-name" class="control-label">Email</label>
+                            <input type="email" readonly class="form-control" id="email_b_a"
+                                   :value="userManagement.email">
+                        </div>
                         <div class="form-group">
                             <label for="recipient-name" class="control-label">Amount(BDT)</label>
-                            <input type="number" class="form-control" id="adjust_amount">
+                            <input type="text" class="form-control" id="adjust_amount"
+                                   oninput="document.getElementById('adjust_amount').value=document.getElementById('adjust_amount').value.replace(/[^\d]*/g,'')">
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="control-label">Reason</label>
@@ -171,8 +177,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="balanceAdjustment()">Submit</button>
+                        <button type="button" class="btn btn-danger" @click="balanceAdjustment(-1)">Reduce</button>
+                        <button type="button" class="btn btn-primary" @click="balanceAdjustment(1)">Add</button>
                     </div>
                 </div>
             </div>
@@ -352,15 +358,21 @@
                 closeEditor() {
                     this.mode = undefined;
                 },
-                balanceAdjustment() {
-                    const amount = document.getElementById('adjust_amount').value;
+                balanceAdjustment(sign = 1) {
+                    const amount = document.getElementById('adjust_amount').value * sign;
                     const reason = document.getElementById('balance_adjust_reason').value;
+                    if (!document.getElementById('adjust_amount').value || (reason || '').length < 5) {
+                        swal('Fail!', 'Write a valid amount and reason', 'error');
+                        return;
+                    }
                     this.ajaxCall('user-management/balance-adjust/' + this.dataTableData[this.selectedIndex].id, {
                         amount,
                         reason
                     }, 'post', (data, code) => {
                         if (code === 200) {
                             $("#balance_adjustment").modal('hide');
+                            document.getElementById('adjust_amount').value = '';
+                            document.getElementById('balance_adjust_reason').value = '';
                         }
                     }, true);
                 }
