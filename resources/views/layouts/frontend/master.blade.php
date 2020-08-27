@@ -88,6 +88,7 @@
         }
         body {
             margin-bottom:50px;
+            min-height: 1150px;
         }
 
     </style>
