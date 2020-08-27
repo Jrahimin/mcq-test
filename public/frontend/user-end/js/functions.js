@@ -1,15 +1,15 @@
 /*
 	Project Name : Knowledge
-	
+
 	-- Google Map
-	
+
 	## Document Scroll
-		
+
 	## Document Ready
 		-- Scrolling Navigation
 		-- Find all anchors
 		-- Add Easing Effect
-		-- Responsive Caret	
+		-- Responsive Caret
 		-- Remove p empty tag for Shortcode
 		-- Expanding Search
 		-- PhotoSlider Section:: Text Effect
@@ -48,8 +48,8 @@
 		var image = "images/marker.png";
 		var zoomLevel = parseInt($('#'+obj).attr("data-zoom") ,10);
 		var styles = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}]
-		var styledMap = new google.maps.StyledMapType(styles,{name: "Styled Map"});	
-		
+		var styledMap = new google.maps.StyledMapType(styles,{name: "Styled Map"});
+
 		var mapOptions = {
 			zoom: zoomLevel,
 			disableDefaultUI: true,
@@ -58,15 +58,15 @@
 			mapTypeControlOptions: {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, "map_style"]
 			}
-		}		
+		}
 		map = new google.maps.Map(document.getElementById(obj), mapOptions);
 		map.mapTypes.set("map_style", styledMap);
 		map.setMapTypeId("map_style");
-		
+
 		infowindow = new google.maps.InfoWindow({
 			content: contentString
-		});      
-	    
+		});
+
         marker = new google.maps.Marker({
 			position: myLatlng,
 			map: map,
@@ -75,9 +75,9 @@
 
 		google.maps.event.addListener(marker, "click", function() {
 			infowindow.open(map,marker);
-		});	
+		});
 	}
-	
+
 	/* ## Document Scroll - Window Scroll */
 	$( document ).scroll(function()
 	{
@@ -89,17 +89,13 @@
 		{
 			$(".menu-block").addClass("navbar-fixed-top animated fadeInDown").delay( 2000 ).fadeIn();
 		}
-		else if ( scroll <= height )
+		/*else if ( scroll <= height )
 		{
 			$(".menu-block").removeClass("navbar-fixed-top animated fadeInDown");
-		}
-		else
-		{
-			$(".menu-block").removeClass("navbar-fixed-top animated fadeInDown");
-		} 
+		}*/
 
 		if ($(this).scrollTop() >= 50)
-		{	
+		{
 			/* If page is scrolled more than 50px */
 			$("#back-to-top").fadeIn(200); /* Fade in the arrow */
 		}
@@ -108,14 +104,14 @@
 			$("#back-to-top").fadeOut(200); /* Else fade out the arrow */
 		}
 	});
-		
+
 	/* ## Document Ready - Handler for .ready() called */
 	$(document).ready(function($) {
 		/* -- Scrolling Navigation */
 		var scroll	=	$(window).scrollTop();
 		var width	=	$(window).width();
 		var height	=	$(window).height();
-		
+
 		/*** set sticky menu ***/
 		if( scroll >= height -500 )
 		{
@@ -129,7 +125,7 @@
 		{
 			$(".menu-block").removeClass("navbar-fixed-top");
 		} /* set sticky menu - end */
-		
+
 		/* local url of page (minus any hash, but including any potential query string) */
 		var url = location.href.replace(/#.*/,'');
 
@@ -162,8 +158,8 @@
 					return false;
 				}
 			}
-		});	
-		
+		});
+
 		/* -- Responsive Caret */
 		$(".ddl-switch").on("click", function() {
 
@@ -178,7 +174,7 @@
 				li.children(".dropdown-menu").slideDown();
 			}
 		});
-		
+
 		/* -- Remove p empty tag for Shortcode */
 		$( "p" ).each(function() {
 			var $this = $( this );
@@ -186,10 +182,10 @@
 				$this.remove();
 			}
 		});
-		
+
 		/* -- Expanding Search */
 		new UISearch( document.getElementById( "sb-search" ) );
-		
+
 		/* -- PhotoSlider Section:: Text Effect */
 		function doAnimations( elems ) {
 			/* Cache the animationend event in a variable */
@@ -212,8 +208,8 @@
 			var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
 			doAnimations($animatingElems);
 		});
-		
-		
+
+
 		/* -- Welcome Section  */
 		if( $(".welcome-section").length ) {
 			$(".welcome-section").each(function () {
@@ -224,7 +220,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Parallax Carousel */
 		 if( $(".parallax-section").length ) {
 			$(".parallax-carousel").owlCarousel({
@@ -238,7 +234,7 @@
 				animateOut: "slideOutUp",
 				animateIn: "slideInUp"
 			})
-			
+
 			$(".parallax-section").each(function () {
 				var $this = $(this);
 				var myVal = $(this).data("value");
@@ -247,7 +243,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Event Section  */
 		if( $(".event-section").length ) {
 			$(".event-section").each(function () {
@@ -258,7 +254,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Latest Blog Section  */
 		if( $(".latestblog-section").length ) {
 			$(".latestblog-section").each(function () {
@@ -269,7 +265,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Team Section  */
 		if( $(".team-section").length ) {
 			$(".team-section").each(function () {
@@ -280,7 +276,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Video Block */
 		if( $(".video-block").length ) {
 			$('.popup-youtube').magnificPopup({
@@ -292,7 +288,7 @@
 				fixedContentPos: false
 			});
 		}
-		
+
 		/* -- CourseDetail Section  */
 		if( $(".coursesdetail-section").length ) {
 			$(".coursesdetail-section").each(function () {
@@ -304,7 +300,7 @@
 				});
 			});
 		}
-		
+
 		/* -- WhyChooseUs Section  */
 		if( $(".whychooseus-section").length ) {
 			$(".whychooseus-section").each(function () {
@@ -316,7 +312,7 @@
 				});
 			});
 		}
-		
+
 		/* -- Blog  */
 		if( $(".blog").length ) {
 			$(".blog").each(function () {
@@ -328,7 +324,7 @@
 				});
 			});
 		}
-		
+
 		/* -- ContactUs Section  */
 		if( $(".contactus-section").length ) {
 			$(".contactus-section").each(function () {
@@ -338,14 +334,14 @@
 					$(".contactus-section .row .map").addClass( "animated rotateInDownLeft" );
 					$(".contactus-section .row .getintouch").addClass( "animated rotateInUpLeft" );
 					$(".contactus-section .contactdetail-block").addClass( "animated slideInLeft" );
-					
+
 				});
 			});
 		}
-		
+
 		/* -- Testimonial 2 Section */
 		if( $(".testimonial2-section").length ) {
-	
+
 			$( "#testimonial2 .total_index" ).html( $("#testimonial2 .item").length );
 			if( $("#testimonial2 .item").length > 1 ){
 				if( $("#testimonial2 .item.active").index() == 0 ){
@@ -362,9 +358,9 @@
 				$( "#testimonial2 .index_prev" ).html( $("#testimonial2 .item").length );
 				$( "#testimonial2 .index_next" ).html( $("#testimonial2 .item").length );
 			}
-			
+
 			$("#testimonial2").on("slide.bs.carousel", function () {
-				
+
 				if( $("#testimonial2 .item").length > 1 ){
 					if( $("#testimonial2 .item.active").index() == 0 ){
 						$( "#testimonial2 .index_prev" ).html( $("#testimonial2 .item").length );
@@ -380,8 +376,8 @@
 					$( "#testimonial2 .index_prev" ).html( $("#testimonial2 .item").length );
 					$( "#testimonial2 .index_next" ).html( $("#testimonial2 .item").length );
 				}
-			});	
-			
+			});
+
 			$(".testimonial2-section").each(function () {
 				var $this = $(this);
 				var myVal = $(this).data("value");
@@ -390,12 +386,12 @@
 				});
 			});
 		}
-		
+
 		/* -- Contact Map */
 		if($("#map-canvas-contact").length==1){
 			initialize("map-canvas-contact");
 		}
-		
+
 		/* -- Contact Form */
 		$( "#btn_submit" ).on( "click", function(event) {
 		  event.preventDefault();
@@ -429,9 +425,9 @@
 			return false;
 			$("#contact-form").attr("action", "saveQuery").submit();
 		});
-		
+
 	});	/* -- Document Ready /- */
-	
+
 	/* ## Window Load - Handler for .load() called */
 	$(window).load(function() {
 		/* -- Site Loader */
