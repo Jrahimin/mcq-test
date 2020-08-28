@@ -23,6 +23,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
     {
         Log::debug("Question import rows collection : ".json_encode($rows));
 
+        DB::beginTransaction();
+
         foreach ($rows as $row) {
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
@@ -38,10 +40,12 @@ class QuestionImport implements ToCollection, WithHeadingRow
             ]);
 
             if ($validator->fails()) {
+                DB::rollBack();
+                Log::error("Question import error row data : ".json_encode($row));
+
                 return redirect()->back()->withErrors($validator->errors());
             }
 
-            DB::beginTransaction();
 
             $question = TestQuestion::create([
                 'exam_test_id' => $this->request->exam_test_id,
@@ -61,7 +65,7 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 ]);
             }
 
-            DB::commit();
         }
+        DB::commit();
     }
 }
