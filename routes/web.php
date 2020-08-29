@@ -31,7 +31,7 @@ Route::group(['namespace' => 'Frontend'], function () {
         Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
     });
 });
-
+Route::post('feedback', 'Admin\FeedbackController@store')->name('feedback');
 Route::group(['middleware' => 'auth'], function () {
     Route::post('exam-preview', 'CommonExamPreviewController@generateExamPreview')->name('exam-preview');
     Route::get('exam-ranking', 'CommonExamPreviewController@getExamRanking')->name('exam-ranking');
@@ -47,6 +47,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('payment-info', 'PaymentInfoController@index')->name('payment-info.index');
     Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
     Route::post('test-question-import', 'TestQuestionController@importQuestionFromExcel')->name('test-question-import');
+    Route::get('feedback-list', 'FeedbackController@index')->name('feedback-list');
+    Route::post('feedback-read-status-update/{id}', 'FeedbackController@readStatusUpdate')->name('feedback-read-status-update');
 });
 Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
     /*Route::get('user-login', function () {

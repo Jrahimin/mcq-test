@@ -86,19 +86,6 @@
                             <div class="form-group row">
                                 <label for="email"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Gender')??'Gender' }}</label>
-
-                                {{--                                <div class="col-md-6">--}}
-                                {{--                                    <input id="email" type="email"--}}
-                                {{--                                           class="form-control @error('email') is-invalid @enderror" name="email"--}}
-                                {{--                                           value="{{ old('email') }}" required autocomplete="email">--}}
-
-                                {{--                                    @error('email')--}}
-                                {{--                                    <span class="invalid-feedback" role="alert">--}}
-                                {{--                                        <strong>{{ $message }}</strong>--}}
-                                {{--                                    </span>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-
                                 <div class="col-md-6">
                                     <div class="form-check display-inline-block mr-2">
                                         <label class="form-check-label">
@@ -108,7 +95,8 @@
                                     </div>
                                     <div class="form-check display-inline-block margin-left-10">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="gender" value="f" {{ old('gender')=='f'?'checked':'' }}> Female
+                                            <input type="radio" class="form-check-input" name="gender"
+                                                   value="f" {{ old('gender')=='f'?'checked':'' }}> Female
                                         </label>
                                     </div>
                                 </div>
