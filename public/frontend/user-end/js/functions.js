@@ -89,10 +89,10 @@
 		{
 			$(".menu-block").addClass("navbar-fixed-top animated fadeInDown").delay( 2000 ).fadeIn();
 		}
-		/*else if ( scroll <= height )
+		else if ( scroll <= height-200 )
 		{
 			$(".menu-block").removeClass("navbar-fixed-top animated fadeInDown");
-		}*/
+		}
 
 		if ($(this).scrollTop() >= 50)
 		{
