@@ -102,7 +102,7 @@
                     <a href="{{secure_url(route('feedback-list'))}}" class="nav-link {{ request()->is('feedback-list') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-area"></i>
                         <p>
-                            Payment Info
+                            Feedback
                             {{--<span class="right badge badge-danger">New</span>--}}
                         </p>
                     </a>
