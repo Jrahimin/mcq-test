@@ -414,9 +414,7 @@
                     <div class="col-md-6">
                         <div class="getintouch animated rotateInUpLeft">
                             <h3>Get in touch </h3>
-                            <p>Consectetur adipiscing elit. Pellentesque lobortis, nisl at ullamcorper egestas, felis
-                                tortor adipiscing dolor, a interdum lorem urna quis magna. Integer eget arcu Integer
-                                eget arcu sit amet Integer commodo ipsum congue eu.</p>
+                            <p>Please, Provide your feedback. Let us know your expericence. If you have any query or suggestion feel free to put it here.</p>
                             <form class="contactus-form" id="contact-form" method="post" action="{{route('feedback')}}">
                                 @csrf
                                 <div class="row">
@@ -444,9 +442,9 @@
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <input type="text" required="" placeholder="Title" id="title"
+                                            <input type="text" required="" placeholder="Feedback Title" id="title"
                                                    class="form-control" name="title"
-                                                   value="{{old('name')}}">
+                                                   value="{{old('title')}}">
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
