@@ -46,6 +46,13 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['exam-pack','exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
+                            <a href="{{secure_url(route('exam-pack.index'))}}"
+                               class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
+                                <i class="far fa-question nav-icon"></i>
+                                <p>Exam Package</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{secure_url(route('exam-test.index'))}}"
                                class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
@@ -57,13 +64,6 @@
                                class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Test Question</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{secure_url(route('exam-pack.index'))}}"
-                               class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
-                                <i class="far fa-question nav-icon"></i>
-                                <p>Exam Package</p>
                             </a>
                         </li>
                     </ul>
