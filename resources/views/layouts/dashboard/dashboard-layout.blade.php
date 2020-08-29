@@ -148,5 +148,17 @@ to get the desired effect
 <script src="{{secure_asset('plugins/sweetalert2/sweetalert2.js')}}"></script>
 @yield('script-lib')
 @stack('custom-js')
+<script>
+    $(document).ready(()=>{
+        (function () {
+            @if(session()->has('error_message'))
+            Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+            @endif
+            @if(session()->has('success_message'))
+            Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+            @endif
+        })();
+    });
+</script>
 </body>
 </html>

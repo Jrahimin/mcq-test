@@ -86,8 +86,9 @@
             padding-top: 6px;
             padding-bottom: 4px;
         }
+
         body {
-            margin-bottom:50px;
+            margin-bottom: 50px;
             /*min-height: 1150px;*/
         }
 
@@ -337,10 +338,10 @@
 
     (function () {
         @if(session()->has('success_message'))
-        Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
+            Swal.fire('Success!', "{{session()->get('success_message')}}", 'success');
         @endif
         @if(session()->has('error_message'))
-        Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
+            Swal.fire('Fail!', "{{session()->get('error_message')}}", 'error');
         @endif
     })();
 </script>
