@@ -442,6 +442,7 @@
                 is_exam_completed: false,
                 question_list_response: [],
                 exam_info_response: {},
+                is_practice: `{!! $is_practice !!}`
             },
             methods: {
                 ajaxCall: window.ajaxCall,
@@ -468,6 +469,7 @@
                 answerSubmit() {
                     this.ajaxCall('{{ route('user-exam-submit') }}', {
                         exam_id: "{{$exam_test_id}}",
+                        "is_practice" : this.is_practice,
                         "answers": this.answers,
                     }, 'post', (data, code) => {
                         if (code === 200) {
@@ -501,7 +503,7 @@
                 }
             },
             mounted() {
-                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {
+                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}", "is_practice" : this.is_practice}, 'post', (data, code) => {
                     if (code === 200) {
                         this.questions = data.questionList ? data.questionList.map(el => {
                             el.options = el ? el.options.map(option => {

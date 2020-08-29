@@ -30,6 +30,8 @@ class UserMcqTestController extends Controller
 
     public function generateExamQuestion(Request $request)
     {
+        Log::info("exam paper generate req : ".json_encode($request->all()));
+
         $this->validate($request, [
             'exam_id' => 'required'
         ]);
@@ -38,15 +40,18 @@ class UserMcqTestController extends Controller
             $exam = ExamTest::find($request->exam_id);
             $data = $this->data;
             $data['exam_test_id'] = $request->exam_id;
+            $data['is_practice'] = $request->practice ? true : false;
 
             if (!$request->wantsJson()) {
                 return view('frontend.mcq-test', $data);
             }
 
-            $isTaken = DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
-                ->where('status', 1)->first();
-            if($isTaken){
-                return $this->invalidResponse('Sorry! You have already participated in this exam.');
+            if(!$request->is_practice){
+                $isTaken = DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
+                    ->where('status', 1)->first();
+                if($isTaken){
+                    return $this->invalidResponse('Sorry! You have already participated in this exam.');
+                }
             }
 
             $query = $exam->questions()->with('activeAnswers')->where('status', 1);
@@ -64,6 +69,11 @@ class UserMcqTestController extends Controller
                 $remainingSecFromNow = $secDiff < $exam->duration_minutes * 60 ? $secDiff : $exam->duration_minutes * 60;
             } else{
                 $remainingSecFromNow = 24*60*60;
+            }
+
+            // if for practice
+            if($request->is_practice){
+                $remainingSecFromNow = $exam->duration_minutes ? $exam->duration_minutes * 60 : 24*60*60;
             }
 
 
@@ -175,8 +185,10 @@ class UserMcqTestController extends Controller
 
             Log::info("Exam paper review : " . json_encode($examPaperReview));
 
-            DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
-                ->update(['score' => $attainedMark, 'total_correct' => $noOfCorrectAnswer, 'total_wrong' => $noOfWrongAnswer, 'status' => 1]);
+            if(!$request->is_practice){
+                DB::table('exam_test_user')->where('user_id', $request->user()->id)->where('exam_test_id', $exam->id)
+                    ->update(['score' => $attainedMark, 'total_correct' => $noOfCorrectAnswer, 'total_wrong' => $noOfWrongAnswer, 'status' => 1]);
+            }
 
             return $this->successResponse('Exam result preview', $examPaperReview);
         }

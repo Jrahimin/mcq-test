@@ -169,7 +169,19 @@
 
                                                     <a class="btn btn-primary btn-sm"
                                                        :href="exam_rank_route+'?exam_id='+exam.id"
-                                                       style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List</a>
+                                                       style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List
+                                                    </a>
+
+                                                    <form action="{{route('user-exam')}}" method="POST">
+                                                        @csrf
+                                                        <input type="text" hidden name="exam_id" :value="exam.id">
+                                                        <input type="text" hidden name="practice" value="1">
+
+                                                        <button class="btn btn-info btn-sm"
+                                                                style="margin-top: 3%;" formtarget="_blank"><i
+                                                                class="fa fa-pencil"></i> Practice
+                                                        </button>
+                                                    </form>
                                                 </th>
                                             </tr>
                                             </tbody>

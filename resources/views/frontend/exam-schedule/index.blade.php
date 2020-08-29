@@ -59,7 +59,7 @@
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
                         <input type="hidden" class="form-control" name="exam_pack_id" value="{{ request()->input('exam_pack_id') ?? '' }}">
                         <span class="input-group-btn">
-					        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </span>
                     </form>
                 </div>
