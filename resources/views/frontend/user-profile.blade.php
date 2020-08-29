@@ -41,233 +41,232 @@
                     </div>
                 </div>
             </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel">
-                <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel">
+                        <div class="panel-heading">
                           <span class="panel-icon">
                             <i class="fa fa-star"></i>
                           </span>
-                    <span class="panel-title"> Basic Info</span>
-                </div>
-                <div class="panel-body pn">
-                    <table class="table mbn tc-icon-1 tc-med-2 tc-bold-last">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <span class="fa fa-money text-warning"></span>
-                            </td>
-                            <td>Balance</td>
-                            <td>
-                                <i class="text-info pr10"></i>{{ $userInfo->balance }} BDT
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="fa fa-money text-primary"></span>
-                            </td>
-                            <td>Total Paid</td>
-                            <td>
-                                <i class="text-danger pr10"></i>{{ $userInfo->totalPaid }} BDT
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="fa fa-book text-info"></span>
-                            </td>
-                            <td>No of Exam Bought</td>
-                            <td>
-                                <i class="text-info pr10"></i>{{ $userInfo->userTotalExam }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="fa fa-shopping-bag text-info"></span>
-                            </td>
-                            <td>No of Exam Pack Bought</td>
-                            <td>
-                                <i class="text-info pr10"></i>{{ $userInfo->userTotalExamPack }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            {{--                    <div class="panel">--}}
-            {{--                        <div class="panel-heading">--}}
-            {{--                              <span class="panel-icon">--}}
-            {{--                                <i class="fa fa-pencil"></i>--}}
-            {{--                              </span>--}}
-            {{--                            <span class="panel-title">Exam Packs</span>--}}
-            {{--                        </div>--}}
-            {{--                        <div class="panel-body pb5">--}}
-
-            {{--                            <h6>Experience</h6>--}}
-
-            {{--                            <h4>Facebook Internship</h4>--}}
-            {{--                            <p class="text-muted"> University of Missouri, Columbia--}}
-            {{--                                <br> Student Health Center, June 2010 - 2012--}}
-            {{--                            </p>--}}
-
-            {{--                            <hr class="short br-lighter">--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-        </div>
-        <div class="col-md-8">
-            <div class="tab-block">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#activity" data-toggle="tab">Activity</a>
-                    </li>
-                    <li>
-                        <a href="#up-coming-exam" data-toggle="tab">Exams & Pack</a>
-                    </li>
-                    {{--                            <li>--}}
-                    {{--                                <a href="#tab3" data-toggle="tab">Media</a>--}}
-                    {{--                            </li>--}}
-                </ul>
-                <div class="tab-content p30" style="height: fit-content;">
-                    <div id="activity" class="tab-pane active">
-                        <div class="panel panel-primary">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">My Progress (exam score)</div>
-                            <div class="panel-body">
-                                <!-- Table -->
-                                <canvas class="chart chartjs-render-monitor" id="main-chart" height="300"
-                                        width="1549" style="display: block;"></canvas>
-                            </div>
-
+                            <span class="panel-title"> Basic Info</span>
                         </div>
-                        <div class="panel panel-primary">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">Participated Exams</div>
-                            <div class="panel-body" style="overflow-x: auto;">
-                                <!-- Table -->
-                                <table class="table table-bordered table-striped" id="participated_exam_table">
-                                    <thead>
-                                    <tr>
-                                        <th>Test Name</th>
-                                        <th>Date</th>
-                                        <th>Duration</th>
-                                        <th>Score</th>
-                                        <th>Position</th>
-                                        <th>Type</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="exam of user_exam_list">
-                                        <th>@{{ exam.title }}</th>
-                                        <th>@{{ exam.exam_schedule }}</th>
-                                        <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
-                                        <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
-                                        <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
-                                        <th>@{{ exam.typeName }}</th>
-                                        <th>
-                                            <form action="{{route('exam-preview')}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="exam_id" :value="exam.id">
-                                                <button class="btn btn-primary btn-sm"
-                                                        style="padding-left: 12px; padding-right: 14px;" formtarget="_blank"><i
-                                                        class="fa fa-eye"></i> Preview
-                                                </button>
-                                            </form>
-
-                                            <a class="btn btn-primary btn-sm"
-                                               :href="exam_rank_route+'?exam_id='+exam.id"
-                                               style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List
-                                            </a>
-
-                                            <form action="{{route('user-exam')}}" method="POST">
-                                                @csrf
-                                                <input type="text" hidden name="exam_id" :value="exam.id">
-                                                <input type="text" hidden name="practice" value="1">
-
-                                                <button class="btn btn-info btn-sm"
-                                                        style="margin-top: 3%;" formtarget="_blank"><i
-                                                        class="fa fa-pencil"></i> Practice
-                                                </button>
-                                            </form>
-                                        </th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
+                        <div class="panel-body pn">
+                            <table class="table mbn tc-icon-1 tc-med-2 tc-bold-last">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-money text-warning"></span>
+                                    </td>
+                                    <td>Balance</td>
+                                    <td>
+                                        <i class="text-info pr10"></i>{{ $userInfo->balance }} BDT
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-money text-primary"></span>
+                                    </td>
+                                    <td>Total Paid</td>
+                                    <td>
+                                        <i class="text-danger pr10"></i>{{ $userInfo->totalPaid }} BDT
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-book text-info"></span>
+                                    </td>
+                                    <td>No of Exam Bought</td>
+                                    <td>
+                                        <i class="text-info pr10"></i>{{ $userInfo->userTotalExam }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-shopping-bag text-info"></span>
+                                    </td>
+                                    <td>No of Exam Pack Bought</td>
+                                    <td>
+                                        <i class="text-info pr10"></i>{{ $userInfo->userTotalExamPack }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div id="up-coming-exam" class="tab-pane">
-                        <div class="panel panel-primary">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">Upcoming Exams</div>
-                            <div class="panel-body" style="overflow-x: auto;">
-                                <!-- Table -->
-                                <table class="table table-bordered table-striped" id="upcoming-exam-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Test Name</th>
-                                        <th>Date</th>
-                                        <th>Duration</th>
-                                        <th>Type</th>
-                                        <th>Price (BDT)</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="exam of user_up_coming_exam_list">
-                                        <th>@{{ exam.title }}</th>
-                                        <th>@{{ exam.exam_schedule }}</th>
-                                        <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
-                                        <th>@{{ exam.typeName }}</th>
-                                        <th>@{{ exam.price }}</th>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot></tfoot>
-                                </table>
-                            </div>
+                    {{--                    <div class="panel">--}}
+                    {{--                        <div class="panel-heading">--}}
+                    {{--                              <span class="panel-icon">--}}
+                    {{--                                <i class="fa fa-pencil"></i>--}}
+                    {{--                              </span>--}}
+                    {{--                            <span class="panel-title">Exam Packs</span>--}}
+                    {{--                        </div>--}}
+                    {{--                        <div class="panel-body pb5">--}}
 
-                        </div>
-                        <div class="panel panel-primary">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">Packages</div>
-                            <div class="panel-body" style="overflow-x: auto;">
-                                <!-- Table -->
-                                <table class="table table-bordered table-striped" id="packages-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Valid From</th>
-                                        <th>Valid Till</th>
-                                        <th>Mock Test</th>
-                                        <th>Model Test</th>
-                                        <th>Mini Test</th>
-                                        <th>Price (BDT)</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="exam of user_exam_packages">
-                                        <th>@{{ exam.title }}</th>
-                                        <th>@{{ exam.dateFrom }}</th>
-                                        <th>@{{ exam.dateTo }}</th>
-                                        <th>@{{ exam.mock_test_count }}</th>
-                                        <th>@{{ exam.model_test_count }}</th>
-                                        <th>@{{ exam.mini_test_count }}</th>
-                                        <th>@{{ exam.price }}</th>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot></tfoot>
-                                </table>
-                            </div>
+                    {{--                            <h6>Experience</h6>--}}
 
+                    {{--                            <h4>Facebook Internship</h4>--}}
+                    {{--                            <p class="text-muted"> University of Missouri, Columbia--}}
+                    {{--                                <br> Student Health Center, June 2010 - 2012--}}
+                    {{--                            </p>--}}
+
+                    {{--                            <hr class="short br-lighter">--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-block">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#activity" data-toggle="tab">Activity</a>
+                            </li>
+                            <li>
+                                <a href="#up-coming-exam" data-toggle="tab">Exams & Pack</a>
+                            </li>
+                            {{--                            <li>--}}
+                            {{--                                <a href="#tab3" data-toggle="tab">Media</a>--}}
+                            {{--                            </li>--}}
+                        </ul>
+                        <div class="tab-content p30" style="height: fit-content;">
+                            <div id="activity" class="tab-pane active">
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">My Progress (exam score)</div>
+                                    <div class="panel-body">
+                                        <!-- Table -->
+                                        <canvas class="chart chartjs-render-monitor" id="main-chart" height="300"
+                                                width="1549" style="display: block;"></canvas>
+                                    </div>
+
+                                </div>
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Participated Exams</div>
+                                    <div class="panel-body" style="overflow-x: auto;">
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped" id="participated_exam_table">
+                                            <thead>
+                                            <tr>
+                                                <th>Test Name</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Score</th>
+                                                <th>Position</th>
+                                                <th>Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="exam of user_exam_list">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.userScore+'/'+exam.totalMark }}</th>
+                                                <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th>
+                                                    <form action="{{route('exam-preview')}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="exam_id" :value="exam.id">
+                                                        <button class="btn btn-primary btn-sm"
+                                                                style="padding-left: 12px; padding-right: 14px;" formtarget="_blank"><i
+                                                                class="fa fa-eye"></i> Preview
+                                                        </button>
+                                                    </form>
+
+                                                    <a class="btn btn-primary btn-sm"
+                                                       :href="exam_rank_route+'?exam_id='+exam.id"
+                                                       style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List
+                                                    </a>
+
+                                                    <form action="{{route('user-exam')}}" method="POST">
+                                                        @csrf
+                                                        <input type="text" hidden name="exam_id" :value="exam.id">
+                                                        <input type="text" hidden name="practice" value="1">
+
+                                                        <button class="btn btn-info btn-sm"
+                                                                style="margin-top: 3%;" formtarget="_blank"><i
+                                                                class="fa fa-pencil"></i> Practice
+                                                        </button>
+                                                    </form>
+                                                </th>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="up-coming-exam" class="tab-pane">
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Upcoming Exams</div>
+                                    <div class="panel-body" style="overflow-x: auto;">
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped" id="upcoming-exam-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Test Name</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Type</th>
+                                                <th>Price (BDT)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="exam of user_up_coming_exam_list">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.exam_schedule }}</th>
+                                                <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
+                                                <th>@{{ exam.typeName }}</th>
+                                                <th>@{{ exam.price }}</th>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="panel panel-primary">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">Packages</div>
+                                    <div class="panel-body" style="overflow-x: auto;">
+                                        <!-- Table -->
+                                        <table class="table table-bordered table-striped" id="packages-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Valid From</th>
+                                                <th>Valid Till</th>
+                                                <th>Mock Test</th>
+                                                <th>Model Test</th>
+                                                <th>Mini Test</th>
+                                                <th>Price (BDT)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="exam of user_exam_packages">
+                                                <th>@{{ exam.title }}</th>
+                                                <th>@{{ exam.dateFrom }}</th>
+                                                <th>@{{ exam.dateTo }}</th>
+                                                <th>@{{ exam.mock_test_count }}</th>
+                                                <th>@{{ exam.model_test_count }}</th>
+                                                <th>@{{ exam.mini_test_count }}</th>
+                                                <th>@{{ exam.price }}</th>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {{--                            <div id="tab3" class="tab-pane"></div>--}}
                         </div>
                     </div>
-                    {{--                            <div id="tab3" class="tab-pane"></div>--}}
                 </div>
             </div>
-        </div>
-    </div>
-    </section>
+        </section>
     </div>
 @endsection
 @section('script-lib')
