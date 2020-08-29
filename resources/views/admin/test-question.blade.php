@@ -539,13 +539,13 @@
 
             },
         })
-        @if($errors->any())
-        swal({
-            title: "Fail!",
-            text: "{{$errors->first()}}",
-            icon: "warning",
-            dangerMode: true,
-        });
-        @endif
+{{--        @if($errors->any())--}}
+{{--        swal({--}}
+{{--            title: "Fail!",--}}
+{{--            text: "{{$errors->first()}}",--}}
+{{--            icon: "warning",--}}
+{{--            dangerMode: true,--}}
+{{--        });--}}
+{{--        @endif--}}
     </script>
 @endpush

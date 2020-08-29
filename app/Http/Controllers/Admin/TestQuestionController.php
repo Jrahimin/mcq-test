@@ -98,17 +98,18 @@ class TestQuestionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
+            return redirect()->back()->with('error_message', $validator->errors()->first());
         }
 
         try {
-            Excel::import(new QuestionImport($request), $request->file('question'));
-
-            return redirect()->back()->with('success_message', 'Exam Question has been uploaded successfully');
+            $questionImport = new QuestionImport($request);
+            Excel::import($questionImport, $request->file('question'));
+            $excelStatus = $questionImport->excelStatus();
+            return redirect()->back()->with($excelStatus['message_type'], $excelStatus['message']);
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return redirect()->back()->withErrors(['Something went wrong! please provide a valid file format']);
+            return redirect()->back()->with('error_message', 'Something went wrong! please provide a valid file format');
         }
     }
 

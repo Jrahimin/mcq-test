@@ -14,6 +14,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class QuestionImport implements ToCollection, WithHeadingRow
 {
     protected $request;
+    protected $status;
+
     public function __construct($request)
     {
         $this->request = $request;
@@ -21,10 +23,10 @@ class QuestionImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
-        Log::debug("Question import rows collection : ".json_encode($rows));
+        Log::debug("Question import rows collection : " . json_encode($rows));
 
         DB::beginTransaction();
-
+        $excelHasError = false;
         foreach ($rows as $row) {
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
@@ -41,17 +43,20 @@ class QuestionImport implements ToCollection, WithHeadingRow
 
             if ($validator->fails()) {
                 DB::rollBack();
-                Log::error("Question import error row data : ".json_encode($row));
-
-                return redirect()->back()->withErrors($validator->errors());
+                Log::error("Question import error row data : " . json_encode($row));
+                $this->status['message_type'] = 'error_message';
+                $this->status['message'] = $validator->errors()->first();
+                $excelHasError = true;
+                DB::rollBack();
+                break;
             }
 
 
             $question = TestQuestion::create([
                 'exam_test_id' => $this->request->exam_test_id,
-                'subject_id'   => $this->request->subject_id,
-                'mark'         => $this->request->mark,
-                'title'        => $row['question'],
+                'subject_id' => $this->request->subject_id,
+                'mark' => $this->request->mark,
+                'title' => $row['question'],
             ]);
 
             for ($i = 1; $i < 10; $i++) {
@@ -66,6 +71,15 @@ class QuestionImport implements ToCollection, WithHeadingRow
             }
 
         }
-        DB::commit();
+        if (!$excelHasError) {
+            DB::commit();
+            $this->status['message_type'] = 'success_message';
+            $this->status['message'] = 'Exam Question has been uploaded successfully';
+        }
+    }
+
+    public function excelStatus()
+    {
+        return $this->status;
     }
 }
