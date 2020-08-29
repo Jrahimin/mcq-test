@@ -104,7 +104,7 @@ class TestQuestionController extends Controller
         try {
             Excel::import(new QuestionImport($request), $request->file('question'));
 
-            return redirect()->back()->with(['success_message' => 'Exam Question has been uploaded successfully']);
+            return redirect()->back()->with('success_message', 'Exam Question has been uploaded successfully');
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
