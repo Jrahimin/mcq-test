@@ -44,8 +44,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
             if ($validator->fails()) {
                 DB::rollBack();
                 Log::error("Question import error row data : " . json_encode($row));
-
-                $this->status = ['error_message' => $validator->errors()->first()];
+                $this->status['message_type'] = 'error_message';
+                $this->status['message'] = $validator->errors()->first();
                 $excelHasError = true;
                 DB::rollBack();
                 break;
@@ -73,7 +73,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
         }
         if (!$excelHasError) {
             DB::commit();
-            $this->status = ['success_message' => 'Exam Question has been uploaded successfully'];
+            $this->status['message_type'] = 'success_message';
+            $this->status['message'] = 'Exam Question has been uploaded successfully';
         }
     }
 

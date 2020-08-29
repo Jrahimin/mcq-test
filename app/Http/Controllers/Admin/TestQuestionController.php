@@ -105,10 +105,7 @@ class TestQuestionController extends Controller
             $questionImport = new QuestionImport($request);
             Excel::import($questionImport, $request->file('question'));
             $excelStatus = $questionImport->excelStatus();
-            if (isset($excelStatus['success_message'])) {
-                return redirect()->back()->with('success_message', $excelStatus['success_message']);
-            }
-            return redirect()->back()->with('error_message', $excelStatus['error_message']);
+            return redirect()->back()->with($excelStatus['message_type'], $excelStatus['message']);
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
