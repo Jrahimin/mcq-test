@@ -34,7 +34,7 @@ body{margin-top:20px;
     padding: 30px 40px;
     margin-bottom: 25px;
     border-bottom: 1px solid #d9d9d9;
-    background-color: beige;
+    background-color: #252b3e;
 }
 .page-tabs {
     margin: -25px -20px 30px;
@@ -460,7 +460,7 @@ body{margin-top:20px;
     vertical-align: bottom;
 }
 .media-heading {
-    color: #555555;
+    color: whitesmoke;
     margin-top: 0;
     margin-bottom: 5px;
 }
