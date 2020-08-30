@@ -91,7 +91,7 @@ class UserManagementController extends Controller
     {
         try {
             $user = User::findOrFail($request->id);
-            $user->update($this->generateData($request));
+            $user->update($this->generateData($request, false));
             return $this->successResponse('User stored successfully', $user);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -153,16 +153,47 @@ class UserManagementController extends Controller
         }
     }
 
-    protected function generateData(Request $request)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function passwordReset(Request $request, int $id)
     {
-        return [
+        try {
+            $validation = Validator::make($request->all(), [
+                'password' => 'required|min:6',
+                'password_confirmation' => 'required|same:password',
+            ]);
+            if ($validation->fails()) {
+                return $this->invalidResponse($validation->errors()->first());
+            }
+            if (auth()->user()->type != 1) return $this->unauthorizedResponse('You are not authorized person!');
+
+            $user = User::findOrFail($id)->update(['password' => bcrypt($request->password)]);
+            if ($user)
+                return $this->successResponse('User password has done reset successfully', null);
+                return $this->invalidResponse('User password doesn\'t reset successfully', null);
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    protected function generateData(Request $request, $is_create_request = true)
+    {
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'mobile_no' => $request->mobile_no,
             'address' => $request->address,
             'type' => $request->type ?? UserTypes::ADMIN,
-            'status' => !!$request->status,
-            'password' => bcrypt($request->password),
+            'status' => !!$request->status
         ];
+        if ($is_create_request) {
+            $data['password'] = bcrypt($request->password);
+        }
+        return $data;
     }
 }

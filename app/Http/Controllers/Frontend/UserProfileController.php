@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserProfileController extends Controller
 {
@@ -55,7 +59,7 @@ class UserProfileController extends Controller
                     return $exam;
                 });
             } else {
-                $userExams = $user->examTest()->where('exam_schedule','>=',Carbon::now()->format('Y-m-d H:i:s'))->get();
+                $userExams = $user->examTest()->where('exam_schedule', '>=', Carbon::now()->format('Y-m-d H:i:s'))->get();
             }
 
             return $this->successResponse('User exams fetched', $userExams);
@@ -77,6 +81,37 @@ class UserProfileController extends Controller
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
             return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    public function userPasswordReset(Request $request)
+    {
+        try {
+            $user = auth()->user();
+            $validator = Validator::make($request->all(), [
+                'old_password' => [
+                    'required',
+                    'min:6',
+                    function ($attribute, $value, $fail) use ($user) {
+                        if (!Hash::check($value, $user->password)) {
+                            $fail('Your password was not updated, since the provided current password does not match.');
+                        }
+                    }
+                ],
+                'new_password' => 'required|min:6',
+                'confirm_new_password' => 'required|same:new_password'
+            ]);
+            if ($validator->fails()) {
+                return redirect()->back()->with('error_message', $validator->errors()->first())->withInput();
+            }
+            $user = $user->update(['password' => bcrypt($request->new_password)]);
+            if ($user)
+                return redirect()->route(auth()->user()->type == 4 ? 'user-profile' : 'dashboard')->with('success_message', 'Your password have done reset successfully');
+            return redirect()->back()->with('error_message', 'Something went wrong. Please provide the valid data')->withInput();
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return redirect()->back()->with('error_message', 'Something went wrong. Please provide the valid data')->withInput();
+
         }
     }
 

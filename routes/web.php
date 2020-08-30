@@ -19,7 +19,6 @@ Route::group(['namespace' => 'Frontend'], function () {
         Route::get('make-payment', 'UserPaymentController@index')->name('make-payment');
         Route::post('payment-submit', 'UserPaymentController@paymentSubmit')->name('payment-submit');
 
-
         Route::post('exam/buy', 'UserExamScheduleController@buyExam')->name('buy-exam');
 
         Route::post('user-exam', 'UserMcqTestController@generateExamQuestion')->name('user-exam');
@@ -29,6 +28,7 @@ Route::group(['namespace' => 'Frontend'], function () {
         Route::post('user-exam-list', 'UserProfileController@getUserExams')->name('user-exam-list');
         Route::post('user-pack-list', 'UserProfileController@getUserExamPack')->name('user-pack-list');
         Route::post('user-score-chart', 'UserProfileController@getUserScoreChartData')->name('user-score-chart');
+        Route::put('user-password-reset', 'UserProfileController@userPasswordReset')->name('user-password-reset');
     });
 });
 Route::post('feedback', 'Admin\FeedbackController@store')->name('feedback');
@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
     Route::resource('user-management', 'UserManagementController');
+    Route::put('user-management/password-reset/{id}', 'UserManagementController@passwordReset');
     Route::post('user-management/balance-adjust/{id}', 'UserManagementController@balanceAdjust');
     Route::get('payment-info', 'PaymentInfoController@index')->name('payment-info.index');
     Route::put('payment-info/{id}', 'PaymentInfoController@update')->name('payment-info.update');
