@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\UserTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\Refund;
 use App\Traits\ApiResponseTrait;
 use App\User;
@@ -73,7 +74,7 @@ class UserManagementController extends Controller
         try {
             $userManagement = User::create($this->generateData($request));
 
-            return $this->successResponse('Admin User is added successfully', $userManagement);
+            return $this->successResponse('User Added successfully', $userManagement);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -87,7 +88,7 @@ class UserManagementController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function update(UserStoreRequest $request)
+    public function update(UserUpdateRequest $request)
     {
         try {
             $user = User::findOrFail($request->id);
@@ -145,7 +146,7 @@ class UserManagementController extends Controller
                 'refunded_by' => auth()->user()->id
             ]);
             DB::commit();
-            return $this->successResponse('Balance Adjustment is made. Last Balance: ' . $last_balace, null);
+            return $this->successResponse('Balance Adjustment updated. Last Balance: ' . $last_balace, null);
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
@@ -153,16 +154,51 @@ class UserManagementController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function passwordReset(Request $request, int $id)
+    {
+        try {
+            $validation = Validator::make($request->all(), [
+                'password' => 'required|min:6',
+                'password_confirmation' => 'required|same:password',
+            ]);
+
+            if ($validation->fails()) {
+                return $this->invalidResponse($validation->errors()->first());
+            }
+
+            if (auth()->user()->type != UserTypes::SUPERADMIN)
+                return $this->unauthorizedResponse('You are not authorized to reset password!');
+
+            User::findOrFail($id)->update(['password' => bcrypt($request->password)]);
+
+            return $this->successResponse('User password has been reset successfully', null);
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
     protected function generateData(Request $request)
     {
-        return [
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'mobile_no' => $request->mobile_no,
             'address' => $request->address,
             'type' => $request->type ?? UserTypes::ADMIN,
-            'status' => !!$request->status,
-            'password' => bcrypt($request->password),
+            'status' => !!$request->status
         ];
+
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        return $data;
     }
 }

@@ -37,6 +37,10 @@
                             <small> - Profile</small>
                         </h2>
                         <p class="lead">{{ $userInfo->address }} {{ $userInfo->address ? '|' : '' }} {{ $userInfo->mobile_no }}</p>
+                        <p class="lead">
+                            <a href="javascript:void(0)">Profile Update</a> |
+                            <a href="javascript:void(0)" onclick="passwordResetPersonal()">Password Reset</a>
+                        </p>
 
                     </div>
                 </div>

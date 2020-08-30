@@ -72,6 +72,58 @@ to get the desired effect
     <!-- /.control-sidebar -->
 
     @include('layouts.dashboard.footer')
+    @if(auth()->user())
+        <div class="password_reset_view">
+            <div class="modal fade" id="password_reset_personal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="{{route('user-password-reset')}}" method="POST">
+                            @csrf
+                            @method('put')
+                            <div class="modal-header d-block">
+                                <button type="button" class="close border-0" data-dismiss="modal"
+                                        aria-label="Close"><span
+                                        aria-hidden="true"><i class="fa fa-times-circle text-danger"></i></span>
+                                </button>
+                                <h4 class="modal-title"
+                                    id="exampleModalLabel">Password Reset
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="password" class="control-label">Old Password</label>
+
+                                    <input type="password" class="form-control @error('old_password') is-invalid @enderror"
+                                           value="{{ old('old_password') }}" required name="old_password">
+                                    @error('old_password') <span class="text-danger">{{$message}}</span>@enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm_password" class="control-label">New Password</label>
+                                    <input type="password" class="form-control @error('new_password') is-invalid @enderror"
+                                           value="{{ old('new_password') }}" required name="new_password">
+                                    @error('new_password') <span class="text-danger">{{$message}}</span>@enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm_password" class="control-label">Confirm New Password</label>
+                                    <input type="password"
+                                           class="form-control @error('confirm_new_password') is-invalid @enderror"
+                                           value="{{ old('confirm_new_password') }}" required name="confirm_new_password">
+                                    @error('confirm_new_password') <span class="text-danger">{{$message}}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-key"></i> Change Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </div>
 <!-- ./wrapper -->
 
@@ -136,6 +188,9 @@ to get the desired effect
                 });
         })();
 
+    }
+    function passwordResetPersonal(){
+        $('#password_reset_personal').modal('show');
     }
 </script>
 <!-- DataTables -->

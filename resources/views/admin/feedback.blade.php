@@ -100,7 +100,7 @@
                                 defaultContent: '',
                                 title: 'Title'
                             }, {
-                                className: 'details-control',
+                                className: 'none',
                                 orderable: true,
                                 data: 'message',
                                 name: 'message',
