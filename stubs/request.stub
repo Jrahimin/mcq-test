@@ -3,11 +3,11 @@
 namespace {{ namespace }};
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Traits\ValidationResponseTrait;
+use App\Traits\RequestResponseTrait;
 
 class {{ class }} extends FormRequest
 {
-    use ValidationResponseTrait;
+    use RequestResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      *

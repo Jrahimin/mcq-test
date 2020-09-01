@@ -5,10 +5,9 @@ namespace App\Http\Requests\Admin;
 use App\Traits\RequestResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     use RequestResponseTrait;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,13 +26,13 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $this->id,
+            'id'        => 'required|exists:users,id',
+            'name'      => 'required',
+            'email'     => 'required|email|unique:users,email,'.$this->id,
             'mobile_no' => 'nullable',
-            'address' => 'nullable',
-            'type' => 'nullable|integer',
-            'status' => 'nullable|integer',
-            'password' => 'nullable|min:6',
+            'address'   => 'nullable',
+            'type'      => 'nullable|integer',
+            'status'    => 'nullable|integer',
         ];
     }
 }
