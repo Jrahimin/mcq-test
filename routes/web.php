@@ -73,4 +73,5 @@ Route::group(['prefix' => '', 'namespace' => 'Frontend'], function () {
         return view('frontend.contact-us');
     })->name('contact-us');
 });
+
 Auth::routes();

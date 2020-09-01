@@ -73,7 +73,7 @@ class UserManagementController extends Controller
         try {
             $userManagement = User::create($this->generateData($request));
 
-            return $this->successResponse('Exam pack stored successfully', $userManagement);
+            return $this->successResponse('Admin User is added successfully', $userManagement);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return $this->exceptionResponse($this->exceptionMessage);
@@ -145,7 +145,7 @@ class UserManagementController extends Controller
                 'refunded_by' => auth()->user()->id
             ]);
             DB::commit();
-            return $this->successResponse('Balance Adjustment updated. Last Balance: ' . $last_balace, null);
+            return $this->successResponse('Balance Adjustment is made. Last Balance: ' . $last_balace, null);
         } catch (\Exception $ex) {
             DB::rollBack();
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

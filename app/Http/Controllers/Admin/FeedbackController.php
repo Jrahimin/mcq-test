@@ -51,8 +51,8 @@ class FeedbackController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email',
-                'title' => 'required|string',
-                'message' => 'required|string'
+                'title' => 'required',
+                'message' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -65,7 +65,7 @@ class FeedbackController extends Controller
                 'title' => $request->title,
                 'message' => $request->message,
             ]);
-            return redirect()->route('user-home')->with('success_message', 'Thank you for contact with us');
+            return redirect()->route('user-home')->with('success_message', 'Thanks for your feedback');
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return redirect()->back()->with('error_message', 'Something went wrong. Please provide the valid data')->withInput();
