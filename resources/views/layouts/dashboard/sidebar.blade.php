@@ -15,7 +15,7 @@
                 <img src="{{ secure_asset('frontend/image/admin.png')}}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Super Admin</a>
+                <a href="#" class="d-block">{{auth()->user()->name?? 'Unknown'}}</a>
             </div>
         </div>
 

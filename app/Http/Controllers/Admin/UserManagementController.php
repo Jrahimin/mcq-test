@@ -72,6 +72,7 @@ class UserManagementController extends Controller
     public function store(UserStoreRequest $request)
     {
         try {
+            $request['password'] = '123456';
             $userManagement = User::create($this->generateData($request));
 
             return $this->successResponse('User Added successfully', $userManagement);
