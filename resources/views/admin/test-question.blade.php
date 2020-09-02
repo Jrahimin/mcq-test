@@ -8,6 +8,13 @@
         thead input {
             width: 100% !important;
         }
+
+        @media (max-width: 600px) {
+            #exampleModal {
+                width: 100vw;
+                margin-left: 0 !important;
+            }
+        }
     </style>
 @endpush
 @section('main-content')
@@ -137,7 +144,8 @@
                                                 <a href="javascript:void(0)" class="badge badge-danger m-1" v-if="i>3"
                                                    @click="removeAnswer(i)"><i
                                                         class="fa fa-window-close"></i> Remove</a>
-                                                <a href="javascript:void(0)" class="btn btn-primary btn-sm pull-right m-1"
+                                                <a href="javascript:void(0)"
+                                                   class="btn btn-primary btn-sm pull-right m-1"
                                                    v-if="i === testQuestion.answers.length-1"
                                                    @click="addAnswer()"><i
                                                         class="fa fa-plus"></i> Add Option</a>
@@ -539,13 +547,13 @@
 
             },
         })
-{{--        @if($errors->any())--}}
-{{--        swal({--}}
-{{--            title: "Fail!",--}}
-{{--            text: "{{$errors->first()}}",--}}
-{{--            icon: "warning",--}}
-{{--            dangerMode: true,--}}
-{{--        });--}}
-{{--        @endif--}}
+        {{--        @if($errors->any())--}}
+        {{--        swal({--}}
+        {{--            title: "Fail!",--}}
+        {{--            text: "{{$errors->first()}}",--}}
+        {{--            icon: "warning",--}}
+        {{--            dangerMode: true,--}}
+        {{--        });--}}
+        {{--        @endif--}}
     </script>
 @endpush

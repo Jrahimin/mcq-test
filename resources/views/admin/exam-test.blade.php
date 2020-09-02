@@ -135,10 +135,10 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="price">Type</label>
-                                            <validation-provider rules="required"
-                                                                 v-slot="{ errors }">
-                                                <select type="text" class="form-control" id="type"
-                                                        v-bind:class="errors[0]?'border-danger':''"
+{{--                                            <validation-provider rules="required"--}}
+{{--                                                                 v-slot="{ errors }">--}}
+                                                <select type="text" class="form-control" id="exam_type"
+{{--                                                        :class="errors[0]?'border-danger':''"--}}
                                                         v-model="examTest.type">
                                                     <option value="">Select Type</option>
                                                     <option value="{{ \App\Enums\ExamTypes::MODELTEST }}">MODEL TEST
@@ -148,7 +148,7 @@
                                                     <option value="{{ \App\Enums\ExamTypes::MINITEST }}">MINI TEST
                                                     </option>
                                                 </select>
-                                            </validation-provider>
+{{--                                            </validation-provider>--}}
                                         </div>
                                     </div>
                                     <div class="col-md-4">
