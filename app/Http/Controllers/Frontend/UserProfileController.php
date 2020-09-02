@@ -101,13 +101,15 @@ class UserProfileController extends Controller
                 'new_password' => 'required|min:6',
                 'confirm_new_password' => 'required|same:new_password'
             ]);
+
             if ($validator->fails()) {
                 return redirect()->back()->with('error_message', $validator->errors()->first())->withInput();
             }
-            $user = $user->update(['password' => bcrypt($request->new_password)]);
-            if ($user)
-                return redirect()->route(auth()->user()->type == 4 ? 'user-profile' : 'dashboard')->with('success_message', 'Your password have done reset successfully');
-            return redirect()->back()->with('error_message', 'Something went wrong. Please provide the valid data')->withInput();
+
+            $user->update(['password' => bcrypt($request->new_password)]);
+
+            return redirect()->route(auth()->user()->type == 4 ? 'user-profile' : 'dashboard')->with('success_message', 'Your password have done reset successfully');
+
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return redirect()->back()->with('error_message', 'Something went wrong. Please provide the valid data')->withInput();

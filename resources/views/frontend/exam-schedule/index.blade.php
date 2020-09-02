@@ -35,6 +35,9 @@
             -moz-transition: all 1s ease 0s;
             -o-transition: all 1s ease 0s;
         }
+        @media (max-width: 677px) {
+
+        }
     </style>
 @endpush
 @section('main-section')

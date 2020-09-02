@@ -92,7 +92,7 @@ class UserManagementController extends Controller
     {
         try {
             $user = User::findOrFail($request->id);
-            $user->update($this->generateData($request, false));
+            $user->update($this->generateData($request));
             return $this->successResponse('User stored successfully', $user);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
