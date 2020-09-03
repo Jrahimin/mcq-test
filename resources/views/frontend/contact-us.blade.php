@@ -22,7 +22,7 @@
                 <div class="pagebanner-content">
                     <h3>Contact us</h3>
                     <ol class="breadcrumb">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('user-home') }}">Home</a></li>
                         <li>Contact us</li>
                     </ol>
                 </div>
@@ -92,14 +92,15 @@
                 <div class="container">
                     <div class="col-md-4 col-sm-4 col-xs-6 contactinfo-box">
                         <span class="icon icon-Pointer"></span>
-                        <h3>Where We Are?</h3>
-                        <p>Chittagong</p>
-                        <a href="#" title="MORE ABOUT US ">MORE ABOUT US </a>
+                        <h3>You may visit</h3>
+                        <p>Check out</p>
+                        <a href="https://www.facebook.com/A2BCtg" title="Facebook Page" target="_blank"><i class="fa fa-facebook" style="color: green"></i> Page</a> |
+                        <a href="https://www.facebook.com/groups/934361316674807" title="Facebook Page" target="_blank"><i class="fa fa-facebook" style="color: green"></i> Group </a>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-6 contactinfo-box">
                         <span class="icon icon-Phone2"></span>
                         <h3>Give us a Call</h3>
-                        <p>Feel free to Contact for asking any quer</p>
+                        <p>Feel free to Contact</p>
                         <a href="tel:01816804737" title="01816804737">01816804737</a>
                     </div>
                     {{--<div class="col-md-3 col-sm-3 col-xs-6 contactinfo-box">

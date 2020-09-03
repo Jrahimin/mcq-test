@@ -1,8 +1,25 @@
 <?php
 
+use App\Models\PaymentInfo;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
+    $todayInit = Carbon::now()->subDays(6)->format('Y-m-d').' 00:00:00';
+    $todayEnd = Carbon::now()->format('Y-m-d').' 23:59:59';
+
+    //whereBetween('created_at', [$todayInit, $todayEnd])->
+    $paymentData = PaymentInfo::where('status', 1)->get()->groupBy(function($date) {
+        return Carbon::parse($date->created_at)->format('Y-m-d');
+    });
+
+    foreach ($paymentData as $date=>$payment)
+    {
+        dd($date);
+    }
+
+    dd($paymentData);
+
     return "this is test";
 });
 
@@ -39,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'blockUser']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::post('payment-chart', 'DashboardController@getPaymentChartData')->name('payment-chart');
     Route::resource('exam-test', 'ExamTestController');
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
