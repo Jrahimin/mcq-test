@@ -28,6 +28,10 @@ class QuestionImport implements ToCollection, WithHeadingRow
         DB::beginTransaction();
         $excelHasError = false;
         foreach ($rows as $row) {
+
+            if(!$row->question)
+                continue;
+
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
                 'option_1' => 'required',
