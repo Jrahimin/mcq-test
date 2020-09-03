@@ -65,11 +65,10 @@ class ExamTestController extends Controller
             $examTest = ExamTest::create($this->dataPrepare($request));
 
             // if exam pack belongs to user. new exam will be assigned to the users.
-            if($request->exam_pack_id){
+            if ($request->exam_pack_id) {
                 $examPack = ExamPack::findOrFail($request->exam_pack_id);
 
-                foreach ($examPack->user as $user)
-                {
+                foreach ($examPack->user as $user) {
                     $user->examTest()->attach($examTest->id, [
                         'enrolment_price' => $examTest->price,
                         'enrolment_date' => $examTest->exam_schedule,
@@ -121,6 +120,26 @@ class ExamTestController extends Controller
         try {
             $examTest = ExamTest::find($id)->delete();
             if ($examTest) return $this->successResponse('Exam test deleted successfully', null);
+            return $this->invalidResponse($this->exceptionMessage);
+        } catch (\Exception $ex) {
+            Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
+            return $this->exceptionResponse($this->exceptionMessage);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function deleteExamQuestions($id)
+    {
+        try {
+            $examTest = ExamTest::find($id);
+            if ($examTest->questions()->count()<=0) return $this->invalidResponse('There is no exam associated with this exam test');
+            $examTest->questions()->delete();
+            if ($examTest) return $this->successResponse('Exam questions deleted successfully', null);
             return $this->invalidResponse($this->exceptionMessage);
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());

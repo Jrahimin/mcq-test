@@ -5,16 +5,15 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    $todayInit = Carbon::now()->subDays(6)->format('Y-m-d').' 00:00:00';
-    $todayEnd = Carbon::now()->format('Y-m-d').' 23:59:59';
+    $todayInit = Carbon::now()->subDays(6)->format('Y-m-d') . ' 00:00:00';
+    $todayEnd = Carbon::now()->format('Y-m-d') . ' 23:59:59';
 
     //whereBetween('created_at', [$todayInit, $todayEnd])->
-    $paymentData = PaymentInfo::where('status', 1)->get()->groupBy(function($date) {
+    $paymentData = PaymentInfo::where('status', 1)->get()->groupBy(function ($date) {
         return Carbon::parse($date->created_at)->format('Y-m-d');
     });
 
-    foreach ($paymentData as $date=>$payment)
-    {
+    foreach ($paymentData as $date => $payment) {
         dd($date);
     }
 
@@ -58,6 +57,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::post('payment-chart', 'DashboardController@getPaymentChartData')->name('payment-chart');
     Route::resource('exam-test', 'ExamTestController');
+    Route::delete('exam-test/{id}/questions', 'ExamTestController@deleteExamQuestions');
     Route::resource('test-question', 'TestQuestionController');
     Route::resource('exam-pack', 'ExamPackController');
     Route::resource('user-management', 'UserManagementController');
