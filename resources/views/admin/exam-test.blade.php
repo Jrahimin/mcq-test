@@ -369,13 +369,13 @@
                                 orderable: true,
                                 data: 'id', render(data, row, type) {
                                     return `
-                                            <div class='btn-group'>
+
                                                 <button class='badge badge-info btn btn-info edit_discount'> <i class="fa fa-edit"></i> Edit</button>
                                                 <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-trash"></i> Delete</button>
                                                 <a href="{{route('exam-ranking')}}?exam_id=${data}" class='badge badge-info btn btn-primary'> <i class="fa fa-list"></i> Rank</a>
-                                                <form method="post" action="{{url('exam-preview')}}"><input type="text" hidden name="exam_id" value="${data}"> @csrf <button type="submit" class='badge badge-info btn btn-primary'> <i class="fa fa-street-view"></i> Preview</button></form>
+                                                <form method="post" action="{{url('exam-preview')}}"><input type="text" hidden name="exam_id" value="${data}"> @csrf <button type="submit" class='badge badge-info btn btn-info'> <i class="fa fa-street-view"></i> Preview</button></form>
                                                 <button class='badge badge-danger btn btn-danger delete_exam'> <i class="fa fa-trash"></i> Question</button>
-                                            </div>
+
                                             `;
                                 },
                                 defaultContent: 'Action',
