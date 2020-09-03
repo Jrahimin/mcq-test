@@ -137,7 +137,7 @@ class ExamTestController extends Controller
     {
         try {
             $examTest = ExamTest::find($id);
-            if ($examTest->questions()->count()<=0) return $this->invalidResponse('There is no exam associated with this exam test');
+            if ($examTest->questions()->count()<=0) return $this->invalidResponse('There is no questions associated with this exam test');
             $examTest->questions()->delete();
             if ($examTest) return $this->successResponse('Exam questions deleted successfully', null);
             return $this->invalidResponse($this->exceptionMessage);
