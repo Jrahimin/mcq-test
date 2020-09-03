@@ -29,7 +29,8 @@ class QuestionImport implements ToCollection, WithHeadingRow
         $excelHasError = false;
         foreach ($rows as $row) {
 
-            if(!$row->question)
+            $questionData = $row->toArray()['question'];
+            if(!$questionData || $questionData == ' ')
                 continue;
 
             $validator = Validator::make($row->toArray(), [
@@ -51,7 +52,6 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 $this->status['message_type'] = 'error_message';
                 $this->status['message'] = $validator->errors()->first();
                 $excelHasError = true;
-                DB::rollBack();
                 break;
             }
 
