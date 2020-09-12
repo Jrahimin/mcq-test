@@ -1,30 +1,20 @@
 <?php
 
-use App\Models\PaymentInfo;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    $todayInit = Carbon::now()->subDays(6)->format('Y-m-d') . ' 00:00:00';
-    $todayEnd = Carbon::now()->format('Y-m-d') . ' 23:59:59';
-
-    //whereBetween('created_at', [$todayInit, $todayEnd])->
-    $paymentData = PaymentInfo::where('status', 1)->get()->groupBy(function ($date) {
-        return Carbon::parse($date->created_at)->format('Y-m-d');
-    });
-
-    foreach ($paymentData as $date => $payment) {
-        dd($date);
-    }
-
-    dd($paymentData);
-
+    dd(url('login/facebook'));
     return "this is test";
 });
 
 Auth::routes();
-Route::group(['namespace' => 'Frontend'], function () {
 
+Route::group(['namespace' => 'Auth', 'prefix' => 'login'], function () {
+    Route::get('facebook', 'OauthLoginController@redirectFb')->name('fb-redirect');
+    Route::get('facebook/callback', 'OauthLoginController@callbackFb')->name('fb-callback');
+});
+
+Route::group(['namespace' => 'Frontend'], function () {
     Route::get('/', 'UserHomeController@index')->name('user-home');
     Route::get('packages', 'UserExamPackController@index')->name('packages');
     Route::get('package/{id}', 'UserExamPackController@detail')->name('exam-pack-detail');

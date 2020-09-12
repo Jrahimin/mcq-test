@@ -104,6 +104,14 @@
                                     </div>
                                 </div>
                             </form>
+                            <div class="col-md-10">
+                                <form method="GET" action="{{ route('fb-redirect') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">
+                                        <span><i class="fa fa-facebook"> {{ __('Login With Facebook') }}</i></span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
