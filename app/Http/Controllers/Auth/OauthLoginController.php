@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserTypes;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class OauthLoginController extends Controller
@@ -32,19 +34,24 @@ class OauthLoginController extends Controller
 
             Log::info("oauth user : ".json_encode($user));
 
-            dd($user);
-
-            $existingUser = User::where('facebook_id', $user->id)->first();
+            $existingUser = User::where('fb_id', $user->id)->first();
             if ($existingUser) {
                 Auth::login($existingUser);
-                return redirect()->route('user-home');
             } else {
-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'fb_id' => $user->id]);
-                Auth::login($newUser);
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => bcrypt(Str::random(6)),
+                    'type' => UserTypes::USER,
+                    'image_url' => $user->avatar_original,
+                    'fb_id' => $user->id,
+                    'status' => 1
+                ]);
 
-                return redirect()->back();
+                Auth::login($newUser);
             }
 
+            return redirect()->route('user-home');
             // $user->token;
         }
         catch (\Exception $ex) {

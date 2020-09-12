@@ -27,10 +27,14 @@
                         {{--<span class="fa fa-5x fa-user"></span>--}}
                     </div>
                     <div class="media-body va-m">
-                        @if($userInfo->gender == 'f')
-                            <img width="120px;" src="{{asset('frontend/user-end/images/user-f.png')}}" alt="{{ $userInfo->name }}"/>
+                        @if($userInfo->image_url)
+                            <img width="120px;" src="{{ $userInfo->image_url }}" alt="{{ $userInfo->name }}"/>
                         @else
-                            <img width="120px;" src="{{asset('frontend/user-end/images/user-m.png')}}" alt="{{ $userInfo->name }}"/>
+                            @if($userInfo->gender == 'f')
+                                <img width="120px;" src="{{asset('frontend/user-end/images/user-f.png')}}" alt="{{ $userInfo->name }}"/>
+                            @else
+                                <img width="120px;" src="{{asset('frontend/user-end/images/user-m.png')}}" alt="{{ $userInfo->name }}"/>
+                            @endif
                         @endif
 
                         <h2 class="media-heading">{{ $userInfo->name }}
