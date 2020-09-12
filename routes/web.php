@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    dd(url('login/facebook'));
     return "this is test";
 });
 

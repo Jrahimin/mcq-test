@@ -33,7 +33,7 @@ return [
     'facebook' => [
         'client_id' => "318482052763329",
         'client_secret' => "3d3999e0d3adb1094fcf3e14dd02a72b",
-        'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/facebook',
+        'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/facebook/callback',
     ],
 
 ];
