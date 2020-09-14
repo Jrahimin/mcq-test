@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.dashboard-layout')
 @section('title',$title??'Dynamic')
 @section('style-lib')
-
+    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote.css')}}">
 @endsection
 @push('custom-css')
     <style type="text/css">
@@ -14,6 +14,10 @@
                 width: 100vw;
                 margin-left: 0 !important;
             }
+        }
+
+        .form-check {
+            padding-top: 0 !important;
         }
     </style>
 @endpush
@@ -85,24 +89,34 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="title">Question</label>
-                                                <validation-provider rules="required"
-                                                                     v-slot="{ errors }">
-                                                    <input type="text" class="form-control" id="title"
-                                                           placeholder="Enter Question"
-                                                           v-bind:class="errors[0]?'border-danger':''"
-                                                           v-model="testQuestion.title">
-                                                </validation-provider>
+                                                <label for="question">Question</label>
+                                                <div class="mb-3">
+                                                    <textarea id="question" class="textarea form-control"
+                                                              placeholder="Place answer explanation" style="width: 100%; height: 200px; font-size: 14px;
+                                                             line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;">
+                                                    </textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                                                       v-model="testQuestion.status">
-                                                <label class="form-check-label" for="exampleCheck1">Is Active</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="answer_explanation">Answer Explanation</label>
+                                                <div class="mb-3">
+                                                    <textarea id="answer_explanation" class="textarea form-control"
+                                                              placeholder="Place answer explanation" style="width: 100%; height: 200px; font-size: 14px;
+                                                             line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;">
+                                                    </textarea>
+                                                </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                                   v-model="testQuestion.status">
+                                            <label class="form-check-label" for="exampleCheck1">Is Active</label>
                                         </div>
                                     </div>
                                     <hr>
@@ -122,7 +136,7 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style="margin-top: 2.50rem;">
                                             <div class="form-check">
                                                 <input type="checkbox"
                                                        class="form-check-input" id="is_correct"
@@ -130,7 +144,7 @@
                                                 <label class="form-check-label" for="exam_schedule">IS Correct</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style="margin-top: 2.50rem;">
                                             <div class="form-check">
                                                 <input type="checkbox"
                                                        class="form-check-input" id="status"
@@ -261,7 +275,7 @@
     <!-- /.container-fluid -->
 @endsection
 @section('script-lib')
-
+    <script src="{{asset('plugins/summernote/summernote.min.js')}}"></script>
 @endsection
 @push('custom-js')
     <script defer type="text/javascript">
@@ -350,6 +364,14 @@
                                 name: 'title',
                                 defaultContent: '',
                                 title: 'Title'
+                            },
+                            {
+                                className: 'none',
+                                orderable: false,
+                                data: 'description',
+                                name: 'description',
+                                defaultContent: '',
+                                title: 'Description'
                             }, {
                                 className: 'details-control',
                                 orderable: true,
@@ -390,6 +412,8 @@
                 ajaxCall: window.ajaxCall,
                 responseProcess: window.responseProcess,
                 submit() {
+                    this.testQuestion.title = $("#question").summernote('code');
+                    this.testQuestion.description = $('#answer_explanation').summernote('code');
                     this.error = undefined;
                     let url = 'test-question';
                     let method = 'post';
@@ -438,6 +462,7 @@
                     }, true)
                 },
                 reset() {
+                    setTimeout(() => $('.textarea').summernote('reset'), 100);
                     this.mode = undefined;
                     this.testQuestion = {
                         exam_test_id: '',
@@ -518,6 +543,10 @@
                     that.dataTableData = that.dataTable.rows().data();
                     that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
                     that.testQuestion = that.dataTableData[that.selectedIndex];
+                    setTimeout(() => {
+                        $("#answer_explanation").summernote('code', that.dataTableData[that.selectedIndex].description);
+                        $("#question").summernote('code', that.dataTableData[that.selectedIndex].title);
+                    }, 500);
                 });
 
                 $('#testQuestion-table tbody').on('click', '.delete_discount', function () {

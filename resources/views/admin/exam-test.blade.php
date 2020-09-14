@@ -1,7 +1,6 @@
 @extends('layouts.dashboard.dashboard-layout')
 @section('title',$title??'Dynamic')
 @section('style-lib')
-
 @endsection
 @push('custom-css')
     <style type="text/css">
@@ -135,20 +134,20 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="price">Type</label>
-{{--                                            <validation-provider rules="required"--}}
-{{--                                                                 v-slot="{ errors }">--}}
-                                                <select type="text" class="form-control" id="exam_type"
-{{--                                                        :class="errors[0]?'border-danger':''"--}}
-                                                        v-model="examTest.type">
-                                                    <option value="">Select Type</option>
-                                                    <option value="{{ \App\Enums\ExamTypes::MODELTEST }}">MODEL TEST
-                                                    </option>
-                                                    <option value="{{ \App\Enums\ExamTypes::MOCKTEST }}">MOCK TEST
-                                                    </option>
-                                                    <option value="{{ \App\Enums\ExamTypes::MINITEST }}">MINI TEST
-                                                    </option>
-                                                </select>
-{{--                                            </validation-provider>--}}
+                                            {{--                                            <validation-provider rules="required"--}}
+                                            {{--                                                                 v-slot="{ errors }">--}}
+                                            <select type="text" class="form-control" id="exam_type"
+                                                    {{--                                                        :class="errors[0]?'border-danger':''"--}}
+                                                    v-model="examTest.type">
+                                                <option value="">Select Type</option>
+                                                <option value="{{ \App\Enums\ExamTypes::MODELTEST }}">MODEL TEST
+                                                </option>
+                                                <option value="{{ \App\Enums\ExamTypes::MOCKTEST }}">MOCK TEST
+                                                </option>
+                                                <option value="{{ \App\Enums\ExamTypes::MINITEST }}">MINI TEST
+                                                </option>
+                                            </select>
+                                            {{--                                            </validation-provider>--}}
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -213,7 +212,6 @@
     <!-- /.container-fluid -->
 @endsection
 @section('script-lib')
-
 @endsection
 @push('custom-js')
     <script defer type="text/javascript">
@@ -510,7 +508,7 @@
                             that.state = undefined;
                             that.dataTableData = that.dataTable.rows().data();
                             that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
-                            that.ajaxCall('exam-test/' + that.dataTableData[that.selectedIndex].id+'/questions', {}, 'delete', (data, code) => {
+                            that.ajaxCall('exam-test/' + that.dataTableData[that.selectedIndex].id + '/questions', {}, 'delete', (data, code) => {
                             }, true);
                         }
                     });

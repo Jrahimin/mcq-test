@@ -43,7 +43,7 @@ class TestQuestionController extends Controller
 
             if ($request->ajax()) {
                 $testQuestions = TestQuestion::with('answers')->get();
-                return Datatables::of(TestQuestionResource::collection($testQuestions))->make(true);
+                return Datatables::of(TestQuestionResource::collection($testQuestions))->rawColumns(['title', 'description'])->make(true);
             }
             $examTests = ExamTest::select('title', 'id')->where('status', 1)->get();
             $subjects = Subject::select('name', 'id')->where('status', 1)->get();
@@ -69,6 +69,7 @@ class TestQuestionController extends Controller
                 'exam_test_id' => $request->exam_test_id,
                 'subject_id' => $request->subject_id,
                 'title' => $request->title,
+                'description' => $request->description,
                 'mark' => $request->mark,
                 'status' => !!$request->status,
             ]);
@@ -128,6 +129,7 @@ class TestQuestionController extends Controller
                 'exam_test_id' => $request->exam_test_id,
                 'subject_id' => $request->subject_id,
                 'title' => $request->title,
+                'description' => $request->description,
                 'mark' => $request->mark,
                 'status' => !!$request->status,
             ]);
