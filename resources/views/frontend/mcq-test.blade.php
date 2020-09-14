@@ -392,6 +392,17 @@
         .btn-primary, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
             background-color: #5b636ba8;
         }
+
+        ._question_m_p {
+            margin: 1% 4%;
+        }
+
+        ._question_m_p_q {
+            margin: 1% 4%;
+            background: #e6e8e682;
+            box-shadow: 1px 1px 5px 5px #abb5b1;
+            padding: 2%;
+        }
     </style>
 @endpush
 @section('main-section')
@@ -431,6 +442,7 @@
                 is_exam_completed: false,
                 question_list_response: [],
                 exam_info_response: {},
+                is_practice: `{!! $is_practice !!}`
             },
             methods: {
                 ajaxCall: window.ajaxCall,
@@ -457,6 +469,7 @@
                 answerSubmit() {
                     this.ajaxCall('{{ route('user-exam-submit') }}', {
                         exam_id: "{{$exam_test_id}}",
+                        "is_practice" : this.is_practice,
                         "answers": this.answers,
                     }, 'post', (data, code) => {
                         if (code === 200) {
@@ -490,7 +503,7 @@
                 }
             },
             mounted() {
-                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {
+                this.ajaxCall('{{ route('user-exam') }}', {exam_id: "{{$exam_test_id}}", "is_practice" : this.is_practice}, 'post', (data, code) => {
                     if (code === 200) {
                         this.questions = data.questionList ? data.questionList.map(el => {
                             el.options = el ? el.options.map(option => {
@@ -499,9 +512,11 @@
                             }) : [];
                             return el;
                         }) : [];
-                        this.answers.push({
-                            question_id: this.questions[0].question_id,
-                            option_id: '',
+                        this.questions.forEach(question => {
+                            this.answers.push({
+                                question_id: question.question_id,
+                                option_id: '',
+                            });
                         });
                         this.secLeft = data.examInfo.duration_sec;
                         this.second = data.examInfo.duration_sec;
@@ -512,14 +527,19 @@
                     } else {
                         sweetAlert({
                             title: "Fail",
-                            text: "Sorry! You have already participated in this exam.",
+                            text: "Sorry! You have already participated in this exam.", // TODO Error message set
                             icon: "warning",
                             buttons: true,
                             dangerMode: true,
-                        }).then(() => window.location.href = '/exam-schedule');
+                        }).then(() => window.location.href = "{{route('exam-schedule')}}");
                     }
                 }, false);
             },
+            computed: {
+                currentPageData: (index) => {
+                    return this.questions.slice(index);
+                }
+            }
         })
     </script>
 @endpush

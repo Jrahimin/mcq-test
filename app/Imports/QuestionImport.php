@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\TestQuestion;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -13,6 +14,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class QuestionImport implements ToCollection, WithHeadingRow
 {
     protected $request;
+    protected $status;
+
     public function __construct($request)
     {
         $this->request = $request;
@@ -20,7 +23,16 @@ class QuestionImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
+        Log::debug("Question import rows collection : " . json_encode($rows));
+
+        DB::beginTransaction();
+        $excelHasError = false;
         foreach ($rows as $row) {
+
+            $questionData = $row->toArray()['question'];
+            if(!$questionData || $questionData == ' ')
+                continue;
+
             $validator = Validator::make($row->toArray(), [
                 'question' => 'required',
                 'option_1' => 'required',
@@ -35,20 +47,24 @@ class QuestionImport implements ToCollection, WithHeadingRow
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator->errors());
+                DB::rollBack();
+                Log::error("Question import error row data : " . json_encode($row));
+                $this->status['message_type'] = 'error_message';
+                $this->status['message'] = $validator->errors()->first();
+                $excelHasError = true;
+                break;
             }
 
-            DB::beginTransaction();
 
             $question = TestQuestion::create([
                 'exam_test_id' => $this->request->exam_test_id,
-                'subject_id'   => $this->request->subject_id,
-                'mark'         => $this->request->mark,
-                'title'        => $row['question'],
+                'subject_id' => $this->request->subject_id,
+                'mark' => $this->request->mark,
+                'title' => $row['question'],
             ]);
 
-            for ($i = 1; $i < 6; $i++) {
-                if (!$row['option_' . $i])
+            for ($i = 1; $i < 10; $i++) {
+                if (!isset($row['option_' . $i]) || $row['option_' . $i] == '')
                     break;
 
                 Answer::create([
@@ -58,7 +74,16 @@ class QuestionImport implements ToCollection, WithHeadingRow
                 ]);
             }
 
-            DB::commit();
         }
+        if (!$excelHasError) {
+            DB::commit();
+            $this->status['message_type'] = 'success_message';
+            $this->status['message'] = 'Exam Question has been uploaded successfully';
+        }
+    }
+
+    public function excelStatus()
+    {
+        return $this->status;
     }
 }

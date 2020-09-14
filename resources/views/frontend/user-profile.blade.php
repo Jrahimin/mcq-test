@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/user-end/css/user_profile.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/chart.js/Chart.min.css') }}">
     <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 @endsection
 @push('custom-css')
     <style>
@@ -15,22 +16,32 @@
 
 @section('main-section')
     <div class="container-fluid" id="user_profile">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <section id="content" class="container">
             <!-- Begin .page-heading -->
             <div class="page-heading">
                 <div class="media clearfix">
-                    <div class="media-left pr30">
-                        {{--<a href="#">
-                            <img class="media-object mw150" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
-                        </a>--}}
-                        <span class="fa fa-5x fa-user"></span>
-                    </div>
                     <div class="media-body va-m">
+                        @if($userInfo->image_url)
+                            <img width="120px;" src="{{ $userInfo->image_url }}" alt="{{ $userInfo->name }}"/>
+                        @else
+                            @if($userInfo->gender == 'f')
+                                <img width="120px;" src="{{asset('frontend/user-end/images/user-f.png')}}" alt="{{ $userInfo->name }}"/>
+                            @else
+                                <img width="120px;" src="{{asset('frontend/user-end/images/user-m.png')}}" alt="{{ $userInfo->name }}"/>
+                            @endif
+                        @endif
+
                         <h2 class="media-heading">{{ $userInfo->name }}
                             <small> - Profile</small>
                         </h2>
-                        <p class="lead">{{ $userInfo->address }} | {{ $userInfo->mobile_no }}</p>
+                        <p class="lead">{{ $userInfo->address }} {{ $userInfo->address ? '|' : '' }} {{ $userInfo->mobile_no }}</p>
+                        <p class="lead">
+                            {{--<a href="javascript:void(0)">Profile Update</a>--}}
+                            @if(!$userInfo->fb_id && !$userInfo->google_id)
+                                | <a href="javascript:void(0)" onclick="passwordResetPersonal()">Password Reset</a>
+                            @endif
+                        </p>
+
                     </div>
                 </div>
             </div>
@@ -160,16 +171,28 @@
                                                 <th>
                                                     <form action="{{route('exam-preview')}}" method="POST">
                                                         @csrf
-                                                        <input type="text" name="exam_id" :value="exam.id" hidden>
+                                                        <input type="hidden" name="exam_id" :value="exam.id">
                                                         <button class="btn btn-primary btn-sm"
-                                                                style="padding-left: 12px; padding-right: 14px;"><i
+                                                                style="padding-left: 12px; padding-right: 14px;" formtarget="_blank"><i
                                                                 class="fa fa-eye"></i> Preview
                                                         </button>
                                                     </form>
 
                                                     <a class="btn btn-primary btn-sm"
                                                        :href="exam_rank_route+'?exam_id='+exam.id"
-                                                       style="margin-top: 3%"><i class="fa fa-list"></i> Rank List</a>
+                                                       style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List
+                                                    </a>
+
+                                                    <form action="{{route('user-exam')}}" method="POST">
+                                                        @csrf
+                                                        <input type="text" hidden name="exam_id" :value="exam.id">
+                                                        <input type="text" hidden name="practice" value="1">
+
+                                                        <button class="btn btn-info btn-sm"
+                                                                style="margin-top: 3%;" formtarget="_blank"><i
+                                                                class="fa fa-pencil"></i> Practice
+                                                        </button>
+                                                    </form>
                                                 </th>
                                             </tr>
                                             </tbody>

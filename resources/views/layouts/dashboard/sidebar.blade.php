@@ -15,7 +15,7 @@
                 <img src="{{ secure_asset('frontend/image/admin.png')}}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Super Admin</a>
+                <a href="#" class="d-block">{{auth()->user()->name?? 'Unknown'}}</a>
             </div>
         </div>
 
@@ -46,6 +46,13 @@
                     <ul class="nav nav-treeview"
                         style="{{request()->is(['exam-pack','exam-test','test-question'])?'display:block;':''}}">
                         <li class="nav-item">
+                            <a href="{{secure_url(route('exam-pack.index'))}}"
+                               class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
+                                <i class="far fa-question nav-icon"></i>
+                                <p>Exam Package</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{secure_url(route('exam-test.index'))}}"
                                class="nav-link {{ request()->is('exam-test') ? 'active' : '' }}">
                                 <i class="far fa-book-open nav-icon"></i>
@@ -57,13 +64,6 @@
                                class="nav-link {{ request()->is('test-question') ? 'active' : '' }}">
                                 <i class="far fa-question nav-icon"></i>
                                 <p>Test Question</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{secure_url(route('exam-pack.index'))}}"
-                               class="nav-link {{ request()->is('exam-pack') ? 'active' : '' }}">
-                                <i class="far fa-question nav-icon"></i>
-                                <p>Exam Package</p>
                             </a>
                         </li>
                     </ul>
@@ -94,6 +94,15 @@
                         <i class="nav-icon fas fa-chart-area"></i>
                         <p>
                             Payment Info
+                            {{--<span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{secure_url(route('feedback-list'))}}" class="nav-link {{ request()->is('feedback-list') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-area"></i>
+                        <p>
+                            Feedback
                             {{--<span class="right badge badge-danger">New</span>--}}
                         </p>
                     </a>

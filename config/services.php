@@ -30,4 +30,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'client_id' => "318482052763329",
+        'client_secret' => "3d3999e0d3adb1094fcf3e14dd02a72b",
+        'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/facebook/callback',
+    ],
+
+    'google' => [
+        'client_id' => "327716097335-4ln0fdcc14musofa1q8fung20qedbsu1.apps.googleusercontent.com",
+        'client_secret' => "IvpvqVGBVG_NKGopmAgTyWaP",
+        'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/google/callback',
+    ],
+
 ];

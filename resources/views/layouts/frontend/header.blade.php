@@ -17,10 +17,10 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a title="{{config('app.name')}}" href="index-2.html" class="navbar-brand"><img
-                                    width="60px;" src="{{asset('frontend/user-end/images/logo.png')}}"
-                                    alt="{{config('app.name')}}"/>{{config('app.name')}} <span>Education of Best</span></a>
-                            <a href="index-2.html" class="mobile-logo" title="{{config('app.name')}}">
+                            <a title="{{config('app.name')}}" href="{{route('user-home')}}" class="navbar-brand">
+                                <img width="60px;" src="{{asset('frontend/user-end/images/logo.png')}}" alt="{{config('app.name')}}"/>
+                                {{config('app.name')}} <span>Education of Best</span></a>
+                            <a href="{{route('user-home')}}" class="mobile-logo" title="{{config('app.name')}}">
                                 <h3>{{config('app.name')}}</h3></a>
                         </div>
                     </div>
@@ -30,7 +30,9 @@
                                 <li><a title="Home" href="{{route('user-home')}}">Home</a></li>
                                 <li><a title="Packages" href="{{route('packages')}}">Packages</a></li>
                                 <li><a title="Event" href="{{route('exam-schedule')}}">Exam Schedule</a></li>
-                                <li><a title="Payment" href="{{route('make-payment')}}">Recharge</a></li>
+                                @if(auth()->check())
+                                    <li><a title="Payment" href="{{route('make-payment')}}">Recharge</a></li>
+                                @endif
                                 <li><a title="About" href="{{route('about')}}">About</a></li>
                                 <li><a title="Contact" href="{{route('contact-us')}}">Contact</a></li>
                                 {{--                                <li class="dropdown active">--}}

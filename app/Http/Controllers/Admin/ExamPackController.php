@@ -28,6 +28,7 @@ class ExamPackController extends Controller
         $this->data['path'] = 'Exam-Pack';
         $this->data['title'] = 'Exam Pack';
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +39,7 @@ class ExamPackController extends Controller
         try {
             if ($request->wantsJson()) {
                 $examPacks = ExamPack::latest()->get();
-                return Datatables::of($examPacks)->make(true);
+                return Datatables::of($examPacks)->rawColumns(['description'])->make(true);
             }
             $data = $this->data;
             $data['examTests'] = ExamTest::select('title', 'id')->where('status', 1)->get();
@@ -111,8 +112,9 @@ class ExamPackController extends Controller
             'mock_test_count' => $request->mock_test_count,
             'model_test_count' => $request->model_test_count,
             'price' => $request->price,
-            'from_date' => $request->from_date?Carbon::parse($request->from_date)->format('Y-m-d H:i:s'):'',
-            'to_date' => $request->to_date?Carbon::parse($request->to_date)->format('Y-m-d H:i:s'):'',
+            'description' => $request->description,
+            'from_date' => $request->from_date ? Carbon::parse($request->from_date)->format('Y-m-d H:i:s') : '',
+            'to_date' => $request->to_date ? Carbon::parse($request->to_date)->format('Y-m-d H:i:s') : '',
             'status' => $request->status,
         ];
     }

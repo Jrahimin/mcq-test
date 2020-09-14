@@ -29,11 +29,14 @@
             right: 48px;
             position: absolute;
             padding-top: 10px;
-            margin-top: 20px;
+            margin-top: 25px;
             transition: all 1s ease 0s;
             -webkit-transition: all 1s ease 0s;
             -moz-transition: all 1s ease 0s;
             -o-transition: all 1s ease 0s;
+        }
+        @media (max-width: 677px) {
+
         }
     </style>
 @endpush
@@ -59,7 +62,7 @@
                         <input type="text" class="form-control" name="search" placeholder="Search packages">
                         <input type="hidden" class="form-control" name="exam_pack_id" value="{{ request()->input('exam_pack_id') ?? '' }}">
                         <span class="input-group-btn">
-					        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </span>
                     </form>
                 </div>
@@ -72,6 +75,7 @@
                     <br/><hr>
                 @endforeach
             </div>
+            <br/>
             <div class="section-padding"></div>
 
             {{ $examList->appends(request()->query())->links() }}

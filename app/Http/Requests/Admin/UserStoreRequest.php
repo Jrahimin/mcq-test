@@ -27,13 +27,13 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id,
-            'mobile_no' => 'nullable|string',
-            'address' => 'nullable|string',
-            'type' => 'nullable|in:1,2,3,4',
-            'status' => 'nullable|boolean',
-            'password' => 'nullable|string',
+            'mobile_no' => 'nullable',
+            'address' => 'nullable',
+            'type' => 'nullable|integer',
+            'status' => 'nullable|integer',
+            'password' => 'nullable|min:6',
         ];
     }
 }

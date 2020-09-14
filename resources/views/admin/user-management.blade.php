@@ -36,7 +36,7 @@
                                             <validation-provider rules="required"
                                                                  v-slot="{ errors }">
                                                 <input type="text" class="form-control" id="name"
-                                                       placeholder="Enter package title"
+                                                       placeholder="Enter Name"
                                                        v-bind:class="errors[0]?'border-danger':''"
                                                        v-model="userManagement.name">
                                             </validation-provider>
@@ -78,21 +78,11 @@
 
                                             <select type="text" class="form-control" id="type"
                                                     v-model="userManagement.type">
-                                                <option></option>
+                                                <option value="">Select Type</option>
                                                 @foreach($userTypes as $key=>$userType)
                                                     <option value="{{$key}}">{{$userType}}</option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="to_date">Password</label>
-
-                                            <input type="password"
-                                                   class="form-control" id="password"
-                                                   placeholder="Enter Password"
-                                                   v-model="userManagement.password">
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +136,101 @@
             <!-- /.col -->
         </div>
         <!-- /.col -->
+        <div class="modal fade" id="balance_adjustment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-block">
+                        <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true"><i class="fa fa-times-circle text-danger"></i></span></button>
+                        <h4 class="modal-title"
+                            id="exampleModalLabel">Adjust Balance
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" v-if="userManagement">
+                            <label for="recipient-name" class="control-label">Name</label>
+                            <input type="text" readonly class="form-control" id="name_b_a" :value="userManagement.name">
+                        </div>
+                        <div class="form-group" v-if="userManagement">
+                            <label for="recipient-name" class="control-label">Email</label>
+                            <input type="email" readonly class="form-control" id="email_b_a"
+                                   :value="userManagement.email">
+                        </div>
+                        <div class="form-group">
+
+                            <label for="recipient-name" class="control-label">Amount(BDT)</label>
+                            <input type="text" class="form-control" id="adjust_amount"
+                                   oninput="document.getElementById('adjust_amount').value=document.getElementById('adjust_amount').value.replace(/[^\d]*/g,'')">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Reason</label>
+                            <textarea class="form-control" id="balance_adjust_reason"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" @click="balanceAdjustment(-1)">Reduce</button>
+                        <button type="button" class="btn btn-primary" @click="balanceAdjustment(1)">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="password_reset" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <validation-observer v-slot="{ handleSubmit }">
+                        <form @submit.prevent="handleSubmit(passwordReset)">
+                            <div class="modal-header d-block">
+                                <button type="button" class="close border-0" data-dismiss="modal"
+                                        aria-label="Close"><span
+                                        aria-hidden="true"><i class="fa fa-times-circle text-danger"></i></span>
+                                </button>
+                                <h4 class="modal-title"
+                                    id="exampleModalLabel">Password Reset
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group" v-if="userManagement">
+                                    <label for="name_b_a" class="control-label">Name</label>
+                                    <input type="text" readonly class="form-control" id="name_b_a"
+                                           :value="userManagement.name">
+                                </div>
+                                <div class="form-group" v-if="userManagement">
+                                    <label for="email_b_a" class="control-label">Email</label>
+                                    <input type="email" readonly class="form-control" id="email_b_a"
+                                           :value="userManagement.email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="control-label">Password</label>
+                                    <validation-provider rules="required" vid="password"
+                                                         v-slot="{ errors }">
+                                        <input type="password" class="form-control"
+                                               v-model="reset_password.password"
+                                               v-bind:class="errors[0]?'border-danger':''" ref="password">
+                                        <span class="text-danger"
+                                              v-if="errors[0]">Password should at-least 6 characters</span>
+                                    </validation-provider>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm_password" class="control-label">Confirm Password</label>
+                                    <validation-provider rules="required"
+                                                         v-slot="{ errors }">
+                                        <input type="password" class="form-control"
+                                               v-model="reset_password.password_confirmation"
+                                               v-bind:class="errors[0]?'border-danger':''">
+                                        <span class="text-danger" v-if="errors[0]">Password and confirm password doesn't match</span>
+                                    </validation-provider>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                                <button type="submit" class="btn btn-primary">Reset</button>
+                            </div>
+                        </form>
+                    </validation-observer>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.container-fluid -->
 @endsection
@@ -165,9 +250,12 @@
                     "balance": undefined,
                     "mobile_no": undefined,
                     "address": undefined,
-                    "type": undefined,
+                    "type": '',
                     "status": true,
-                    "password": undefined,
+                },
+                reset_password: {
+                    password: '',
+                    password_confirmation: '',
                 },
                 mode: undefined,
                 error: undefined,
@@ -243,7 +331,7 @@
                                 className: 'all',
                                 orderable: true,
                                 data: 'status', render(data, row, type) {
-                                    return data ? `<span class='badge badge-info'>Active</span>` : `<span class='badge badge-danger'>Inactive</span>`;
+                                    return data ? `<span class='badge badge-info fa-lock'>Active</span>` : `<span class='badge badge-danger'>Inactive</span>`;
                                 },
                                 name: 'status',
                                 defaultContent: '',
@@ -252,9 +340,13 @@
                                 className: 'all',
                                 orderable: true,
                                 data: 'id', render(data, row, type) {
-                                    return `<button class='badge badge-info btn btn-info edit_discount'> <i class="fa fa-edit"></i>Edit</button>
-                                            <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-remove"></i>Delete</button>
-                                            `;
+                                    return `<div class='btn btn-group'><button class='badge badge-info btn btn-info edit_discount'> <i class="fa fa-edit"></i>Edit</button>
+                                            <button class='badge badge-danger btn btn-danger delete_discount'> <i class="fa fa-trash"> </i>Delete</button>
+                                              @if(auth()->user()->type==1)
+                                    <button class='badge badge-warning btn btn-warning balance_adjustment'> <i class="fa fa-gift"></i> Refund</button>
+                                    <button class='badge badge-danger btn btn-danger password_reset'> <i class="fa fa-key"></i> Reset</button>
+@endif
+                                    </div>`;
                                 },
                                 defaultContent: 'Action',
                                 title: 'Action'
@@ -306,10 +398,14 @@
                         "balance": undefined,
                         "mobile_no": undefined,
                         "address": undefined,
-                        "type": undefined,
+                        "type": '',
                         "status": true,
                         "password": undefined,
                     };
+                    this.reset_password = {
+                        password: '',
+                        password_confirmation: '',
+                    }
                 },
                 addExamTest() {
                     this.reset();
@@ -318,6 +414,29 @@
                 closeEditor() {
                     this.mode = undefined;
                 },
+                balanceAdjustment(sign = 1) {
+                    const amount = document.getElementById('adjust_amount').value * sign;
+                    const reason = document.getElementById('balance_adjust_reason').value;
+                    if (!document.getElementById('adjust_amount').value || (reason || '').length < 5) {
+                        swal('Fail!', 'Write a valid amount and reason', 'error');
+                        return;
+                    }
+                    this.ajaxCall('user-management/balance-adjust/' + this.dataTableData[this.selectedIndex].id, {
+                        amount,
+                        reason
+                    }, 'post', (data, code) => {
+                        if (code === 200) {
+                            $("#balance_adjustment").modal('hide');
+                            document.getElementById('adjust_amount').value = '';
+                            document.getElementById('balance_adjust_reason').value = '';
+                        }
+                    }, true);
+                },
+                passwordReset() {
+                    this.ajaxCall('user-management/password-reset/' + this.userManagement.id, {...this.reset_password}, 'put', (data, code) => {
+                        $("#password_reset").modal('hide');
+                    }, true);
+                }
             },
             mounted() {
                 const that = this;
@@ -367,6 +486,20 @@
                             }, true);
                         }
                     });
+                });
+                $('#userManagement-table tbody').on('click', '.balance_adjustment', function () {
+                    that.reset();
+                    that.dataTableData = that.dataTable.rows().data();
+                    that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
+                    that.userManagement = that.dataTableData[that.selectedIndex];
+                    $("#balance_adjustment").modal('show');
+                });
+                $('#userManagement-table tbody').on('click', '.password_reset', function () {
+                    that.reset();
+                    that.dataTableData = that.dataTable.rows().data();
+                    that.selectedIndex = that.dataTable.row($(this).parent().parent()).index();
+                    that.userManagement = that.dataTableData[that.selectedIndex];
+                    $("#password_reset").modal('show');
                 });
             },
         })

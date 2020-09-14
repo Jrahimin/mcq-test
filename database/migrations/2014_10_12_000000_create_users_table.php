@@ -20,7 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->double('balance', 12, 2)->default(0);
             $table->string('mobile_no')->nullable();
+            $table->string('gender')->nullable();
             $table->text('address')->nullable();
+            $table->string('image_url')->nullable();
             $table->tinyInteger('type')->default(UserTypes::USER);
             $table->tinyInteger('status')->default(0);
             $table->timestamp('email_verified_at')->nullable();

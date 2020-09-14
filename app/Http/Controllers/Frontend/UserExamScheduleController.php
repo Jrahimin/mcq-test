@@ -49,33 +49,42 @@ class UserExamScheduleController extends Controller
                 $data['examPackTitle'] = ExamPack::findOrFail($request->exam_pack_id)->title;
             }
 
-            $examList = $query->when($request->search, function ($q) use ($request) {
+            $query = $query->when($request->search, function ($q) use ($request) {
                 $q->where('title', 'like', "%{$request->search}%")
                     ->orWhere('price', $request->search)
                     ->orWhereDate('exam_schedule', $request->search);
-            })->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
+            });
+
+            if($request->category_id)
+                $query = $query->where('category_id', $request->category_id);
+            if($request->type)
+                $query = $query->where('type', $request->type);
+            if($request->keyword)
+                $query = $query->where('title', 'like', "%{$request->keyword}%");
+
+            $examList = $query->orderBy(DB::raw('ABS(DATEDIFF(exam_schedule, NOW()))'))->get()->map(function ($item){
                 $item->is_bought = false;
                 if(auth()->check()){
-                    if(auth()->user()->examTest->where('id')->first()){
+                    if(auth()->user()->examTest->where('id', $item->id)->first()){
                         $item->is_bought = true;
                     }
                 }
 
                 $item->is_running = false;
                 $item->is_expired = false;
-                $examEndTime = Carbon::parse($item->exam_schedule)->addMinutes($item->duration_minutes)->format('Y-m-d H:i').':59';
+                $examEndTime = Carbon::parse($item->exam_schedule_to)->format('Y-m-d H:i').':59';
                 $now = Carbon::now()->setTimezone('asia/dhaka')->format('Y-m-d H:i:s');
                 if($now >= $item->exam_schedule && $now <= $examEndTime){
                     $item->is_running = true;
                 }
-                if($now >= $item->exam_schedule){
+                if($now >= $item->exam_schedule_to){
                     $item->is_expired = true;
                 }
 
                 return $item;
             });
 
-            $data['examList'] = $this->paginate($examList);
+            $data['examList'] = $this->paginate($examList,5);
 
             return view('frontend.exam-schedule.index', $data);
         } catch (\Exception $ex) {
@@ -99,7 +108,7 @@ class UserExamScheduleController extends Controller
 
         try {
             $exam = ExamTest::findOrFail($request->exam_id);
-            $user = User::find(1);
+            $user = $request->user();
 
             $isTaken = DB::table('exam_test_user')->where(['user_id' => $user->id, 'exam_test_id' => $request->exam_id])->first();
             if($isTaken){
@@ -130,10 +139,11 @@ class UserExamScheduleController extends Controller
         }
     }
 
-    protected function paginate($items, $perPage = 5, $page = null, $options = [])
+    protected function paginate($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath()]);
     }
 }
