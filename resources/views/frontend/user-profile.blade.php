@@ -37,7 +37,7 @@
                         <p class="lead">{{ $userInfo->address }} {{ $userInfo->address ? '|' : '' }} {{ $userInfo->mobile_no }}</p>
                         <p class="lead">
                             {{--<a href="javascript:void(0)">Profile Update</a>--}}
-                            @if(!$userInfo->fb_id)
+                            @if(!$userInfo->fb_id && !$userInfo->google_id)
                                 | <a href="javascript:void(0)" onclick="passwordResetPersonal()">Password Reset</a>
                             @endif
                         </p>

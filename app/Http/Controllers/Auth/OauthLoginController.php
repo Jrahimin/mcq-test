@@ -74,7 +74,6 @@ class OauthLoginController extends Controller
     {
         try{
             $user = Socialite::driver('google')->user();
-            dd($user);
 
             Log::info("google oauth user : ".json_encode($user));
 
