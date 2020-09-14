@@ -12,6 +12,13 @@ use Laravel\Socialite\Facades\Socialite;
 
 class OauthLoginController extends Controller
 {
+    protected $exceptionMessage;
+
+    public function __construct()
+    {
+        $this->exceptionMessage = "Something went wrong. Please try again later.";
+    }
+
     /**
      * Redirect the user to the GitHub authentication page.
      *
@@ -38,6 +45,11 @@ class OauthLoginController extends Controller
             if ($existingUser) {
                 Auth::login($existingUser);
             } else {
+                $userEmailExists = User::where('email', $user->email)->first();
+                if($userEmailExists){
+                    return redirect()->back()->withErrors("You can not log in with Facebook. your email is alredy registered without facebook login.");
+                }
+
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
@@ -56,7 +68,8 @@ class OauthLoginController extends Controller
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return redirect()->route('fb-redirect');
+
+            return redirect()->back()->withErrors($this->exceptionMessage);
         }
     }
 
@@ -81,6 +94,11 @@ class OauthLoginController extends Controller
             if ($existingUser) {
                 Auth::login($existingUser);
             } else {
+                $userEmailExists = User::where('email', $user->email)->first();
+                if($userEmailExists){
+                    return redirect()->back()->withErrors("You can not log in with Google. your email is alredy registered without google login.");
+                }
+
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
@@ -99,7 +117,8 @@ class OauthLoginController extends Controller
         }
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
-            return redirect()->route('fb-redirect');
+
+            return redirect()->back()->withErrors($this->exceptionMessage);
         }
     }
 }
