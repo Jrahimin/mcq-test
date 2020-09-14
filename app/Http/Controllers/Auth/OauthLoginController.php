@@ -47,7 +47,7 @@ class OauthLoginController extends Controller
             } else {
                 $userEmailExists = User::where('email', $user->email)->first();
                 if($userEmailExists){
-                    return redirect()->route('login')->withErrors("You can not log in with Facebook. your email is alredy registered without facebook login.");
+                    return redirect()->route('login')->with('error_message', "You can not log in with Facebook. your email is alredy registered without facebook login.");
                 }
 
                 $newUser = User::create([
@@ -69,7 +69,7 @@ class OauthLoginController extends Controller
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
-            return redirect()->route('login')->withErrors($this->exceptionMessage);
+            return redirect()->route('login')->with('error_message', $this->exceptionMessage);
         }
     }
 
@@ -96,7 +96,7 @@ class OauthLoginController extends Controller
             } else {
                 $userEmailExists = User::where('email', $user->email)->first();
                 if($userEmailExists){
-                    return redirect()->route('login')->withErrors("You can not log in with Google. your email is alredy registered without google login.");
+                    return redirect()->route('login')->with('error_message', "You can not log in with Google. your email is alredy registered without google login.");
                 }
 
                 $newUser = User::create([
@@ -118,7 +118,7 @@ class OauthLoginController extends Controller
         catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
 
-            return redirect()->route('login')->withErrors($this->exceptionMessage);
+            return redirect()->route('login')->with('error_message', $this->exceptionMessage);
         }
     }
 }
