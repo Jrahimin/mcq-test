@@ -36,4 +36,10 @@ return [
         'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/facebook/callback',
     ],
 
+    'google' => [
+        'client_id' => "327716097335-4ln0fdcc14musofa1q8fung20qedbsu1.apps.googleusercontent.com",
+        'client_secret' => "IvpvqVGBVG_NKGopmAgTyWaP",
+        'redirect' => env('APP_URL', 'https://a2bpublications.com/mcq-test/').'login/google/callback',
+    ],
+
 ];

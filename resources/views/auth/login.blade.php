@@ -111,6 +111,13 @@
                                         <span><i class="fa fa-facebook"> {{ __('Login With Facebook') }}</i></span>
                                     </button>
                                 </form>
+
+                                <form method="GET" action="{{ route('google-redirect') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">
+                                        <span><i class="fa fa-google"> {{ __('Login With Google') }}</i></span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
