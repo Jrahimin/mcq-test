@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/user-end/css/user_profile.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/chart.js/Chart.min.css') }}">
     <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 @endsection
 @push('custom-css')
     <style>
@@ -15,17 +16,10 @@
 
 @section('main-section')
     <div class="container-fluid" id="user_profile">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <section id="content" class="container">
             <!-- Begin .page-heading -->
             <div class="page-heading">
                 <div class="media clearfix">
-                    <div class="pr30">
-                        {{--<a href="#">
-                            <img class="media-object mw150" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
-                        </a>--}}
-                        {{--<span class="fa fa-5x fa-user"></span>--}}
-                    </div>
                     <div class="media-body va-m">
                         @if($userInfo->image_url)
                             <img width="120px;" src="{{ $userInfo->image_url }}" alt="{{ $userInfo->name }}"/>

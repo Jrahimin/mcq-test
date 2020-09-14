@@ -11,6 +11,9 @@ Auth::routes();
 Route::group(['namespace' => 'Auth', 'prefix' => 'login'], function () {
     Route::get('facebook', 'OauthLoginController@redirectFb')->name('fb-redirect');
     Route::get('facebook/callback', 'OauthLoginController@callbackFb')->name('fb-callback');
+
+    Route::get('google', 'OauthLoginController@redirectGoogle')->name('google-redirect');
+    Route::get('google/callback', 'OauthLoginController@callbackGoogle')->name('google-callback');
 });
 
 Route::group(['namespace' => 'Frontend'], function () {
