@@ -16,6 +16,7 @@ class CreateExamTestsTable extends Migration
         Schema::create('exam_tests', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('exam_pack_id')->index()->nullable();
+            $table->unsignedInteger('category_id')->index()->nullable();
             $table->string('title');
             $table->dateTime('exam_schedule');
             $table->integer('duration_minutes')->nullable();

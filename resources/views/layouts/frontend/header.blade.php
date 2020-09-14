@@ -30,7 +30,7 @@
                                 <li><a title="Home" href="{{route('user-home')}}">Home</a></li>
                                 <li><a title="Packages" href="{{route('packages')}}">Packages</a></li>
                                 <li><a title="Event" href="{{route('exam-schedule')}}">Exam Schedule</a></li>
-                                <li><a title="Payment" href="{{route('make-payment')}}">Payment</a></li>
+                                <li><a title="Payment" href="{{route('make-payment')}}">Recharge</a></li>
                                 <li><a title="About" href="{{route('about')}}">About</a></li>
                                 <li><a title="Contact" href="{{route('contact-us')}}">Contact</a></li>
                                 {{--                                <li class="dropdown active">--}}

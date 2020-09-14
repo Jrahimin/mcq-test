@@ -68,16 +68,17 @@
                                                 <label for="exam_schedule">Question Mark</label>
                                                 <validation-provider rules="required"
                                                                      v-slot="{ errors }">
-                                                    <input type="number" v-bind:class="errors[0]?'border-danger':''"
+                                                    <input type="text" v-bind:class="errors[0]?'border-danger':''"
                                                            class="form-control" id="mark"
                                                            placeholder="Enter question mark"
-                                                           v-model="testQuestion.mark">
+                                                           v-model="testQuestion.mark"
+                                                           oninput="document.getElementById('mark').value=document.getElementById('mark').value.replace(/[^-?\d+(.\d+)?]/g,'')">
                                                 </validation-provider>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-8">
                                             <div class="form-group">
                                                 <label for="title">Question</label>
                                                 <validation-provider rules="required"
@@ -89,8 +90,6 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" id="exampleCheck1"
@@ -99,14 +98,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
+                                    <h4 class="text-center"><u>Question Options</u></h4><br>
                                     <div class="row border-primary mb-2 p-2"
                                          v-for="(as,i) in testQuestion.answers"
                                          style="background-color:rgba(119,175,175,0.59)">
-                                        <div class="col-md-10">
+                                        <div class="col-md-8">
                                             <div class="form-group">
                                                 <validation-provider rules="required"
                                                                      v-slot="{ errors }">
-                                                    <label for="answer">Option</label>
+                                                    <label for="answer">Option @{{ i+1 }}</label>
                                                     <input type="text" v-bind:class="errors[0]?'border-danger':''"
                                                            class="form-control" id="answer"
                                                            placeholder="Enter Answer"
@@ -114,30 +115,29 @@
                                                 </validation-provider>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input type="checkbox"
-                                                           class="form-check-input" id="is_correct"
-                                                           v-model="as.is_correct">
-                                                    <label class="form-check-label" for="exam_schedule">IS Correct</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input type="checkbox"
-                                                           class="form-check-input" id="status"
-                                                           v-model="as.status">
-                                                    <label class="form-check-label" for="exam_schedule">IS Active</label>
-                                                </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="is_correct"
+                                                       v-model="as.is_correct">
+                                                <label class="form-check-label" for="exam_schedule">IS Correct</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input" id="status"
+                                                       v-model="as.status">
+                                                <label class="form-check-label" for="exam_schedule">IS Active</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
                                             <div class="float-right">
-                                                <a href="javascript:void(0)" class="badge badge-danger" v-if="i>3"
+                                                <a href="javascript:void(0)" class="badge badge-danger m-1" v-if="i>3"
                                                    @click="removeAnswer(i)"><i
                                                         class="fa fa-window-close"></i> Remove</a>
-                                                <a href="javascript:void(0)" class="btn btn-primary btn-sm pull-right"
+                                                <a href="javascript:void(0)" class="btn btn-primary btn-sm pull-right m-1"
                                                    v-if="i === testQuestion.answers.length-1"
                                                    @click="addAnswer()"><i
                                                         class="fa fa-plus"></i> Add Option</a>
