@@ -1,11 +1,16 @@
 @extends('layouts.frontend.master')
 @section('title',$title??'Dynamic')
 @section('style-lib')
-@endsection
-@push('custom-css')
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/user-end/css/user_profile.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/chart.js/Chart.min.css') }}">
     <link rel="stylesheet" href="{{secure_asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+@endsection
+@push('custom-css')
+    <style>
+        .table{
+            overflow-x:auto;
+        }
+    </style>
 @endpush
 
 @section('main-section')
@@ -82,25 +87,25 @@
                             </table>
                         </div>
                     </div>
-{{--                    <div class="panel">--}}
-{{--                        <div class="panel-heading">--}}
-{{--                              <span class="panel-icon">--}}
-{{--                                <i class="fa fa-pencil"></i>--}}
-{{--                              </span>--}}
-{{--                            <span class="panel-title">Exam Packs</span>--}}
-{{--                        </div>--}}
-{{--                        <div class="panel-body pb5">--}}
+                    {{--                    <div class="panel">--}}
+                    {{--                        <div class="panel-heading">--}}
+                    {{--                              <span class="panel-icon">--}}
+                    {{--                                <i class="fa fa-pencil"></i>--}}
+                    {{--                              </span>--}}
+                    {{--                            <span class="panel-title">Exam Packs</span>--}}
+                    {{--                        </div>--}}
+                    {{--                        <div class="panel-body pb5">--}}
 
-{{--                            <h6>Experience</h6>--}}
+                    {{--                            <h6>Experience</h6>--}}
 
-{{--                            <h4>Facebook Internship</h4>--}}
-{{--                            <p class="text-muted"> University of Missouri, Columbia--}}
-{{--                                <br> Student Health Center, June 2010 - 2012--}}
-{{--                            </p>--}}
+                    {{--                            <h4>Facebook Internship</h4>--}}
+                    {{--                            <p class="text-muted"> University of Missouri, Columbia--}}
+                    {{--                                <br> Student Health Center, June 2010 - 2012--}}
+                    {{--                            </p>--}}
 
-{{--                            <hr class="short br-lighter">--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    {{--                            <hr class="short br-lighter">--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
                 </div>
                 <div class="col-md-8">
                     <div class="tab-block">
@@ -111,11 +116,11 @@
                             <li>
                                 <a href="#up-coming-exam" data-toggle="tab">Exams & Pack</a>
                             </li>
-{{--                            <li>--}}
-{{--                                <a href="#tab3" data-toggle="tab">Media</a>--}}
-{{--                            </li>--}}
+                            {{--                            <li>--}}
+                            {{--                                <a href="#tab3" data-toggle="tab">Media</a>--}}
+                            {{--                            </li>--}}
                         </ul>
-                        <div class="tab-content p30" style="height: 730px;">
+                        <div class="tab-content p30" style="height: fit-content;">
                             <div id="activity" class="tab-pane active">
                                 <div class="panel panel-primary">
                                     <!-- Default panel contents -->
@@ -130,7 +135,7 @@
                                 <div class="panel panel-primary">
                                     <!-- Default panel contents -->
                                     <div class="panel-heading">Participated Exams</div>
-                                    <div class="panel-body">
+                                    <div class="panel-body" style="overflow-x: auto;">
                                         <!-- Table -->
                                         <table class="table table-bordered table-striped" id="participated_exam_table">
                                             <thead>
@@ -156,10 +161,15 @@
                                                     <form action="{{route('exam-preview')}}" method="POST">
                                                         @csrf
                                                         <input type="text" name="exam_id" :value="exam.id" hidden>
-                                                        <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Preview</button>
+                                                        <button class="btn btn-primary btn-sm"
+                                                                style="padding-left: 12px; padding-right: 14px;"><i
+                                                                class="fa fa-eye"></i> Preview
+                                                        </button>
                                                     </form>
 
-                                                    <a class="btn btn-info btn-sm" :href="exam_rank_route+'?exam_id='+exam.id"><i class="fa fa-list"></i> Rank List</a>
+                                                    <a class="btn btn-primary btn-sm"
+                                                       :href="exam_rank_route+'?exam_id='+exam.id"
+                                                       style="margin-top: 3%"><i class="fa fa-list"></i> Rank List</a>
                                                 </th>
                                             </tr>
                                             </tbody>
@@ -172,7 +182,7 @@
                                 <div class="panel panel-primary">
                                     <!-- Default panel contents -->
                                     <div class="panel-heading">Upcoming Exams</div>
-                                    <div class="panel-body">
+                                    <div class="panel-body" style="overflow-x: auto;">
                                         <!-- Table -->
                                         <table class="table table-bordered table-striped" id="upcoming-exam-table">
                                             <thead>
@@ -201,7 +211,7 @@
                                 <div class="panel panel-primary">
                                     <!-- Default panel contents -->
                                     <div class="panel-heading">Packages</div>
-                                    <div class="panel-body">
+                                    <div class="panel-body" style="overflow-x: auto;">
                                         <!-- Table -->
                                         <table class="table table-bordered table-striped" id="packages-table">
                                             <thead>
@@ -232,7 +242,7 @@
 
                                 </div>
                             </div>
-{{--                            <div id="tab3" class="tab-pane"></div>--}}
+                            {{--                            <div id="tab3" class="tab-pane"></div>--}}
                         </div>
                     </div>
                 </div>
@@ -253,7 +263,7 @@
                 user_exam_list: [],
                 user_up_coming_exam_list: [],
                 user_exam_packages: [],
-                exam_rank_route : '{{ route('exam-ranking') }}'
+                exam_rank_route: '{{ route('exam-ranking') }}'
             },
             methods: {
                 ajaxCall: window.ajaxCall,

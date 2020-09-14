@@ -478,9 +478,9 @@ body{margin-top:20px;
 }
 /* Tabs Content */
 .tab-block .tab-content {
-    overflow: auto;
+    /*overflow: auto;*/
     position: relative;
-    z-index: 10;
+    /*z-index: 10;*/
     min-height: 125px;
     padding: 16px 12px;
     border: 1px solid #e2e2e2;
@@ -500,7 +500,7 @@ body{margin-top:20px;
 }
 /* nav tab link */
 .tab-block .nav-tabs > li > a {
-    z-index: 9;
+    /*z-index: 9;*/
     position: relative;
     color: #AAA;
     font-size: 14px;
@@ -524,7 +524,7 @@ body{margin-top:20px;
 .tab-block .nav-tabs > li.active > a:focus {
     cursor: default;
     position: relative;
-    z-index: 12;
+    /*z-index: 12;*/
     color: #555555;
     background: #FFF;
     border-color: #e2e2e2;
@@ -559,7 +559,7 @@ body{margin-top:20px;
     border-color: #DDD #FFF #DDD #DDD;
     cursor: default;
     position: relative;
-    z-index: 12;
+    /*z-index: 12;*/
     background: #FFF;
 }
 /*===============================================
@@ -591,7 +591,7 @@ body{margin-top:20px;
     border-color: #DDD #DDD #DDD #FFF;
     cursor: default;
     position: relative;
-    z-index: 12;
+    /*z-index: 12;*/
     background: #FFF;
 }
 /*===============================================
@@ -608,7 +608,7 @@ body{margin-top:20px;
 /* nav tab item link */
 .tabs-below > li > a {
     position: relative;
-    z-index: 9;
+    /*z-index: 9;*/
     margin-right: -1px;
     padding: 11px 16px;
     color: #777;
@@ -623,7 +623,7 @@ body{margin-top:20px;
 .tab-block .tabs-below > li.active > a:focus {
     cursor: default;
     position: relative;
-    z-index: 12;
+    /*z-index: 12;*/
     color: #555555;
     background: #FFF;
     border-color: #DDD;
