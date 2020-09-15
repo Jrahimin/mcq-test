@@ -151,6 +151,7 @@ class UserMcqTestController extends Controller
             $examPaperReview['examInfo'] = array(
                 'title' => $exam->title,
                 'duration_sec' => $exam->duration_minutes * 60,
+                'expire_at' => Carbon::parse($exam->exam_schedule_to)->format('Y-m-d H:i'),
                 'mark_per_question' => $exam->mark_per_question,
                 'question_count' => $totalMark,
                 'total_mark' => $totalMark,

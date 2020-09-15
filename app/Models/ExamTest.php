@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExamTest extends Model
 {
     protected $guarded = ['id'];
-    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName', 'examScheduleDateFrom', 'examScheduleDateTo', 'isExpired'];
+    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName', 'examScheduleDateFrom', 'examScheduleDateTo', 'isExpired', 'isRunning'];
 
     public function questions()
     {
@@ -82,5 +82,22 @@ class ExamTest extends Model
             return false;
 
         return Carbon::now()->format('Y-m-d H:i:s') > $this->exam_schedule_to ? true : false;
+    }
+
+    public function getIsRunningAttribute()
+    {
+        $today = Carbon::now()->format('Y-m-d H:i:s');
+
+        if(!$this->exam_schedule_to){
+            if($today >= $this->exam_schedule){
+                return true;
+            }
+        } else{
+            if($today >= $this->exam_schedule && $today <= $this->exam_schedule_to){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

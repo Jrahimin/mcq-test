@@ -171,7 +171,7 @@
                                                 <th>@{{ exam.typeName }}</th>
                                                 <th>
                                                     <label class="label label-danger" v-if="exam.isExpired">Expired</label>
-                                                    <label class="label label-success">Running</label>
+                                                    <label class="label label-success" v-else>Running</label>
                                                 </th>
                                                 <th>
                                                     <form action="{{route('exam-preview')}}" method="POST" v-if="exam.isExpired">
@@ -220,6 +220,7 @@
                                                 <th>Duration</th>
                                                 <th>Type</th>
                                                 <th>Price (BDT)</th>
+                                                <th>Action</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -229,6 +230,16 @@
                                                 <th>@{{ exam.examTimeFrom+' - '+exam.examTimeTo }}</th>
                                                 <th>@{{ exam.typeName }}</th>
                                                 <th>@{{ exam.price }}</th>
+                                                <th>
+                                                    <form action="{{route('user-exam')}}" method="POST" v-if="exam.isRunning">
+                                                        @csrf
+                                                        <input type="hidden" name="exam_id" :value="exam.id">
+                                                        <button class="btn btn-success btn-sm"
+                                                                style="padding-left: 12px; padding-right: 14px;" formtarget="_blank"><i
+                                                                class="fa fa-pencil"></i> Participate
+                                                        </button>
+                                                    </form>
+                                                </th>
                                             </tr>
                                             </tbody>
                                             <tfoot></tfoot>
