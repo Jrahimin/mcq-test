@@ -56,10 +56,12 @@ class UserProfileController extends Controller
                     $exam->totalExminee = $examForAllUsers->where('exam_test_id', $exam->id)->count();
                     $exam->userScore = $exam->pivot->score;
                     $exam->exam_schedule = Carbon::parse($exam->exam_schedule)->format('Y-m-d');
+                    $exam->exam_schedule_to = Carbon::parse($exam->exam_schedule_to)->format('Y-m-d');
+
                     return $exam;
                 });
             } else {
-                $userExams = $user->examTest()->where('exam_schedule', '>=', Carbon::now()->format('Y-m-d H:i:s'))->get();
+                $userExams = $user->examTest()->where('exam_test_user.status', 0)->where('exam_schedule_to', '>=', Carbon::now()->format('Y-m-d H:i:s'))->get();
             }
 
             return $this->successResponse('User exams fetched', $userExams);

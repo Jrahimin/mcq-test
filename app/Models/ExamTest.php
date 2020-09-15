@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExamTest extends Model
 {
     protected $guarded = ['id'];
-    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName', 'examScheduleDateFrom', 'examScheduleDateTo'];
+    protected $appends = ['totalMark', 'examTimeFrom', 'examTimeTo', 'typeName', 'examScheduleDateFrom', 'examScheduleDateTo', 'isExpired'];
 
     public function questions()
     {
@@ -74,5 +74,13 @@ class ExamTest extends Model
     {
         $exam_type_name = [ExamTypes::MODELTEST => 'Model Test', ExamTypes::MOCKTEST => 'Mock Test', ExamTypes::MINITEST => 'Mini Test'];
         return $exam_type_name[$this->type];
+    }
+
+    public function getIsExpiredAttribute()
+    {
+        if(!$this->exam_schedule_to)
+            return false;
+
+        return Carbon::now()->format('Y-m-d H:i:s') > $this->exam_schedule_to ? true : false;
     }
 }

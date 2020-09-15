@@ -38,7 +38,7 @@
                         <p class="lead">
                             {{--<a href="javascript:void(0)">Profile Update</a>--}}
                             @if(!$userInfo->fb_id && !$userInfo->google_id)
-                                | <a href="javascript:void(0)" onclick="passwordResetPersonal()">Password Reset</a>
+                                <a href="javascript:void(0)" onclick="passwordResetPersonal()">Password Reset</a>
                             @endif
                         </p>
 
@@ -157,6 +157,7 @@
                                                 <th>Score</th>
                                                 <th>Position</th>
                                                 <th>Type</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
@@ -169,7 +170,11 @@
                                                 <th>@{{ exam.position+'/'+exam.totalExminee }}</th>
                                                 <th>@{{ exam.typeName }}</th>
                                                 <th>
-                                                    <form action="{{route('exam-preview')}}" method="POST">
+                                                    <label class="label label-danger" v-if="exam.isExpired">Expired</label>
+                                                    <label class="label label-success">Running</label>
+                                                </th>
+                                                <th>
+                                                    <form action="{{route('exam-preview')}}" method="POST" v-if="exam.isExpired">
                                                         @csrf
                                                         <input type="hidden" name="exam_id" :value="exam.id">
                                                         <button class="btn btn-primary btn-sm"
@@ -178,12 +183,12 @@
                                                         </button>
                                                     </form>
 
-                                                    <a class="btn btn-primary btn-sm"
+                                                    <a class="btn btn-primary btn-sm" v-if="exam.isExpired"
                                                        :href="exam_rank_route+'?exam_id='+exam.id"
                                                        style="margin-top: 3%" target="_blank"><i class="fa fa-list"></i> Rank List
                                                     </a>
 
-                                                    <form action="{{route('user-exam')}}" method="POST">
+                                                    <form action="{{route('user-exam')}}" method="POST" v-if="exam.isExpired">
                                                         @csrf
                                                         <input type="text" hidden name="exam_id" :value="exam.id">
                                                         <input type="text" hidden name="practice" value="1">

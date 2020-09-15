@@ -27,7 +27,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">
+    {{--<div class="row">
         <div class="col-md-5 _question_m_p" style="padding: 2%; background-color: rgba(195,205,205,0.2);"
              v-for="question_response of question_list_response">
             <div class="accordion md-accordion accordion-blocks"
@@ -71,6 +71,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
     <div class="section-padding"></div>
 </div>
