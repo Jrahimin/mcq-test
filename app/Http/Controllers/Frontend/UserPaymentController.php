@@ -63,14 +63,15 @@ class UserPaymentController extends Controller
                 return redirect()->back()->with('error_message', $validator->errors()->first());
             }
 
+            $user = auth()->user();
             PaymentInfo::create([
-                'user_id' => auth()->user()->id,
+                'user_id' => $user->id,
                 'transaction_code' => $request->transaction_code,
                 'amount' => $request->amount,
                 'payment_channel' => $request->payment_channel,
             ]);
 
-            return redirect()->back()->with('success_message', 'Your Payment Request is Submitted. You will get confirmation mail within 24hrs. You can check balance in your profile.');
+            return redirect()->back()->with('success_message', "Your Payment Request is Submitted. You will get confirmation mail to {$user->email} within 24hrs. You can check balance in your profile.");
         } catch (\Exception $ex) {
             Log::error('[Class => ' . __CLASS__ . ", function => " . __FUNCTION__ . " ]" . " @ " . $ex->getFile() . " " . $ex->getLine() . " " . $ex->getMessage());
             return redirect()->back()->with('error_message', $this->exceptionMessage);
