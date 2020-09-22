@@ -52,13 +52,13 @@ text-align: center; text-decoration: none; -webkit-text-size-adjust: none;',
         <td style="{{ $style['email-wrapper'] }}" align="center">
             <table width="100%" cellpadding="0" cellspacing="0">
                 <!-- Logo -->
-                {{--<tr>
+                <tr>
                     <td style="{{ $style['email-masthead'] }}">
-                        <a style="{{ $fontFamily }} {{ $style['email-masthead_name'] }}" href="{{ secure_url('/') }}" target="_blank"> <img src="{{secure_url('/frontend/user-end/images/logo.png')}}" width="60px"/>
+                        <a style="{{ $fontFamily }} {{ $style['email-masthead_name'] }}" href="{{ secure_url('/') }}" target="_blank"> <img src="{{asset('frontend/user-end/images/logo.png')}}" width="60px"/>
                         <!--{{ config('app.name') }}-->
                         </a>
                     </td>
-                </tr>--}}
+                </tr>
                 <!-- Email Body -->
                 <tr>
                     <td style="{{ $style['email-body'] }}" width="100%"><table style="{{ $style['body_action'] }}" width="100%" cellpadding="0" cellspacing="0">
