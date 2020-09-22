@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\PaymentInfoResource;
+use App\Mail\PaymentConfirmMail;
 use App\Models\ExamPack;
 use App\Models\PaymentInfo;
 use App\Traits\ApiResponseTrait;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentInfoController extends Controller
@@ -76,6 +78,8 @@ class PaymentInfoController extends Controller
             $user->increment('balance', $amount);
 
             DB::commit();
+
+            Mail::to($user)->send(new PaymentConfirmMail($user, $paymentInfo));
 
             return $this->successResponse('Payment Status updated successfully', collect(new PaymentInfoResource($paymentInfo)));
         } catch (\Exception $ex) {
