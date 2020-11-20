@@ -22,7 +22,7 @@ class OauthLoginController extends Controller
     /**
      * Redirect the user to the GitHub authentication page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirectFb()
     {
@@ -32,7 +32,7 @@ class OauthLoginController extends Controller
     /**
      * Obtain the user information from GitHub.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function callbackFb()
     {

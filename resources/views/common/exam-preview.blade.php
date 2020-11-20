@@ -455,13 +455,17 @@
             <div class="row">
                 <div class="col-md-5 {{auth()->user()->type==4?'col-md-offset-1':'offset-md-1'}}"
                      style="padding: 2%; background-color: rgba(195,205,205,0.2)"
-                     v-for="question_response of question_list_response">
+                     v-for="(question_response,index) of question_list_response">
                     <div class="accordion md-accordion accordion-blocks"
                          aria-multiselectable="true">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="mt-1 mb-0" style="padding-left: 2%">
-                                    @{{ question_response.question }}
+                                    <strong v-html="(index+1)+'. '+question_response.question"></strong>
+                                    <span class="pull-right">
+                                        <a href="javascript:void(0)" class="btn btn-info btn-sm"
+                                           @click="showExplanation(index)">Explanation</a>
+                                    </span>
                                 </h5>
                             </div>
                             <div class="card-body">
@@ -481,7 +485,41 @@
             </div>
             <div class="section-padding"></div>
         </div>
-
+        <!-- Modal -->
+        <div class="modal fade" id="answer_explanation" tabindex="-1" role="dialog" v-if="explanation_index !== 'no'"
+             aria-labelledby="answer_explanationLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="answer_explanationLabel"
+                            v-html="question_list_response[explanation_index].question"></h4>
+                    </div>
+                    <div class="modal-body">
+{{--                        <ul>--}}
+{{--                            <li v-for="option of question_list_response[explanation_index].options"--}}
+{{--                                :style="{'background':question_list_response[explanation_index].correct_option_id == option.option_id?'rgba(0,180,78,0.46)':'',margin:'1%'}">--}}
+{{--                                @{{ option.option }}--}}
+{{--                                <span--}}
+{{--                                    v-if="question_list_response[explanation_index].correct_option_id == option.option_id"--}}
+{{--                                    class="pull-right" style="padding-right: 1%;color: green"><i--}}
+{{--                                        class="{{auth()->user()->type==4?'glyphicon glyphicon-ok':'fa fa-check float-right pt-1 pr-1'}}"></i></span>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+                        <template v-for="option of question_list_response[explanation_index].options">
+                            <p v-if="question_list_response[explanation_index].correct_option_id == option.option_id"
+                               v-html="option.description"></p>
+                            <p v-if="question_list_response[explanation_index].correct_option_id == option.option_id && (!option.description)" class="text-center headline" style="padding-top: 50px;">No Explanation</p>
+                        </template>
+                    </div>
+                    <div class="modal-footer">
+                        {{--                        <button type="button" class="btn btn-default" data-dismiss="modal">OKAY</button>--}}
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @section('script-lib')
@@ -493,6 +531,7 @@
             data: {
                 exam_test_id: "{{$exam_test_id}}",
                 question_list_response: [],
+                explanation_index: 'no',
                 exam_info_response: {
                     duration_sec: '',
                     mark_per_question: '',
@@ -511,6 +550,10 @@
                         'btn-primary': true, 'btn-block': true,
                     }
                 },
+                showExplanation(index) {
+                    this.explanation_index = index;
+                    $("#answer_explanation").modal('show');
+                }
             },
             mounted() {
                 this.ajaxCall('{{ route('exam-preview') }}', {exam_id: "{{$exam_test_id}}"}, 'post', (data, code) => {

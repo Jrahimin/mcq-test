@@ -65,8 +65,9 @@
     {{--    </div>--}}
     <div class="row">
         <div class="col-md-5 _question_m_p_q question" v-for="(question,index) of questions" :key="index">
-            <h4>@{{index+1}}. @{{ question.question}} <span class="badge pull-right bg-success"> Mark: @{{ question.mark }}</span></h4>
-{{--            <span>(@{{ question.description }})</span>--}}
+            <h4><strong v-html="index+1 +'. '+  question.question"></strong> <span class="badge pull-right bg-success"> Mark: @{{ question.mark }}</span>
+            </h4>
+            {{--            <span>(@{{ question.description }})</span>--}}
             <div class="radio" v-for="(option,i) in question.options" :key="i">
                 <label><input type="radio" :value="option.option_id" v-model="answers[index].option_id">@{{option.option}}</label>
             </div>
